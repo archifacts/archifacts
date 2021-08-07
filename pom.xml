@@ -17,13 +17,5 @@
 		<module>core</module>
 		<module>integration</module>
 	</modules>
-	
-	
-	<distributionManagement>
-		<repository>
-			<id>github</id>
-			<name>GitHub Archifacts Apache Maven Packages</name>
-			<url>https://maven.pkg.github.com/Archifacts/archifacts</url>
-		</repository>
-	</distributionManagement>
+
 </project>
