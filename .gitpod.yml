@@ -9,3 +9,5 @@ vscode:
     - vscjava.vscode-java-debug
     - vscjava.vscode-java-dependency
     - vscjava.vscode-java-test
+    - redhat.fabric8-analytics
+    - redhat.vscode-commons
