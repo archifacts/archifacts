@@ -24,6 +24,9 @@ import com.tngtech.archunit.core.domain.JavaClasses;
  * Offers methods to register descriptors and is capable of building the
  * {@link Application} by applying those descriptors.
  *
+ *
+ * Note: Adding descriptors is not thread-safe!
+ *
  * @author Oliver Libutzki
  *
  */
@@ -35,7 +38,7 @@ public final class ApplicationBuilder {
 	private final Set<TargetBasedArtifactRelationshipDescriptor> targetBasedRelationshipDescriptors = new LinkedHashSet<>();
 
 	/**
-	 * Registers a {@link ArtifactContainerDescriptor}.
+	 * Registers an {@link ArtifactContainerDescriptor}.
 	 *
 	 * @param artifactContainerDescriptor the descriptor to be added
 	 */

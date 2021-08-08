@@ -11,8 +11,11 @@ import org.apache.logging.log4j.Logger;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
- * Represents the whole application which contains {@link ArtifactContainer}s,
- * {@link Artifact}s and {@link ArtifactRelationship}s.
+ * Represents the whole application which contains {@link ArtifactContainer
+ * ArtifactContainers}, {@link Artifact Artifacts} and
+ * {@link ArtifactRelationship ArtifactRelationships}.
+ *
+ * Note: Adding elements is not thread-safe!
  *
  * @author Oliver Libutzki
  *

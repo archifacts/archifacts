@@ -8,7 +8,7 @@ import org.archifacts.core.model.ArtifactContainerType;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
- * Describes a {@link ArtifactContainer}.
+ * Describes an {@link ArtifactContainer}.
  *
  * @author Oliver Libutzki
  * @see ArtifactContainer
@@ -25,8 +25,8 @@ public interface ArtifactContainerDescriptor {
 	ArtifactContainerType type();
 
 	/**
-	 * Returns the name of the {@link ArtifactContainer}. Implementations are free to
-	 * return {@link Optional#empty()} to indicate that they cannot determine a
+	 * Returns the name of the {@link ArtifactContainer}. Implementations are free
+	 * to return {@link Optional#empty()} to indicate that they cannot determine a
 	 * container for the given {@link JavaClass}.
 	 *
 	 * @param javaClass The {@link JavaClass} to be evaluated

@@ -8,7 +8,7 @@ import org.archifacts.core.model.ArtifactRelationship;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
- * Describes a {@link ArtifactRelationship}. As it is target-based the
+ * Describes an {@link ArtifactRelationship}. As it is target-based the
  * relationship's target side is the artifact which is able to provide all the
  * information to build the {@link ArtifactRelationship}.
  *
@@ -34,7 +34,7 @@ public interface TargetBasedArtifactRelationshipDescriptor extends ArtifactRelat
 	 * {@link Artifact#getJavaClass()}. Returns all the sources. For each source a
 	 * {@link ArtifactRelationship} is built.
 	 *
-	 * @param sourceClass the {@link JavaClass} of the {@link Artifact} for which
+	 * @param targetClass the {@link JavaClass} of the {@link Artifact} for which
 	 *                    {@link #isTarget(Artifact)} returned true.
 	 * @return all the sources for the given {@link JavaClass} which are described
 	 *         by this descriptor.

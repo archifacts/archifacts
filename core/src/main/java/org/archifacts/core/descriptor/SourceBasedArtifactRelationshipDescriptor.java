@@ -8,7 +8,7 @@ import org.archifacts.core.model.ArtifactRelationship;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
- * Describes a {@link ArtifactRelationship}. As it is source-based the
+ * Describes an {@link ArtifactRelationship}. As it is source-based the
  * relationship's source side is the artifact which is able to provide all the
  * information to build the {@link ArtifactRelationship}.
  *

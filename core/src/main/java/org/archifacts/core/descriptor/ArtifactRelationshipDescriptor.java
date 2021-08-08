@@ -5,7 +5,7 @@ import org.archifacts.core.model.ArtifactRelationship;
 import org.archifacts.core.model.ArtifactRelationshipRole;
 
 /**
- * Describes a {@link ArtifactRelationship}.
+ * Describes an {@link ArtifactRelationship}.
  *
  * @author Oliver Libutzki
  * @see ArtifactRelationship
