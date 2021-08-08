@@ -119,8 +119,8 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_matching_BuildingBlockDescriptor_creates_a_BuildingBlock() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor());
 			final Application application = applicationBuilder.buildApplication(javaClasses);
 			assertThat(application.getArtifacts())
 					.extracting(Artifact::getClass, Artifact::getName, artifact -> artifact.getJavaClass().getName())
@@ -131,8 +131,8 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_MiscArtifact_is_created_if_no_BuildingBlockDescriptor_matches() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor());
 			final Application application = applicationBuilder.buildApplication(javaClasses);
 			assertThat(application.getArtifacts())
 					.extracting(Artifact::getClass, Artifact::getName, artifact -> artifact.getJavaClass().getName())
@@ -142,8 +142,8 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_a_artifact_is_created_for_each_class() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor());
 			final Application application = applicationBuilder.buildApplication(javaClasses);
 			assertThat(application.getArtifacts()).hasSize(2);
 			assertThat(application.getArtifacts())
@@ -153,10 +153,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_multiple_matching_BuildingBlockDescriptors_cannot_handle_the_same_type() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addBuildingBlockDescriptor(new ArbitraryDescriptor());
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addBuildingBlockDescriptor(new ArbitraryDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
 					.withMessage(
 							"For the following BuildingBlockTypes multiple descriptors have been registered: Event(" + EventDescriptor.class.getName() + ", " + EventDescriptor.class.getName() + ")");
@@ -164,10 +164,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_multiple_matching_BuildingBlockDescriptors_returning_the_different_results_lead_to_an_error() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addBuildingBlockDescriptor(new Event2Descriptor());
-			applicationBuilder.addBuildingBlockDescriptor(new ArbitraryDescriptor());
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addBuildingBlockDescriptor(new Event2Descriptor())
+					.addBuildingBlockDescriptor(new ArbitraryDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
 					.withMessage(
 							"For " + TestEvent.class.getName() + " multiple BuildingBlockDescriptors match: " + EventDescriptor.class.getName() + ", " + Event2Descriptor.class.getName());
