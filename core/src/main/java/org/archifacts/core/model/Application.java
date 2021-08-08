@@ -28,6 +28,16 @@ public final class Application implements HasContainers, HasArtifacts, HasRelati
 	private final Map<JavaClass, Artifact> artifacts = new LinkedHashMap<>();
 	private final Set<ArtifactRelationship> relationships = new LinkedHashSet<>();
 
+	/**
+	 * returns an {@link ApplicationBuilder} in order to initialze the
+	 * {@link Application}.
+	 *
+	 * @return an {@link ApplicationBuilder}
+	 */
+	public static ApplicationBuilder builder() {
+		return new ApplicationBuilder();
+	}
+
 	Application() {
 	}
 

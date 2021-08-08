@@ -24,6 +24,8 @@ import com.tngtech.archunit.core.domain.JavaClasses;
  * Offers methods to register descriptors and is capable of building the
  * {@link Application} by applying those descriptors.
  *
+ * An instance of {@link ApplicationBuilder} can be obtained by calling
+ * {@link Application#builder()}.
  *
  * Note: Adding descriptors is not thread-safe!
  *
@@ -37,60 +39,69 @@ public final class ApplicationBuilder {
 	private final Set<SourceBasedArtifactRelationshipDescriptor> sourceBasedRelationshipDescriptors = new LinkedHashSet<>();
 	private final Set<TargetBasedArtifactRelationshipDescriptor> targetBasedRelationshipDescriptors = new LinkedHashSet<>();
 
+	ApplicationBuilder() {
+	}
+
 	/**
 	 * Registers an {@link ArtifactContainerDescriptor}.
 	 *
 	 * @param artifactContainerDescriptor the descriptor to be added, cannot be null
+	 * @return this instance for method-chaining
 	 * @throws IllegalArgumentException if artifactContainerDescriptor is null
 	 */
-	public void addContainerDescriptor(final ArtifactContainerDescriptor artifactContainerDescriptor) {
+	public ApplicationBuilder addContainerDescriptor(final ArtifactContainerDescriptor artifactContainerDescriptor) {
 		if (artifactContainerDescriptor == null) {
 			throw new IllegalArgumentException("The ArtifactContainerDescriptor cannot be null");
 		}
 		this.containerDescriptors.add(artifactContainerDescriptor);
+		return this;
 	}
 
 	/**
 	 * Registers a {@link BuildingBlockDescriptor}.
 	 *
 	 * @param buildingBlockDescriptor the descriptor to be added, cannot be null
+	 * @return this instance for method-chaining
 	 * @throws IllegalArgumentException if buildingBlockDescriptor is null
 	 */
-	public void addBuildingBlockDescriptor(final BuildingBlockDescriptor buildingBlockDescriptor) {
+	public ApplicationBuilder addBuildingBlockDescriptor(final BuildingBlockDescriptor buildingBlockDescriptor) {
 		if (buildingBlockDescriptor == null) {
 			throw new IllegalArgumentException("The BuildingBlockDescriptor cannot be null");
 		}
 		buildingBlockDescriptors.add(buildingBlockDescriptor);
+		return this;
 	}
 
 	/**
 	 * Registers a {@link SourceBasedArtifactRelationshipDescriptor}.
 	 *
 	 * @param sourceBasedArtifactRelationshipDescriptor the descriptor to be added,
-	 *                                                  cannot be null
+	 * @return this instance for method-chaining cannot be null
 	 * @throws IllegalArgumentException if sourceBasedArtifactRelationshipDescriptor
 	 *                                  is null
 	 */
-	public void addSourceBasedRelationshipDescriptor(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor) {
+	public ApplicationBuilder addSourceBasedRelationshipDescriptor(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor) {
 		if (sourceBasedArtifactRelationshipDescriptor == null) {
 			throw new IllegalArgumentException("The SourceBasedArtifactRelationshipDescriptor cannot be null");
 		}
 		sourceBasedRelationshipDescriptors.add(sourceBasedArtifactRelationshipDescriptor);
+		return this;
 	}
 
 	/**
 	 * Registers a {@link TargetBasedArtifactRelationshipDescriptor}.
 	 *
 	 * @param targetBasedArtifactRelationshipDescriptor the descriptor to be added,
-	 *                                                  cannot be null
+	 * @return this instance for method-chaining cannot be null
 	 * @throws IllegalArgumentException if targetBasedArtifactRelationshipDescriptor
 	 *                                  is null
 	 */
-	public void addTargetBasedRelationshipDescriptor(final TargetBasedArtifactRelationshipDescriptor targetBasedArtifactRelationshipDescriptor) {
+	public ApplicationBuilder addTargetBasedRelationshipDescriptor(final TargetBasedArtifactRelationshipDescriptor targetBasedArtifactRelationshipDescriptor) {
 		if (targetBasedArtifactRelationshipDescriptor == null) {
 			throw new IllegalArgumentException("The TargetBasedArtifactRelationshipDescriptor cannot be null");
 		}
 		targetBasedRelationshipDescriptors.add(targetBasedArtifactRelationshipDescriptor);
+		return this;
 	}
 
 	/**

@@ -52,28 +52,28 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_null_cannot_be_added_as_BuildingBlockDescriptor() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addBuildingBlockDescriptor(null))
 					.withMessage("The BuildingBlockDescriptor cannot be null");
 		}
 
 		@Test
 		void assert_that_null_cannot_be_added_as_ContainerDescriptor() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addContainerDescriptor(null))
 					.withMessage("The ArtifactContainerDescriptor cannot be null");
 		}
 
 		@Test
 		void assert_that_null_cannot_be_added_as_SourceBasedRelationshipDescriptor() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addSourceBasedRelationshipDescriptor(null))
 					.withMessage("The SourceBasedArtifactRelationshipDescriptor cannot be null");
 		}
 
 		@Test
 		void assert_that_null_cannot_be_added_as_TargetBasedRelationshipDescriptor() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addTargetBasedRelationshipDescriptor(null))
 					.withMessage("The TargetBasedArtifactRelationshipDescriptor cannot be null");
 		}
@@ -105,7 +105,7 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_matching_BuildingBlockDescriptor_creates_a_BuildingBlock() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			final Application application = applicationBuilder.buildApplication(javaClasses);
 			assertThat(application.getArtifacts())
@@ -117,7 +117,7 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_MiscArtifact_is_created_if_no_BuildingBlockDescriptor_matches() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			final Application application = applicationBuilder.buildApplication(javaClasses);
 			assertThat(application.getArtifacts())
@@ -128,7 +128,7 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_a_artifact_is_created_for_each_class() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			final Application application = applicationBuilder.buildApplication(javaClasses);
 			assertThat(application.getArtifacts()).hasSize(2);
@@ -139,7 +139,7 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_multiple_matching_BuildingBlockDescriptors_cannot_handle_the_same_type() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
@@ -149,7 +149,7 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_multiple_matching_BuildingBlockDescriptors_returning_the_different_results_lead_to_an_error() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			applicationBuilder.addBuildingBlockDescriptor(new Event2Descriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
@@ -195,10 +195,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_BuildingBlock_can_have_a_container() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addContainerDescriptor(new TestContainerDescriptor());
-			final Application application = applicationBuilder.buildApplication(javaClasses);
+			final Application application = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addContainerDescriptor(new TestContainerDescriptor())
+					.buildApplication(javaClasses);
 			final Artifact testEventArtifact = application.getArtifacts()
 					.stream()
 					.filter(artifact -> artifact.getJavaClass().getName().equals(TestEvent.class.getName()))
@@ -213,10 +213,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_MiscArtifact_can_have_a_container() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addContainerDescriptor(new TestContainerDescriptor());
-			final Application application = applicationBuilder.buildApplication(javaClasses);
+			final Application application = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addContainerDescriptor(new TestContainerDescriptor())
+					.buildApplication(javaClasses);
 			final Artifact anyClassArtifact = application.getArtifacts()
 					.stream()
 					.filter(artifact -> artifact.getJavaClass().getName().equals(AnyClass.class.getName()))
@@ -231,10 +231,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_BuildingBlock_can_have_no_container() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addContainerDescriptor(new TestContainerDescriptor());
-			final Application application = applicationBuilder.buildApplication(javaClasses);
+			final Application application = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addContainerDescriptor(new TestContainerDescriptor())
+					.buildApplication(javaClasses);
 			final Artifact testEventArtifact = application.getArtifacts()
 					.stream()
 					.filter(artifact -> artifact.getJavaClass().getName().equals(NoContainerTestEvent.class.getName()))
@@ -246,10 +246,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_MiscArtifact_can_have_no_container() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addContainerDescriptor(new TestContainerDescriptor());
-			final Application application = applicationBuilder.buildApplication(javaClasses);
+			final Application application = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addContainerDescriptor(new TestContainerDescriptor())
+					.buildApplication(javaClasses);
 			final Artifact testEventArtifact = application.getArtifacts()
 					.stream()
 					.filter(artifact -> artifact.getJavaClass().getName().equals(NoContainerAnyClass.class.getName()))
@@ -261,10 +261,10 @@ class ApplicationBuilderTest {
 
 		@Test
 		void assert_that_containers_are_present() {
-			final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
-			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
-			applicationBuilder.addContainerDescriptor(new TestContainerDescriptor());
-			final Application application = applicationBuilder.buildApplication(javaClasses);
+			final Application application = Application.builder()
+					.addBuildingBlockDescriptor(new EventDescriptor())
+					.addContainerDescriptor(new TestContainerDescriptor())
+					.buildApplication(javaClasses);
 
 			assertThat(application.getContainers())
 					.hasSize(1)

@@ -18,7 +18,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 
 import org.archifacts.core.model.Application;
-import org.archifacts.core.model.ApplicationBuilder;
 import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.core.model.BuildingBlock;
 import org.archifacts.integration.asciidoc.AsciiDoc;
@@ -76,22 +75,22 @@ public class JMoleculesDocumenter {
 	}
 
 	private Application initApplication(final JavaClasses javaClasses) {
-		final ApplicationBuilder applicationBuilder = new ApplicationBuilder();
+		return Application.builder()
+				.addContainerDescriptor(ModuleDescriptor)
+				.addContainerDescriptor(JdkLibraryDescriptor.INSTANCE)
+				.addBuildingBlockDescriptor(AggregateRootDescriptor)
+				.addBuildingBlockDescriptor(EntityDescriptor)
+				.addBuildingBlockDescriptor(IdentifierDescriptor)
+				.addBuildingBlockDescriptor(EventDescriptor)
+				.addBuildingBlockDescriptor(ServiceDescriptor)
+				.addBuildingBlockDescriptor(RepositoryDescriptor)
+				.addSourceBasedRelationshipDescriptor(EventHandlerDescriptor)
+				.addSourceBasedRelationshipDescriptor(IdentifiedByDescriptor)
+				.addSourceBasedRelationshipDescriptor(ManagedByDescriptor)
+				.addSourceBasedRelationshipDescriptor(AggregateRootAssociationDescriptor)
+				.addSourceBasedRelationshipDescriptor(ContainedEntityDescriptor)
+				.buildApplication(javaClasses);
 
-		applicationBuilder.addContainerDescriptor(ModuleDescriptor);
-		applicationBuilder.addContainerDescriptor(JdkLibraryDescriptor.INSTANCE);
-		applicationBuilder.addBuildingBlockDescriptor(AggregateRootDescriptor);
-		applicationBuilder.addBuildingBlockDescriptor(EntityDescriptor);
-		applicationBuilder.addBuildingBlockDescriptor(IdentifierDescriptor);
-		applicationBuilder.addBuildingBlockDescriptor(EventDescriptor);
-		applicationBuilder.addBuildingBlockDescriptor(ServiceDescriptor);
-		applicationBuilder.addBuildingBlockDescriptor(RepositoryDescriptor);
-		applicationBuilder.addSourceBasedRelationshipDescriptor(EventHandlerDescriptor);
-		applicationBuilder.addSourceBasedRelationshipDescriptor(IdentifiedByDescriptor);
-		applicationBuilder.addSourceBasedRelationshipDescriptor(ManagedByDescriptor);
-		applicationBuilder.addSourceBasedRelationshipDescriptor(AggregateRootAssociationDescriptor);
-		applicationBuilder.addSourceBasedRelationshipDescriptor(ContainedEntityDescriptor);
-		return applicationBuilder.buildApplication(javaClasses);
 	}
 
 	private SoftwareSystem initSoftwareSystem(final Workspace workspace) {
