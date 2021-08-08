@@ -1,2 +1,11 @@
+
 tasks:
   - init: mvn package -DskipTests
+
+vscode:
+  extensions:
+    - redhat.java
+    - vscjava.vscode-maven
+    - vscjava.vscode-java-debug
+    - vscjava.vscode-java-dependency
+    - vscjava.vscode-java-test
