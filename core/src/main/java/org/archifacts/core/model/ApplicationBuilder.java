@@ -40,36 +40,56 @@ public final class ApplicationBuilder {
 	/**
 	 * Registers an {@link ArtifactContainerDescriptor}.
 	 *
-	 * @param artifactContainerDescriptor the descriptor to be added
+	 * @param artifactContainerDescriptor the descriptor to be added, cannot be null
+	 * @throws IllegalArgumentException if artifactContainerDescriptor is null
 	 */
 	public void addContainerDescriptor(final ArtifactContainerDescriptor artifactContainerDescriptor) {
+		if (artifactContainerDescriptor == null) {
+			throw new IllegalArgumentException("The ArtifactContainerDescriptor cannot be null");
+		}
 		this.containerDescriptors.add(artifactContainerDescriptor);
 	}
 
 	/**
 	 * Registers a {@link BuildingBlockDescriptor}.
 	 *
-	 * @param buildingBlockDescriptor the descriptor to be added
+	 * @param buildingBlockDescriptor the descriptor to be added, cannot be null
+	 * @throws IllegalArgumentException if buildingBlockDescriptor is null
 	 */
 	public void addBuildingBlockDescriptor(final BuildingBlockDescriptor buildingBlockDescriptor) {
+		if (buildingBlockDescriptor == null) {
+			throw new IllegalArgumentException("The BuildingBlockDescriptor cannot be null");
+		}
 		buildingBlockDescriptors.add(buildingBlockDescriptor);
 	}
 
 	/**
 	 * Registers a {@link SourceBasedArtifactRelationshipDescriptor}.
 	 *
-	 * @param sourceBasedArtifactRelationshipDescriptor the descriptor to be added
+	 * @param sourceBasedArtifactRelationshipDescriptor the descriptor to be added,
+	 *                                                  cannot be null
+	 * @throws IllegalArgumentException if sourceBasedArtifactRelationshipDescriptor
+	 *                                  is null
 	 */
 	public void addSourceBasedRelationshipDescriptor(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor) {
+		if (sourceBasedArtifactRelationshipDescriptor == null) {
+			throw new IllegalArgumentException("The SourceBasedArtifactRelationshipDescriptor cannot be null");
+		}
 		sourceBasedRelationshipDescriptors.add(sourceBasedArtifactRelationshipDescriptor);
 	}
 
 	/**
 	 * Registers a {@link TargetBasedArtifactRelationshipDescriptor}.
 	 *
-	 * @param targetBasedArtifactRelationshipDescriptor the descriptor to be added
+	 * @param targetBasedArtifactRelationshipDescriptor the descriptor to be added,
+	 *                                                  cannot be null
+	 * @throws IllegalArgumentException if targetBasedArtifactRelationshipDescriptor
+	 *                                  is null
 	 */
 	public void addTargetBasedRelationshipDescriptor(final TargetBasedArtifactRelationshipDescriptor targetBasedArtifactRelationshipDescriptor) {
+		if (targetBasedArtifactRelationshipDescriptor == null) {
+			throw new IllegalArgumentException("The TargetBasedArtifactRelationshipDescriptor cannot be null");
+		}
 		targetBasedRelationshipDescriptors.add(targetBasedArtifactRelationshipDescriptor);
 	}
 
@@ -78,11 +98,14 @@ public final class ApplicationBuilder {
 	 *
 	 * @param javaClasses The application's scope. All the classes which are part of
 	 *                    {@link JavaClasses} are classes which are contained in the
-	 *                    application.
+	 *                    application. Cannot be null.
+	 * @throws IllegalArgumentException if javaClasses is null
 	 * @return the {@link Application}
 	 */
 	public Application buildApplication(final JavaClasses javaClasses) {
-
+		if (javaClasses == null) {
+			throw new IllegalArgumentException("JavaClasses cannot be null");
+		}
 		validateBuildingBlockDescriptors();
 
 		final Application application = new Application();
