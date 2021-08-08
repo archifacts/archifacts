@@ -103,6 +103,20 @@ class ApplicationBuilderTest {
 
 		}
 
+		class ArbitraryDescriptor implements BuildingBlockDescriptor {
+
+			@Override
+			public BuildingBlockType type() {
+				return BuildingBlockType.of("Arbitrary");
+			}
+
+			@Override
+			public boolean isBuildingBlock(final JavaClass javaClass) {
+				return false;
+			}
+
+		}
+
 		@Test
 		void assert_that_matching_BuildingBlockDescriptor_creates_a_BuildingBlock() {
 			final ApplicationBuilder applicationBuilder = Application.builder();
@@ -142,6 +156,7 @@ class ApplicationBuilderTest {
 			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
+			applicationBuilder.addBuildingBlockDescriptor(new ArbitraryDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
 					.withMessage(
 							"For the following BuildingBlockTypes multiple descriptors have been registered: Event(" + EventDescriptor.class.getName() + ", " + EventDescriptor.class.getName() + ")");
@@ -152,6 +167,7 @@ class ApplicationBuilderTest {
 			final ApplicationBuilder applicationBuilder = Application.builder();
 			applicationBuilder.addBuildingBlockDescriptor(new EventDescriptor());
 			applicationBuilder.addBuildingBlockDescriptor(new Event2Descriptor());
+			applicationBuilder.addBuildingBlockDescriptor(new ArbitraryDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
 					.withMessage(
 							"For " + TestEvent.class.getName() + " multiple BuildingBlockDescriptors match: " + EventDescriptor.class.getName() + ", " + Event2Descriptor.class.getName());

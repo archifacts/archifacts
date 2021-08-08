@@ -246,7 +246,7 @@ public final class ApplicationBuilder {
 						return Optional.<BuildingBlockDescriptor>empty();
 					}
 					throw new IllegalStateException(
-							"For " + javaClass.getName() + " multiple BuildingBlockDescriptors match: " + buildingBlockDescriptors.stream()
+							"For " + javaClass.getName() + " multiple BuildingBlockDescriptors match: " + descriptors.stream()
 									.map(BuildingBlockDescriptor::getClass)
 									.map(Class::getName)
 									.collect(Collectors.joining(", ")));
