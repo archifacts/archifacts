@@ -9,4 +9,25 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-jmolecules</artifactId>
+
+	<properties>
+		<jmolecules.version>1.2.0</jmolecules.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.archifacts</groupId>
+			<artifactId>archifacts-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jmolecules</groupId>
+			<artifactId>jmolecules-ddd</artifactId>
+			<version>${jmolecules.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmolecules</groupId>
+			<artifactId>jmolecules-events</artifactId>
+			<version>${jmolecules.version}</version>
+		</dependency>
+	</dependencies>
 </project>

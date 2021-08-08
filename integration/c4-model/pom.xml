@@ -9,4 +9,20 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-c4-model</artifactId>
+
+	<properties>
+		<structurizr-core.version>1.9.5</structurizr-core.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.archifacts</groupId>
+			<artifactId>archifacts-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.structurizr</groupId>
+			<artifactId>structurizr-core</artifactId>
+			<version>${structurizr-core.version}</version>
+		</dependency>
+	</dependencies>
 </project>

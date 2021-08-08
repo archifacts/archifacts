@@ -30,23 +30,28 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.archblocks</groupId>
-				<artifactId>archblocks-core</artifactId>
+				<groupId>org.archifacts</groupId>
+				<artifactId>archifacts-core</artifactId>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.archblocks</groupId>
-				<artifactId>archblocks-docs</artifactId>
+				<groupId>org.archifacts</groupId>
+				<artifactId>archifacts-asciidoc</artifactId>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.archblocks</groupId>
-				<artifactId>archblocks-c4-transform</artifactId>
+				<groupId>org.archifacts</groupId>
+				<artifactId>archifacts-c4-model</artifactId>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
-				<groupId>org.archblocks</groupId>
-				<artifactId>archblocks-c4-docs</artifactId>
+				<groupId>org.archifacts</groupId>
+				<artifactId>archifacts-c4-asciidoc</artifactId>
+				<version>0.1.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.archifacts</groupId>
+				<artifactId>archifacts-jmolecules</artifactId>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>

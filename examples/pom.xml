@@ -6,17 +6,11 @@
 		<groupId>org.archifacts</groupId>
 		<artifactId>archifacts-parent</artifactId>
 		<version>0.1.0-SNAPSHOT</version>
-		<relativePath>parent/pom.xml</relativePath>
+		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
-
-	<artifactId>archifacts-aggregator</artifactId>
+	<artifactId>archifacts-examples-aggregator</artifactId>
 	<packaging>pom</packaging>
-
 	<modules>
-		<module>parent</module>
-		<module>core</module>
-		<module>integration</module>
-		<module>examples</module>
+		<module>jmolecules-spring-data-jpa</module>
 	</modules>
-
 </project>
