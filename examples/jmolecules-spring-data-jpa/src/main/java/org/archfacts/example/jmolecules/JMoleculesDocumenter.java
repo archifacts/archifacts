@@ -55,7 +55,7 @@ public class JMoleculesDocumenter {
 		final SoftwareSystem softwareSystem = initSoftwareSystem(c4Workspace);
 		final C4ModelTransformer c4ModelTransformer = new C4ModelTransformer(application, softwareSystem);
 
-		final AsciiDoc asciiDoc = new AsciiDoc(Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
+		final AsciiDoc asciiDoc = new AsciiDoc();
 
 		final ContainerView containerView = initContainerView(softwareSystem, views, c4ModelTransformer);
 
@@ -66,7 +66,7 @@ public class JMoleculesDocumenter {
 				.map(module -> initComponentView(module, views, c4ModelTransformer))
 				.map(ComponentViewPlantUMLDocElement::new)
 				.forEach(asciiDoc::addDocElement);
-		asciiDoc.writeFile();
+		asciiDoc.writeToFile(Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
 
 	}
 
