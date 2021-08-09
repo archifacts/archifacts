@@ -2,7 +2,7 @@ package org.archifacts.core.model;
 
 import java.util.Objects;
 
-class ArtifactContainerDescription {
+final class ArtifactContainerDescription {
 	private final ArtifactContainerType type;
 	private final String name;
 

@@ -39,6 +39,16 @@ public final class ApplicationBuilder {
 	private final Set<SourceBasedArtifactRelationshipDescriptor> sourceBasedRelationshipDescriptors = new LinkedHashSet<>();
 	private final Set<TargetBasedArtifactRelationshipDescriptor> targetBasedRelationshipDescriptors = new LinkedHashSet<>();
 
+	private static final class OriginAwareArtifactContainerDescription {
+		private final ArtifactContainerDescription artifactContainerDescription;
+		private final ArtifactContainerDescriptor origin;
+
+		private OriginAwareArtifactContainerDescription(final ArtifactContainerDescription artifactContainerDescription, final ArtifactContainerDescriptor origin) {
+			this.artifactContainerDescription = artifactContainerDescription;
+			this.origin = origin;
+		}
+	}
+
 	ApplicationBuilder() {
 	}
 
@@ -203,21 +213,21 @@ public final class ApplicationBuilder {
 		containerDescriptors
 				.stream()
 				.map(
-						moduleDescriptor -> moduleDescriptor.containerNameOf(artifact.getJavaClass())
-								.<DescriptorBasedArtifactContainerDescription>map(containerName -> new DescriptorBasedArtifactContainerDescription(moduleDescriptor, containerName)))
+						containerDescriptor -> containerDescriptor.containerNameOf(artifact.getJavaClass())
+								.map(containerName -> new OriginAwareArtifactContainerDescription(new ArtifactContainerDescription(containerDescriptor.type(), containerName), containerDescriptor)))
 				.filter(Optional::isPresent)
-				.<DescriptorBasedArtifactContainerDescription>map(Optional::get)
+				.map(Optional::get)
 				.distinct()
 				.collect(collectingAndThen(toList(), descriptions -> {
 					if (descriptions.size() == 1) {
-						return Optional.of(descriptions.get(0));
+						return Optional.of(descriptions.get(0).artifactContainerDescription);
 					}
 					if (descriptions.isEmpty()) {
-						return Optional.<DescriptorBasedArtifactContainerDescription>empty();
+						return Optional.<ArtifactContainerDescription>empty();
 					}
 					throw new IllegalStateException(
-							"For " + artifact.getName() + " multiple ContainerDecriptors match: " + descriptions.stream()
-									.map(DescriptorBasedArtifactContainerDescription::getDescriptor)
+							"For " + artifact.getName() + " multiple ContainerDescriptors match: " + descriptions.stream()
+									.map(desc -> desc.origin)
 									.map(ArtifactContainerDescriptor::getClass)
 									.map(Class::getName)
 									.collect(Collectors.joining(", ")));
