@@ -13,10 +13,10 @@ public class GraphvizDocElement implements AsciiDocElement {
 	@Override
 	public String render() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("[graphviz, " + filename + ", svg] \n");
-		stringBuilder.append("....\n");
-		stringBuilder.append(graphvizString).append("\n");
-		stringBuilder.append("....\n");
+		stringBuilder.append( "[graphviz, " ).append( filename ).append( ", svg] " ).append( System.lineSeparator() );
+		stringBuilder.append( "...." ).append( System.lineSeparator() );
+		stringBuilder.append(graphvizString).append(System.lineSeparator());
+		stringBuilder.append( "...." ).append( System.lineSeparator() );
 		return stringBuilder.toString();
 	}
 

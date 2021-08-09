@@ -30,8 +30,7 @@ public final class AsciiDoc {
 		docElements
 				.stream()
 				.map(AsciiDocElement::render)
-				.map(renderedDocElement -> renderedDocElement + "\n")
-				.forEach(stringBuilder::append);
+				.forEach(renderedDocElement -> stringBuilder.append(renderedDocElement).append(System.lineSeparator()));
 		return stringBuilder.toString();
 	}
 }

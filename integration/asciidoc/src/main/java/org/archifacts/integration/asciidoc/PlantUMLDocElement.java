@@ -13,10 +13,10 @@ public class PlantUMLDocElement implements AsciiDocElement {
 	@Override
 	public String render() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("[plantuml, " + filename + ", svg] \n");
-		stringBuilder.append("....\n");
-		stringBuilder.append(plantUMLString).append("\n");
-		stringBuilder.append("....\n");
+		stringBuilder.append( "[plantuml, " ).append( filename ).append( ", svg] " ).append( System.lineSeparator() );
+		stringBuilder.append( "...." ).append( System.lineSeparator() );
+		stringBuilder.append(plantUMLString).append(System.lineSeparator());
+		stringBuilder.append( "...." ).append( System.lineSeparator() );
 		return stringBuilder.toString();
 	}
 
