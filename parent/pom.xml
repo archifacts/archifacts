@@ -132,4 +132,11 @@
 			<url>https://maven.pkg.github.com/Archifacts/archifacts</url>
 		</repository>
 	</distributionManagement>
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
 </project>
