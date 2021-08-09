@@ -13,9 +13,9 @@ public class GraphvizDocElement implements AsciiDocElement {
 	@Override
 	public String render() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("[graphviz, " + filename + ", svg] \n");
+		stringBuilder.append("[graphviz, ").append(filename).append(", svg] \n");
 		stringBuilder.append("....\n");
-		stringBuilder.append(graphvizString).append("\n");
+		stringBuilder.append(graphvizString).append('\n');
 		stringBuilder.append("....\n");
 		return stringBuilder.toString();
 	}
