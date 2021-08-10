@@ -13,8 +13,12 @@ import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.Relati
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.RelationshipDescriptors.IdentifiedByDescriptor;
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.RelationshipDescriptors.ManagedByDescriptor;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.archifacts.core.model.Application;
@@ -66,8 +70,15 @@ public class JMoleculesDocumenter {
 				.map(module -> initComponentView(module, views, c4ModelTransformer))
 				.map(ComponentViewPlantUMLDocElement::new)
 				.forEach(asciiDoc::addDocElement);
-		asciiDoc.writeToFile(Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
+		writeDocumentationToFile(asciiDoc);
+	}
 
+	private void writeDocumentationToFile(final AsciiDoc asciiDoc) throws IOException {
+		final Path outputPath = Paths.get("export", "jmolecules-spring-data-jpa-example.adoc");
+		Files.createDirectories(outputPath.getParent());
+		try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
+			asciiDoc.writeToWriter(writer);
+		}
 	}
 
 	private boolean isModule(final ArtifactContainer container) {
