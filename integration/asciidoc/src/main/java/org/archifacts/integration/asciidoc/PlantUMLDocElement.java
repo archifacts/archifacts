@@ -13,9 +13,9 @@ public class PlantUMLDocElement implements AsciiDocElement {
 	@Override
 	public String render() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append("[plantuml, " + filename + ", svg] \n");
+		stringBuilder.append("[plantuml, ").append(filename).append(", svg] \n");
 		stringBuilder.append("....\n");
-		stringBuilder.append(plantUMLString).append("\n");
+		stringBuilder.append(plantUMLString).append('\n');
 		stringBuilder.append("....\n");
 		return stringBuilder.toString();
 	}
