@@ -51,7 +51,17 @@ public abstract class Artifact implements Named {
 
 	@Override
 	public String getName() {
-		return javaClass.getSimpleName();
+		String name = javaClass.getSimpleName();
+		if (name.isEmpty()) {
+			final String fullyQualifiedName = javaClass.getFullName();
+			final int indexOfDollarSign = fullyQualifiedName.lastIndexOf('$');
+	        if (indexOfDollarSign > -1) {
+	        	name = fullyQualifiedName.substring(indexOfDollarSign);
+	        } else {
+	        	name = fullyQualifiedName;
+	        }
+		}
+		return name;
 	}
 
 	public Set<ArtifactRelationship> getIncomingRelationships() {
