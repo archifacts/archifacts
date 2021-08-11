@@ -1,7 +1,9 @@
 package org.archifacts.core.descriptor;
 
-import org.archifacts.core.model.BuildingBlockType;
+import java.lang.annotation.Annotation;
+
 import org.archifacts.core.model.BuildingBlock;
+import org.archifacts.core.model.BuildingBlockType;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
@@ -31,4 +33,47 @@ public interface BuildingBlockDescriptor {
 	 *         of type {@link #type()}, otherwise false.
 	 */
 	boolean isBuildingBlock(JavaClass javaClass);
+	
+	/**
+	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} whose simple name ends with a given suffix.
+	 * 
+	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
+	 * @param suffix The suffix the matching java classes should end with. Must not be <code>null</code>.
+	 * 
+	 * @return A new descriptor.
+	 * 
+	 * @throws NullPointerException If one of the parameter was <code>null</code>.
+	 */
+	static BuildingBlockDescriptor forSimpleNameEndingWith(final BuildingBlockType buildingBlockType, final String suffix) {
+		return new BuildingBlockDescriptorForSimpleNameEndingWith(buildingBlockType, suffix);
+	}
+	
+	/**
+	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are assignable to one of the given types.
+	 * 
+	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
+	 * @param types The types the matching java classes should be assignable to. Must not be <code>null</code>.
+	 * 
+	 * @return A new descriptor.
+	 * 
+	 * @throws NullPointerException If one of the parameter was <code>null</code>.
+	 */
+	static BuildingBlockDescriptor forAssignableTo(final BuildingBlockType buildingBlockType, final Class<?>... types) {
+		return new BuildingBlockDescriptorForAssignableTo(buildingBlockType, types);
+	}
+	
+	/**
+	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are annotated with the given annotations.
+	 * 
+	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
+	 * @param type The annotation with which the matching java classes should be annotated. Must not be <code>null</code>.
+	 * 
+	 * @return A new descriptor.
+	 * 
+	 * @throws NullPointerException If one of the parameter was <code>null</code>.
+	 */
+	static BuildingBlockDescriptor forAnnatatedWith(final BuildingBlockType buildingBlockType, final Class<? extends Annotation> type) {
+		return new BuildingBlockDescriptorForAnnotatedWith(buildingBlockType, type);
+	}
+	
 }
