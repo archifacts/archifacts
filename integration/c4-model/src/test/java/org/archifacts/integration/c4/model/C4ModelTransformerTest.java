@@ -105,7 +105,7 @@ final class C4ModelTransformerTest {
 				.buildApplication(importClasses(Classes1.createAnonymousClass().getClass()));
 		
 		final C4ModelTransformer transformer = createTransformer(application);
-		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactly("$1");
+		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactly(C4ModelTransformerTest.class.getSimpleName() + "$" + Classes1.class.getSimpleName() + "$1");
 	}
 	
 	@Test
@@ -115,7 +115,7 @@ final class C4ModelTransformerTest {
 				.buildApplication(importClasses(Classes1.createAnonymousClass().getClass(), Classes2.createAnonymousClass().getClass()));
 		
 		final C4ModelTransformer transformer = createTransformer( application);
-		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(Classes1.class.getName() + "$1", Classes2.class.getName() + "$1");
+		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(C4ModelTransformerTest.class.getSimpleName() + "$" +  Classes1.class.getSimpleName() + "$1", C4ModelTransformerTest.class.getSimpleName() + "$" + Classes2.class.getSimpleName() + "$1");
 	}
 	
 	private JavaClasses importClasses(final Class<?> ...classes) {

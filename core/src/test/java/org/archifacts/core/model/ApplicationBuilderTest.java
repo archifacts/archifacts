@@ -359,7 +359,7 @@ class ApplicationBuilderTest {
 							tuple(ContainerType1_MiscArtifact.class.getSimpleName(), ContainerType1_MiscArtifact.class.getName()),
 							tuple(ContainerType2_MiscArtifact.class.getSimpleName(), ContainerType2_MiscArtifact.class.getName()),
 							tuple(NoContainer_MiscArtifact.class.getSimpleName(), NoContainer_MiscArtifact.class.getName()),
-							tuple("$1", Classes.class.getName() + "$1"));
+							tuple(ApplicationBuilderTest.class.getSimpleName() + "$" + Classes.class.getSimpleName() + "$1", Classes.class.getName() + "$1"));
 		}
 
 		@Test
