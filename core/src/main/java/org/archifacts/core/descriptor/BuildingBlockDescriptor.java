@@ -36,6 +36,7 @@ public interface BuildingBlockDescriptor {
 	
 	/**
 	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} whose simple name ends with a given suffix.
+	 * The suffix matching is case sensitive.
 	 * 
 	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
 	 * @param suffix The suffix the matching java classes should end with. Must not be <code>null</code>.
@@ -49,10 +50,10 @@ public interface BuildingBlockDescriptor {
 	}
 	
 	/**
-	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are assignable to one of the given types.
+	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are assignable to at least one of the given types.
 	 * 
 	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
-	 * @param types The types the matching java classes should be assignable to. Must not be <code>null</code>.
+	 * @param types The types the matching java classes should be assignable to. At least one type must be assignable in order to match. Must not be <code>null</code>.
 	 * 
 	 * @return A new descriptor.
 	 * 
@@ -63,7 +64,7 @@ public interface BuildingBlockDescriptor {
 	}
 	
 	/**
-	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are annotated with the given annotations.
+	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are annotated with the given annotation.
 	 * 
 	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
 	 * @param type The annotation with which the matching java classes should be annotated. Must not be <code>null</code>.

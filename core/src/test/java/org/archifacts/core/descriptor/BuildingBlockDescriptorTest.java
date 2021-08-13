@@ -63,6 +63,15 @@ final class BuildingBlockDescriptorTest {
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassExtendingSuperClass.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
 	}
+
+	@Test
+	void assertThat_forAssignableTo_matches_with_multiple_types_as_expected() {
+		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("Test"), SuperClass.class, ClassWithSuffix.class);
+	
+		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassExtendingSuperClass.class))).isTrue();
+		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassWithSuffix.class))).isTrue();
+		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
+	}
 	
 	@Test
 	void assertThat_forAnnatatedWith_matches_as_expected() {
