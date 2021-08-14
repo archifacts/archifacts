@@ -29,6 +29,7 @@ public final class AxonDescriptors {
 		public static final SourceBasedArtifactRelationshipDescriptor EntityIdentifiedByDescriptor = new EntityIdentifiedByDescriptor();
 		public static final SourceBasedArtifactRelationshipDescriptor SagaEventHandlerDescriptor = new SagaEventHandlerDescriptor();
 		public static final SourceBasedArtifactRelationshipDescriptor AggregateMemberDescriptor = new AggregateMemberDescriptor();
+		public static final SourceBasedArtifactRelationshipDescriptor QueryHandlerDescriptor = new QueryHandlerDescriptor();
 
 	}
 

@@ -2,13 +2,13 @@ package org.archifacts.integration.axon;
 
 import java.lang.annotation.Annotation;
 
-import org.axonframework.eventhandling.EventHandler;
+import org.axonframework.queryhandling.QueryHandler;
 
-final class EventHandlerDescriptor extends AbstractHandlerDescriptor {
+final class QueryHandlerDescriptor extends AbstractHandlerDescriptor {
 
 	@Override
 	protected Class<? extends Annotation> getAnnotationClass() {
-		return EventHandler.class;
+		return QueryHandler.class;
 	}
 
 }

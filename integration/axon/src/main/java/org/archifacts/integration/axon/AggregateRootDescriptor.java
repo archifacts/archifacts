@@ -20,7 +20,7 @@ final class AggregateRootDescriptor implements BuildingBlockDescriptor {
 
 	@Override
 	public boolean isBuildingBlock(final JavaClass javaClass) {
-		return javaClass.isAnnotatedWith(AggregateRoot.class) || javaClass.isMetaAnnotatedWith(AggregateRoot.class);
+		return javaClass.isMetaAnnotatedWith(AggregateRoot.class);
 	}
 
 }
