@@ -35,6 +35,18 @@ public interface BuildingBlockDescriptor {
 	boolean isBuildingBlock(JavaClass javaClass);
 	
 	/**
+	 * Returns the order of this descriptor. It multiple descriptors match the same {@link JavaClass}, the order is used to break the
+	 * tie (the descriptor with the lower order is then preferred). If multiple descriptors match <b>and</b> have the same order, an
+	 * exception is thrown while building the application. The returned value <b>must</b> be a static value. Otherwise the behavior
+	 * is not predictable. The default order is 0. 
+	 * 
+	 * @return The order of this descriptor. 
+	 */
+	default int getOrder() {
+		return 0;
+	}
+	
+	/**
 	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} whose simple name ends with a given suffix.
 	 * The suffix matching is case sensitive.
 	 * 

@@ -34,4 +34,17 @@ public interface ArtifactContainerDescriptor {
 	 *         {@link Optional#empty()}. Cannot be null.
 	 */
 	Optional<String> containerNameOf(JavaClass javaClass);
+	
+	/**
+	 * Returns the order of this descriptor. It multiple descriptors match the same {@link JavaClass}, the order is used to break the
+	 * tie (the descriptor with the lower order is then preferred). If multiple descriptors match <b>and</b> have the same order, an
+	 * exception is thrown while building the application. The returned value <b>must</b> be a static value. Otherwise the behavior
+	 * is not predictable. The default order is 0. 
+	 * 
+	 * @return The order of this descriptor. 
+	 */
+	default int getOrder() {
+		return 0;
+	}
+	
 }

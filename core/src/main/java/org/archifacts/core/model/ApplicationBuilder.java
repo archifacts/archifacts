@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map.Entry;
@@ -217,16 +218,17 @@ public final class ApplicationBuilder {
 								.map(containerName -> new OriginAwareArtifactContainerDescription(new ArtifactContainerDescription(containerDescriptor.type(), containerName), containerDescriptor)))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
+				.sorted(Comparator.comparing(desc -> desc.origin.getOrder()))
 				.distinct()
 				.collect(collectingAndThen(toList(), descriptions -> {
-					if (descriptions.size() == 1) {
-						return Optional.of(descriptions.get(0).artifactContainerDescription);
-					}
 					if (descriptions.isEmpty()) {
 						return Optional.<ArtifactContainerDescription>empty();
 					}
+					if (descriptions.size() == 1 || descriptions.get(0).origin.getOrder() < descriptions.get(1).origin.getOrder()) {
+						return Optional.of(descriptions.get(0).artifactContainerDescription);
+					}
 					throw new IllegalStateException(
-							"For " + artifact.getName() + " multiple ContainerDescriptors match: " + descriptions.stream()
+							"For " + artifact.getName() + " multiple ContainerDescriptors with the same order match: " + descriptions.stream()
 									.map(desc -> desc.origin)
 									.map(ArtifactContainerDescriptor::getClass)
 									.map(Class::getName)
@@ -248,15 +250,17 @@ public final class ApplicationBuilder {
 		return buildingBlockDescriptors
 				.stream()
 				.filter(buildingBlockDescriptor -> buildingBlockDescriptor.isBuildingBlock(javaClass))
+				.sorted(Comparator.comparing(BuildingBlockDescriptor::getOrder))
 				.collect(collectingAndThen(toList(), descriptors -> {
-					if (descriptors.size() == 1) {
-						return Optional.of(descriptors.get(0));
-					}
 					if (descriptors.isEmpty()) {
 						return Optional.<BuildingBlockDescriptor>empty();
 					}
+					if (descriptors.size() == 1 || descriptors.get(0).getOrder() < descriptors.get(1).getOrder()) {
+						return Optional.of(descriptors.get(0));
+					}
+					
 					throw new IllegalStateException(
-							"For " + javaClass.getName() + " multiple BuildingBlockDescriptors match: " + descriptors.stream()
+							"For " + javaClass.getName() + " multiple BuildingBlockDescriptors with the same order match: " + descriptors.stream()
 									.map(BuildingBlockDescriptor::getClass)
 									.map(Class::getName)
 									.collect(Collectors.joining(", ")));

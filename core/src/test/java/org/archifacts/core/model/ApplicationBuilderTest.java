@@ -34,7 +34,9 @@ import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.ExternalArti
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.MiscArtifactRelationshipDescriptor;
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.NonMatchingBuildingBlockDescriptor;
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondBuildingBlockType1Descriptor;
+import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondBuildingBlockType1DescriptorWithLowerOrder;
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondContainerType1Descriptor;
+import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondContainerType1DescriptorWithLowerOrder;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -142,6 +144,7 @@ class ApplicationBuilderTest {
 			public boolean isBuildingBlock(final JavaClass javaClass) {
 				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
 			}
+			
 		}
 
 		static final class SecondBuildingBlockType1Descriptor implements BuildingBlockDescriptor {
@@ -155,6 +158,25 @@ class ApplicationBuilderTest {
 			public boolean isBuildingBlock(final JavaClass javaClass) {
 				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
 			}
+		}
+		
+		static final class SecondBuildingBlockType1DescriptorWithLowerOrder implements BuildingBlockDescriptor {
+
+			@Override
+			public BuildingBlockType type() {
+				return BuildingBlockType.of("BuildingBlockType1-Duplicate");
+			}
+
+			@Override
+			public boolean isBuildingBlock(final JavaClass javaClass) {
+				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
+			}
+			
+			@Override
+			public int getOrder() {
+				return -1;
+			}
+			
 		}
 
 		static final class BuildingBlockType2Descriptor implements BuildingBlockDescriptor {
@@ -208,6 +230,32 @@ class ApplicationBuilderTest {
 				}
 				return Optional.empty();
 			}
+		}
+		
+		static final class SecondContainerType1DescriptorWithLowerOrder implements ArtifactContainerDescriptor {
+			
+			@Override
+			public ArtifactContainerType type() {
+				return ArtifactContainerType.of("ContainerType1");
+			}
+			
+			@Override
+			public Optional<String> containerNameOf(final JavaClass javaClass) {
+				final String[] splittedName = javaClass.getSimpleName().split("_");
+				if (splittedName.length > 1) {
+					final String containerName = splittedName[0];
+					if ("ContainerType1".equals(containerName)) {
+						return Optional.of("SecondContainer1");
+					}
+				}
+				return Optional.empty();
+			}
+			
+			@Override
+			public int getOrder() {
+				return -1;
+			}
+			
 		}
 
 		static final class ContainerType2Descriptor implements ArtifactContainerDescriptor {
@@ -409,8 +457,25 @@ class ApplicationBuilderTest {
 					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
 					.withMessageContaining(
-							" multiple BuildingBlockDescriptors match: " + BuildingBlockType1Descriptor.class.getName() + ", "
+							" multiple BuildingBlockDescriptors with the same order match: " + BuildingBlockType1Descriptor.class.getName() + ", "
 									+ SecondBuildingBlockType1Descriptor.class.getName());
+		}
+		
+		@Test
+		void assert_that_multiple_matching_BuildingBlockDescriptors_returning_different_results_prefer_lower_order() {
+			final SecondBuildingBlockType1DescriptorWithLowerOrder buildingBlockDescriptor = new SecondBuildingBlockType1DescriptorWithLowerOrder();
+			
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+					.addBuildingBlockDescriptor(buildingBlockDescriptor);
+			
+			final Application application = applicationBuilder.buildApplication(javaClasses);
+			assertThat(application.getArtifactsOfType(buildingBlockDescriptor.type()))
+					.extracting(Artifact::getName, artifact -> artifact.getJavaClass().getName())
+					.containsExactlyInAnyOrder(
+							tuple(NoContainer_BuildingBlockType1.class.getSimpleName(), NoContainer_BuildingBlockType1.class.getName()),
+							tuple(ContainerType1_BuildingBlockType1.class.getSimpleName(), ContainerType1_BuildingBlockType1.class.getName()),
+							tuple(ContainerType2_BuildingBlockType1.class.getSimpleName(), ContainerType2_BuildingBlockType1.class.getName()));
 		}
 	}
 
@@ -534,8 +599,28 @@ class ApplicationBuilderTest {
 					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor());
 			assertThatIllegalStateException().isThrownBy(() -> applicationBuilder.buildApplication(javaClasses))
 					.withMessageContaining(
-							" multiple ContainerDescriptors match: " + ContainerType1Descriptor.class.getName() + ", "
+							" multiple ContainerDescriptors with the same order match: " + ContainerType1Descriptor.class.getName() + ", "
 									+ SecondContainerType1Descriptor.class.getName());
+		}
+		
+		@Test
+		void assert_that_multiple_matching_ContainerDescriptors_returning_different_results_prefer_lower_order() {
+			final ApplicationBuilder applicationBuilder = Application.builder()
+					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
+					.addContainerDescriptor(new ContainerType1Descriptor())
+					.addContainerDescriptor(new SecondContainerType1DescriptorWithLowerOrder())
+					.addContainerDescriptor(new ContainerType2Descriptor())
+					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
+					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor());
+			
+			final Application application = applicationBuilder.buildApplication(javaClasses);
+			
+			assertThat(application.getContainers())
+					.extracting(ArtifactContainer::getName, ArtifactContainer::getType)
+					.containsExactlyInAnyOrder(
+							tuple("SecondContainer1", ArtifactContainerType.of("ContainerType1")),
+							tuple("Container2", ArtifactContainerType.of("ContainerType2")));
 		}
 	}
 
