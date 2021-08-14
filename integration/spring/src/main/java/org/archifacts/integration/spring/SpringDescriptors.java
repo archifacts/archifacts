@@ -14,9 +14,9 @@ public final class SpringDescriptors {
 
 		public static final BuildingBlockDescriptor RepositoryDescriptor = new RepositoryDescriptor();
 		public static final BuildingBlockDescriptor ServiceDescriptor = new ServiceDescriptor();
-		public static final BuildingBlockDescriptor ComponentDescriptor = new ComponentDescriptor();
 		public static final BuildingBlockDescriptor ConfigurationDescriptor = new ConfigurationDescriptor();
 		public static final BuildingBlockDescriptor ControllerDescriptor = new ControllerDescriptor();
+		public static final BuildingBlockDescriptor ComponentDescriptor = new ComponentDescriptor();
 		
 	}
 
