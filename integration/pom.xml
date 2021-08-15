@@ -17,6 +17,7 @@
 		<module>c4-model</module>
 		<module>c4-asciidoc</module>
 		<module>jmolecules</module>
+		<module>axon</module>
 		<module>spring</module>
 	</modules>
 </project>
