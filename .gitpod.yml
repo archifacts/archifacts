@@ -11,3 +11,4 @@ vscode:
     - vscjava.vscode-java-test
     - redhat.fabric8-analytics
     - redhat.vscode-commons
+    - asciidoctor.asciidoctor-vscode

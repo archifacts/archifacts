@@ -1,6 +1,8 @@
 package org.archifacts.integration.c4.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
@@ -14,6 +16,7 @@ import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactContainer;
 import org.archifacts.core.model.ArtifactRelationship;
 import org.archifacts.core.model.BuildingBlock;
+import org.archifacts.core.model.Named;
 
 import com.structurizr.model.Component;
 import com.structurizr.model.Container;
@@ -59,20 +62,38 @@ public final class C4ModelTransformer {
 	}
 
 	private void transform() {
+		transformContainers();
+		transformRelationships();
+	}
+
+	private void transformContainers() {
 		final Supplier<Container> noContainerContainerSupplier = memoize(() -> {
 			final Container noContainerContainer = softwareSystem.addContainer("no-container");
 			this.noContainerContainer = Optional.of(noContainerContainer);
 			return noContainerContainer;
-
 		});
+		
+		final Map<Container, List<Artifact>> containerArtifactsMap = new HashMap<>();
 		application.getArtifacts().forEach(artifact -> {
 			final Container container = artifact.getContainer()
 					.map(artifactContainer -> containerMap.computeIfAbsent(artifactContainer, m -> softwareSystem.addContainer(m.getName(), null, artifactContainer.getType().getName())))
 					.orElseGet(noContainerContainerSupplier);
-			final Component component = container.addComponent(artifact.getName(), artifact.getJavaClass().getName(), null, getTechnology(artifact));
-			componentMap.put(artifact, component);
+			final List<Artifact> artifacts = containerArtifactsMap.computeIfAbsent(container, x -> new ArrayList<>());
+			artifacts.add(artifact);
 		});
+		containerArtifactsMap.entrySet().forEach(entry -> {
+			final Container container = entry.getKey();
+			final List<Artifact> artifacts = entry.getValue();
+			final boolean containsAmbiguousNames = containsAmbiguousNames(artifacts);
+			artifacts.forEach(artifact -> {
+				final String componentName = containsAmbiguousNames ? artifact.getJavaClass().getFullName() : artifact.getName();
+				final Component component = container.addComponent(componentName, artifact.getJavaClass().getName(), null, getTechnology(artifact));
+				componentMap.put(artifact, component);
+			});
+		});
+	}
 
+	private void transformRelationships() {
 		application.getRelationships().forEach(artifactRelationship -> {
 			final Component sourceComponent = componentMap.get(artifactRelationship.getSource());
 			final Component targetComponent = componentMap.get(artifactRelationship.getTarget());
@@ -80,6 +101,14 @@ public final class C4ModelTransformer {
 			relationshipMap.put(artifactRelationship, relationship);
 		});
 	}
+
+	private boolean containsAmbiguousNames(final List<? extends Named> named) {
+		return named
+				.stream()
+				.map(Named::getName)
+				.distinct()
+				.count() < named.size();
+	} 
 
 	private String getTechnology(final Artifact artifact) {
 		if (artifact instanceof BuildingBlock) {

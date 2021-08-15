@@ -47,6 +47,8 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaField;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
+import static org.archifacts.core.model.ApplicationBuilderTest.Classes.createAnonymousClass;
+
 @DisplayNameGeneration(ReplaceUnderscores.class)
 
 class ApplicationBuilderTest {
@@ -64,7 +66,8 @@ class ApplicationBuilderTest {
 				ContainerType2_MiscArtifact.class,
 				NoContainer_BuildingBlockType1.class,
 				NoContainer_BuildingBlockType2.class,
-				NoContainer_MiscArtifact.class);
+				NoContainer_MiscArtifact.class,
+				createAnonymousClass().getClass());
 	}
 
 	static final class Classes {
@@ -117,6 +120,12 @@ class ApplicationBuilderTest {
 
 		static final class NoContainer_ExternalArtifact {
 
+		}
+		
+		static final Object createAnonymousClass() {
+			return new Object() {
+				
+			};
 		}
 	}
 
@@ -349,7 +358,8 @@ class ApplicationBuilderTest {
 					.containsExactlyInAnyOrder(
 							tuple(ContainerType1_MiscArtifact.class.getSimpleName(), ContainerType1_MiscArtifact.class.getName()),
 							tuple(ContainerType2_MiscArtifact.class.getSimpleName(), ContainerType2_MiscArtifact.class.getName()),
-							tuple(NoContainer_MiscArtifact.class.getSimpleName(), NoContainer_MiscArtifact.class.getName()));
+							tuple(NoContainer_MiscArtifact.class.getSimpleName(), NoContainer_MiscArtifact.class.getName()),
+							tuple(ApplicationBuilderTest.class.getSimpleName() + "$" + Classes.class.getSimpleName() + "$1", Classes.class.getName() + "$1"));
 		}
 
 		@Test
