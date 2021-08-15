@@ -75,7 +75,7 @@ final class AxonDescriptorsTest {
 				Arguments.of(AxonDescriptors.RelationshipDescriptors.EventHandlerDescriptor, new RelationshipPair[] {pair(MyEventHandler.class, MyEvent1.class), pair(MyAggregateRoot.class, MyEvent1.class), pair(MySagaEventHandler.class, MyEvent1.class)}),
 				Arguments.of(AxonDescriptors.RelationshipDescriptors.EventSourcingHandlerDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyEvent1.class)}),
 				Arguments.of(AxonDescriptors.RelationshipDescriptors.SagaEventHandlerDescriptor, new RelationshipPair[] {pair(MySagaEventHandler.class, MyEvent1.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.AggregateMemberDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyAggregateMember1.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.AggregateMemberDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyAggregateMember1.class), pair(MyAggregateRoot.class, MyAggregateMember2.class), pair(MyAggregateRoot.class, MyAggregateMember3.class)}),
 				Arguments.of(AxonDescriptors.RelationshipDescriptors.QueryHandlerDescriptor, new RelationshipPair[] {pair(MyQueryHandler.class, MyQuery1.class)}),
 				Arguments.of(AxonDescriptors.RelationshipDescriptors.CommandHandlerDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyCommand1.class), pair(MyAggregateRoot.class, MyCommand2.class)}));
 	}

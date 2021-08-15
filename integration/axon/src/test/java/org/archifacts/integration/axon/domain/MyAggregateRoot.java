@@ -26,6 +26,14 @@ public class MyAggregateRoot {
 	@AggregateMember
 	private Set<MyAggregateMember3> myAggregateMember3;
 	
+	@AggregateMember
+	@SuppressWarnings( "rawtypes" )
+	private Map untypedAggregateMemberMap;
+	
+	@AggregateMember
+	@SuppressWarnings( "rawtypes" )
+	private Set untypedAggregateMemberCollection;
+	
 	@CommandHandler
 	public MyAggregateRoot(final MyCommand1 command) {
 		apply(new MyEvent1(command.getId()));
