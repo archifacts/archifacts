@@ -1,6 +1,11 @@
 package org.archifacts.integration.spring;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
+import org.archifacts.core.model.BuildingBlockType;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
 
 public final class SpringDescriptors {
 
@@ -12,10 +17,10 @@ public final class SpringDescriptors {
 		private BuildingBlockDescriptors() {
 		}
 
-		public static final BuildingBlockDescriptor RepositoryDescriptor = new RepositoryDescriptor();
-		public static final BuildingBlockDescriptor ServiceDescriptor = new ServiceDescriptor();
-		public static final BuildingBlockDescriptor ConfigurationDescriptor = new ConfigurationDescriptor();
-		public static final BuildingBlockDescriptor ControllerDescriptor = new ControllerDescriptor();
+		public static final BuildingBlockDescriptor RepositoryDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Repository"), Repository.class);
+		public static final BuildingBlockDescriptor ServiceDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Service"), Service.class);
+		public static final BuildingBlockDescriptor ConfigurationDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Configuration"), Configuration.class);
+		public static final BuildingBlockDescriptor ControllerDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Controller"), Controller.class);
 		public static final BuildingBlockDescriptor ComponentDescriptor = new ComponentDescriptor();
 		
 	}

@@ -76,5 +76,19 @@ public interface BuildingBlockDescriptor {
 	static BuildingBlockDescriptor forAnnatatedWith(final BuildingBlockType buildingBlockType, final Class<? extends Annotation> type) {
 		return new BuildingBlockDescriptorForAnnotatedWith(buildingBlockType, type);
 	}
+
+	/**
+	 * Convenient method to create a new descriptor matching all {@link JavaClass java classes} that are meta-annotated with the given annotation.
+	 * 
+	 * @param buildingBlockType The type of the {@link BuildingBlock} the new descriptor should describe. Must not be <code>null</code>.
+	 * @param type The annotation with which the matching java classes should be meta-annotated. Must not be <code>null</code>.
+	 * 
+	 * @return A new descriptor.
+	 * 
+	 * @throws NullPointerException If one of the parameter was <code>null</code>.
+	 */
+	static BuildingBlockDescriptor forMetaAnnatatedWith(final BuildingBlockType buildingBlockType, final Class<? extends Annotation> type) {
+		return new BuildingBlockDescriptorForMetaAnnotatedWith(buildingBlockType, type);
+	}
 	
 }

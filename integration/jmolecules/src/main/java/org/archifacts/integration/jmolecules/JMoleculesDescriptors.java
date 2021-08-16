@@ -2,6 +2,9 @@ package org.archifacts.integration.jmolecules;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
+import org.archifacts.core.model.BuildingBlockType;
+import org.jmolecules.ddd.annotation.Service;
+import org.jmolecules.ddd.types.Identifier;
 
 public final class JMoleculesDescriptors {
 
@@ -15,9 +18,9 @@ public final class JMoleculesDescriptors {
 		public static final BuildingBlockDescriptor AggregateRootDescriptor = new AggregateRootDescriptor();
 		public static final BuildingBlockDescriptor EntityDescriptor = new EntityDescriptor();
 		public static final BuildingBlockDescriptor EventDescriptor = new EventDescriptor();
-		public static final BuildingBlockDescriptor IdentifierDescriptor = new IdentifierDescriptor();
+		public static final BuildingBlockDescriptor IdentifierDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("Identifier"), Identifier.class);
 		public static final BuildingBlockDescriptor RepositoryDescriptor = new RepositoryDescriptor();
-		public static final BuildingBlockDescriptor ServiceDescriptor = new ServiceDescriptor();
+		public static final BuildingBlockDescriptor ServiceDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Service"), Service.class);
 	}
 
 	public static final class RelationshipDescriptors {
