@@ -75,7 +75,7 @@ final class BuildingBlockDescriptorTest {
 	
 	@Test
 	void assertThat_forAnnatatedWith_matches_as_expected() {
-		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forAnnatatedWith(BuildingBlockType.of("Test"), Annotation.class);
+		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forAnnotatedWith(BuildingBlockType.of("Test"), Annotation.class);
 		
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnnotatedClass.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();

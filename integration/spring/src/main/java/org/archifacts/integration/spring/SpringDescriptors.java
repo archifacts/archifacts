@@ -17,10 +17,10 @@ public final class SpringDescriptors {
 		private BuildingBlockDescriptors() {
 		}
 
-		public static final BuildingBlockDescriptor RepositoryDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Repository"), Repository.class);
-		public static final BuildingBlockDescriptor ServiceDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Service"), Service.class);
-		public static final BuildingBlockDescriptor ConfigurationDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Configuration"), Configuration.class);
-		public static final BuildingBlockDescriptor ControllerDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Controller"), Controller.class);
+		public static final BuildingBlockDescriptor RepositoryDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Repository"), Repository.class);
+		public static final BuildingBlockDescriptor ServiceDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Service"), Service.class);
+		public static final BuildingBlockDescriptor ConfigurationDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Configuration"), Configuration.class);
+		public static final BuildingBlockDescriptor ControllerDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Controller"), Controller.class);
 		public static final BuildingBlockDescriptor ComponentDescriptor = new ComponentDescriptor();
 		
 	}

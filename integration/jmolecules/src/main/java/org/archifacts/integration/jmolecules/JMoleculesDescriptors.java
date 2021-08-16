@@ -20,7 +20,7 @@ public final class JMoleculesDescriptors {
 		public static final BuildingBlockDescriptor EventDescriptor = new EventDescriptor();
 		public static final BuildingBlockDescriptor IdentifierDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("Identifier"), Identifier.class);
 		public static final BuildingBlockDescriptor RepositoryDescriptor = new RepositoryDescriptor();
-		public static final BuildingBlockDescriptor ServiceDescriptor = BuildingBlockDescriptor.forMetaAnnatatedWith(BuildingBlockType.of("Service"), Service.class);
+		public static final BuildingBlockDescriptor ServiceDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Service"), Service.class);
 	}
 
 	public static final class RelationshipDescriptors {
