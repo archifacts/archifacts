@@ -1,8 +1,9 @@
 package org.archifacts.core.model;
 
+import static org.archifacts.core.model.ApplicationBuilderTest.Classes.createAnonymousClass;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.tuple;
 
 import java.util.Optional;
@@ -46,8 +47,6 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaField;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-
-import static org.archifacts.core.model.ApplicationBuilderTest.Classes.createAnonymousClass;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 
@@ -291,28 +290,28 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_null_cannot_be_added_as_BuildingBlockDescriptor() {
 			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addBuildingBlockDescriptor(null))
+			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.addBuildingBlockDescriptor(null))
 					.withMessage("The BuildingBlockDescriptor cannot be null");
 		}
 
 		@Test
 		void assert_that_null_cannot_be_added_as_ContainerDescriptor() {
 			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addContainerDescriptor(null))
+			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.addContainerDescriptor(null))
 					.withMessage("The ArtifactContainerDescriptor cannot be null");
 		}
 
 		@Test
 		void assert_that_null_cannot_be_added_as_SourceBasedRelationshipDescriptor() {
 			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addSourceBasedRelationshipDescriptor(null))
+			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.addSourceBasedRelationshipDescriptor(null))
 					.withMessage("The SourceBasedArtifactRelationshipDescriptor cannot be null");
 		}
 
 		@Test
 		void assert_that_null_cannot_be_added_as_TargetBasedRelationshipDescriptor() {
 			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatIllegalArgumentException().isThrownBy(() -> applicationBuilder.addTargetBasedRelationshipDescriptor(null))
+			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.addTargetBasedRelationshipDescriptor(null))
 					.withMessage("The TargetBasedArtifactRelationshipDescriptor cannot be null");
 		}
 	}
