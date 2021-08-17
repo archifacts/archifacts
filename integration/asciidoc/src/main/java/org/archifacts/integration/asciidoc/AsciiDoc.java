@@ -20,7 +20,6 @@ public final class AsciiDoc {
 	 * @param writer The writer. Must not be <code>null</code>.
 	 * 
 	 * @throws IOException If an I/O error occurs
-	 * @throws NullPointerException If the writer was <code>null</code>.
 	 */
 	public void writeToWriter(final Writer writer) throws IOException {
 		Objects.requireNonNull(writer, "The writer must not be null.");

@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toSet;
 
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
@@ -57,12 +58,9 @@ public final class ApplicationBuilder {
 	 *
 	 * @param artifactContainerDescriptor the descriptor to be added, cannot be null
 	 * @return this instance for method-chaining
-	 * @throws IllegalArgumentException if artifactContainerDescriptor is null
 	 */
 	public ApplicationBuilder addContainerDescriptor(final ArtifactContainerDescriptor artifactContainerDescriptor) {
-		if (artifactContainerDescriptor == null) {
-			throw new IllegalArgumentException("The ArtifactContainerDescriptor cannot be null");
-		}
+		Objects.requireNonNull(artifactContainerDescriptor, "The ArtifactContainerDescriptor cannot be null");
 		this.containerDescriptors.add(artifactContainerDescriptor);
 		return this;
 	}
@@ -72,12 +70,9 @@ public final class ApplicationBuilder {
 	 *
 	 * @param buildingBlockDescriptor the descriptor to be added, cannot be null
 	 * @return this instance for method-chaining
-	 * @throws IllegalArgumentException if buildingBlockDescriptor is null
 	 */
 	public ApplicationBuilder addBuildingBlockDescriptor(final BuildingBlockDescriptor buildingBlockDescriptor) {
-		if (buildingBlockDescriptor == null) {
-			throw new IllegalArgumentException("The BuildingBlockDescriptor cannot be null");
-		}
+		Objects.requireNonNull(buildingBlockDescriptor, "The BuildingBlockDescriptor cannot be null");
 		buildingBlockDescriptors.add(buildingBlockDescriptor);
 		return this;
 	}
@@ -87,13 +82,9 @@ public final class ApplicationBuilder {
 	 *
 	 * @param sourceBasedArtifactRelationshipDescriptor the descriptor to be added,
 	 * @return this instance for method-chaining cannot be null
-	 * @throws IllegalArgumentException if sourceBasedArtifactRelationshipDescriptor
-	 *                                  is null
 	 */
 	public ApplicationBuilder addSourceBasedRelationshipDescriptor(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor) {
-		if (sourceBasedArtifactRelationshipDescriptor == null) {
-			throw new IllegalArgumentException("The SourceBasedArtifactRelationshipDescriptor cannot be null");
-		}
+		Objects.requireNonNull(sourceBasedArtifactRelationshipDescriptor, "The SourceBasedArtifactRelationshipDescriptor cannot be null");
 		sourceBasedRelationshipDescriptors.add(sourceBasedArtifactRelationshipDescriptor);
 		return this;
 	}
@@ -103,13 +94,9 @@ public final class ApplicationBuilder {
 	 *
 	 * @param targetBasedArtifactRelationshipDescriptor the descriptor to be added,
 	 * @return this instance for method-chaining cannot be null
-	 * @throws IllegalArgumentException if targetBasedArtifactRelationshipDescriptor
-	 *                                  is null
 	 */
 	public ApplicationBuilder addTargetBasedRelationshipDescriptor(final TargetBasedArtifactRelationshipDescriptor targetBasedArtifactRelationshipDescriptor) {
-		if (targetBasedArtifactRelationshipDescriptor == null) {
-			throw new IllegalArgumentException("The TargetBasedArtifactRelationshipDescriptor cannot be null");
-		}
+		Objects.requireNonNull(targetBasedArtifactRelationshipDescriptor, "The TargetBasedArtifactRelationshipDescriptor cannot be null");
 		targetBasedRelationshipDescriptors.add(targetBasedArtifactRelationshipDescriptor);
 		return this;
 	}
@@ -120,13 +107,10 @@ public final class ApplicationBuilder {
 	 * @param javaClasses The application's scope. All the classes which are part of
 	 *                    {@link JavaClasses} are classes which are contained in the
 	 *                    application. Cannot be null.
-	 * @throws IllegalArgumentException if javaClasses is null
 	 * @return the {@link Application}
 	 */
 	public Application buildApplication(final JavaClasses javaClasses) {
-		if (javaClasses == null) {
-			throw new IllegalArgumentException("JavaClasses cannot be null");
-		}
+		Objects.requireNonNull(javaClasses, "JavaClasses cannot be null");
 		validateBuildingBlockDescriptors();
 
 		final Application application = new Application();
