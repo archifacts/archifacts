@@ -8,8 +8,8 @@
 		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
-	<groupId>org.archifacts.examples</groupId>
-	<artifactId>archifacts-jmolecules-spring-data-jpa</artifactId>
+	<groupId>org.archifact</groupId>
+	<artifactId>archifacts-examples-jmolecules-spring-data-jpa</artifactId>
 
 	<properties>
 		<jmolecules.integration.version>0.3.0</jmolecules.integration.version>
@@ -29,7 +29,8 @@
 			<artifactId>jmolecules-spring-data-jpa</artifactId>
 			<version>${jmolecules.integration.version}</version>
 			<scope>runtime</scope>
-			<!-- We don't care about transitive dependencies as we just want to scan classes in jmolecules-spring-data-jpa -->
+			<!-- We don't care about transitive dependencies as we just want to scan 
+				classes in jmolecules-spring-data-jpa -->
 			<exclusions>
 				<exclusion>
 					<groupId>*</groupId>
@@ -44,16 +45,14 @@
 			<plugins>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-install-plugin</artifactId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<version>3.2.0</version>
 					<configuration>
-						<skip>true</skip>
-					</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-deploy-plugin</artifactId>
-					<configuration>
-						<skip>true</skip>
+						<archive>
+							<manifest>
+								<mainClass>org.archfacts.example.jmolecules.JMoleculesDocumenter</mainClass>
+							</manifest>
+						</archive>
 					</configuration>
 				</plugin>
 			</plugins>
