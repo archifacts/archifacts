@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.axonframework.commandhandling.CommandHandler;
+import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
 import org.axonframework.modelling.command.AggregateMember;
@@ -45,7 +46,7 @@ public class MyAggregateRoot {
 	}
 	
 	@CommandHandler
-	public void handle(final MyCommand2 command) {
+	public void handle(final CommandMessage<MyCommand2> command) {
 	}
 	
 }
