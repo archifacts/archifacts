@@ -34,7 +34,7 @@ final class ModuleDescriptor implements ArtifactContainerDescriptor {
 	}
 
 	private <T> Optional<T> toJavaOptional(final com.tngtech.archunit.base.Optional<T> optional) {
-		return optional.transform(Optional::of).or(Optional.empty());
+		return optional.map(Optional::of).orElse(Optional.empty());
 	}
 
 	@Override
