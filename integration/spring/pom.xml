@@ -12,6 +12,8 @@
 	</parent>
 
 	<artifactId>archifacts-spring</artifactId>
+	
+	<description>archifacts Spring integration</description>
 
 	<properties>
 		<spring.version>5.3.9</spring.version>

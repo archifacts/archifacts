@@ -9,7 +9,8 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-c4-model</artifactId>
-
+	<description>archifacts C4 Model integration</description>
+	
 	<properties>
 		<structurizr-core.version>1.9.5</structurizr-core.version>
 	</properties>

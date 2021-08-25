@@ -11,6 +11,7 @@
 
 	<artifactId>archifacts-integration-aggregator</artifactId>
 	<packaging>pom</packaging>
+	<description>archifacts Integration Aggregator POM</description>
 
 	<modules>
 		<module>asciidoc</module>

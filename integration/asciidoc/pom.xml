@@ -9,4 +9,5 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-asciidoc</artifactId>
+	<description>archifacts AsciDoc integration</description>
 </project>
