@@ -50,7 +50,7 @@
 					<configuration>
 						<archive>
 							<manifest>
-								<mainClass>org.archfacts.example.jmolecules.JMoleculesDocumenter</mainClass>
+								<mainClass>org.archifacts.example.jmolecules.JMoleculesDocumenter</mainClass>
 							</manifest>
 						</archive>
 					</configuration>

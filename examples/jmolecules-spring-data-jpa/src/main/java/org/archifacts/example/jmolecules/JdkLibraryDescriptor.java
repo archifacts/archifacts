@@ -1,4 +1,4 @@
-package org.archfacts.example.jmolecules;
+package org.archifacts.example.jmolecules;
 
 import java.util.Optional;
 

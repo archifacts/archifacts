@@ -1,4 +1,4 @@
-package org.archfacts.example.jmolecules;
+package org.archifacts.example.jmolecules;
 
 import static java.util.function.Predicate.not;
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor;
