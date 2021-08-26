@@ -63,12 +63,10 @@ final class AxonDescriptorsTest {
 				.builder()
 				.addSourceBasedRelationshipDescriptor(sourceBasedArtifactRelationshipDescriptor)
 				.buildApplication(DOMAIN);
-		
-		final Set<Tuple> actualRelationshipPairs = application.getRelationshipsOfType(sourceBasedArtifactRelationshipDescriptor.role())
-				.stream()
-				.map(r -> tuple(r.getSource().getJavaClass().reflect(), r.getTarget().getJavaClass().reflect()))
-				.collect(Collectors.toSet());
-		assertThat(actualRelationshipPairs).containsExactlyInAnyOrder(expectedTuples);
+
+		assertThat(application.getRelationshipsOfType(sourceBasedArtifactRelationshipDescriptor.role()))
+				.extracting(r -> r.getSource().getJavaClass().reflect(), r -> r.getTarget().getJavaClass().reflect())
+				.containsExactlyInAnyOrder(expectedTuples);
 	}
 	
 	private static Stream<Arguments> getSourceBasedArtifactRelationshipDescriptors() {
