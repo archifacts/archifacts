@@ -1,8 +1,8 @@
 package org.archifacts.integration.axon;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -18,10 +18,13 @@ import org.archifacts.integration.axon.domain.MyAggregateRootId;
 import org.archifacts.integration.axon.domain.MyCommand1;
 import org.archifacts.integration.axon.domain.MyCommand2;
 import org.archifacts.integration.axon.domain.MyEvent1;
+import org.archifacts.integration.axon.domain.MyEvent2;
 import org.archifacts.integration.axon.domain.MyEventHandler;
 import org.archifacts.integration.axon.domain.MyQuery1;
+import org.archifacts.integration.axon.domain.MyQuery2;
 import org.archifacts.integration.axon.domain.MyQueryHandler;
 import org.archifacts.integration.axon.domain.MySagaEventHandler;
+import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -55,63 +58,27 @@ final class AxonDescriptorsTest {
 	
 	@ParameterizedTest
 	@MethodSource("getSourceBasedArtifactRelationshipDescriptors")
-	void assertThat_source_based_artifact_relationship_descriptor_are_recognized(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor, final RelationshipPair... expectedRelationshipPairs) {
+	void assertThat_source_based_artifact_relationship_descriptor_are_recognized(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor, final Tuple... expectedTuples) {
 		final Application application = Application
 				.builder()
 				.addSourceBasedRelationshipDescriptor(sourceBasedArtifactRelationshipDescriptor)
 				.buildApplication(DOMAIN);
-		
-		final Set<RelationshipPair> actualRelationshipPairs = application.getRelationshipsOfType(sourceBasedArtifactRelationshipDescriptor.role())
-				.stream()
-				.map(r -> new RelationshipPair(r.getSource().getJavaClass().reflect(), r.getTarget().getJavaClass().reflect()))
-				.collect(Collectors.toSet());
-		assertThat(actualRelationshipPairs).containsExactlyInAnyOrder(expectedRelationshipPairs);
+
+		assertThat(application.getRelationshipsOfType(sourceBasedArtifactRelationshipDescriptor.role()))
+				.extracting(r -> r.getSource().getJavaClass().reflect(), r -> r.getTarget().getJavaClass().reflect())
+				.containsExactlyInAnyOrder(expectedTuples);
 	}
 	
 	private static Stream<Arguments> getSourceBasedArtifactRelationshipDescriptors() {
 		return Stream.of(
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.AggregateIdentifiedByDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyAggregateRootId.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.EntityIdentifiedByDescriptor, new RelationshipPair[] {pair(MyAggregateMember1.class, String.class), pair(MyAggregateMember2.class, String.class), pair(MyAggregateMember3.class, String.class), pair(MyAggregateRoot.class, MyAggregateRootId.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.EventHandlerDescriptor, new RelationshipPair[] {pair(MyEventHandler.class, MyEvent1.class), pair(MyAggregateRoot.class, MyEvent1.class), pair(MySagaEventHandler.class, MyEvent1.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.EventSourcingHandlerDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyEvent1.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.SagaEventHandlerDescriptor, new RelationshipPair[] {pair(MySagaEventHandler.class, MyEvent1.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.AggregateMemberDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyAggregateMember1.class), pair(MyAggregateRoot.class, MyAggregateMember2.class), pair(MyAggregateRoot.class, MyAggregateMember3.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.QueryHandlerDescriptor, new RelationshipPair[] {pair(MyQueryHandler.class, MyQuery1.class)}),
-				Arguments.of(AxonDescriptors.RelationshipDescriptors.CommandHandlerDescriptor, new RelationshipPair[] {pair(MyAggregateRoot.class, MyCommand1.class), pair(MyAggregateRoot.class, MyCommand2.class)}));
-	}
-	
-	private static RelationshipPair pair(final Class<?> sourceClass, final Class<?> targetClass) {
-		return new RelationshipPair(sourceClass, targetClass);
-	}
-	
-	private static final class RelationshipPair {
-		
-		private final Class<?> sourceClass;
-		private final Class<?> targetClass;
-		
-		RelationshipPair(final Class<?> sourceClass, final Class<?> targetClass) {
-			this.sourceClass = sourceClass;
-			this.targetClass = targetClass;
-		}
-
-		@Override
-		public int hashCode( ) {
-			return Objects.hash(sourceClass, targetClass);
-		}
-
-		@Override
-		public boolean equals(final Object obj) {
-			// Simplified implementation for the test
-			final RelationshipPair other = ( RelationshipPair ) obj;
-			return Objects.equals(sourceClass, other.sourceClass) && Objects.equals(targetClass, other.targetClass);
-		}
-
-		@Override
-		public String toString( ) {
-			return "RelationshipPair [sourceClass=" + sourceClass + ", targetClass=" + targetClass + "]";
-		}
-		
-		
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.AggregateIdentifiedByDescriptor, new Tuple[] {tuple(MyAggregateRoot.class, MyAggregateRootId.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.EntityIdentifiedByDescriptor, new Tuple[] {tuple(MyAggregateMember1.class, String.class), tuple(MyAggregateMember2.class, String.class), tuple(MyAggregateMember3.class, String.class), tuple(MyAggregateRoot.class, MyAggregateRootId.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.EventHandlerDescriptor, new Tuple[] {tuple(MyEventHandler.class, MyEvent1.class), tuple(MyEventHandler.class, MyEvent2.class), tuple(MyAggregateRoot.class, MyEvent1.class), tuple(MySagaEventHandler.class, MyEvent1.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.EventSourcingHandlerDescriptor, new Tuple[] {tuple(MyAggregateRoot.class, MyEvent1.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.SagaEventHandlerDescriptor, new Tuple[] {tuple(MySagaEventHandler.class, MyEvent1.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.AggregateMemberDescriptor, new Tuple[] {tuple(MyAggregateRoot.class, MyAggregateMember1.class), tuple(MyAggregateRoot.class, MyAggregateMember2.class), tuple(MyAggregateRoot.class, MyAggregateMember3.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.QueryHandlerDescriptor, new Tuple[] {tuple(MyQueryHandler.class, MyQuery1.class), tuple(MyQueryHandler.class, MyQuery2.class)}),
+				Arguments.of(AxonDescriptors.RelationshipDescriptors.CommandHandlerDescriptor, new Tuple[] {tuple(MyAggregateRoot.class, MyCommand1.class), tuple(MyAggregateRoot.class, MyCommand2.class)}));
 	}
 	
 }

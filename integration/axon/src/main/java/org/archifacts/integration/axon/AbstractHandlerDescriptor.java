@@ -10,6 +10,8 @@ import org.axonframework.messaging.Message;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaCodeUnit;
+import com.tngtech.archunit.core.domain.JavaParameterizedType;
+import com.tngtech.archunit.core.domain.JavaType;
 
 abstract class AbstractHandlerDescriptor implements SourceBasedArtifactRelationshipDescriptor {
 
@@ -32,11 +34,23 @@ abstract class AbstractHandlerDescriptor implements SourceBasedArtifactRelations
 		return sourceClass.getCodeUnits()
 				.stream()
 				.filter(this::isValidHandler)
-				.map(method -> method.getRawParameterTypes().get(0));
+				.map(method -> method.getParameterTypes().get(0))
+				.map(javaType -> toJavaClass(javaType));
 	}
-	
+
 	private boolean isValidHandler(final JavaCodeUnit codeUnit) {
-		return codeUnit.isMetaAnnotatedWith(getAnnotationClass()) && !codeUnit.getRawParameterTypes().isEmpty() && !codeUnit.getRawParameterTypes().get(0).isAssignableTo(Message.class);
+		return codeUnit.isMetaAnnotatedWith(getAnnotationClass()) && !codeUnit.getParameterTypes().isEmpty();
+	}
+
+	private JavaClass toJavaClass(final JavaType javaType) {
+		final JavaClass javaClass = javaType.toErasure();
+		
+		if (javaClass.isAssignableTo(Message.class) && javaType instanceof JavaParameterizedType) {
+			final JavaParameterizedType javaParameterizedType = (JavaParameterizedType)javaType;
+			return javaParameterizedType.getActualTypeArguments().get(0).toErasure();
+		}
+		
+		return javaClass;
 	}
 	
 	protected abstract Class<? extends Annotation> getAnnotationClass();
