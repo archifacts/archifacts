@@ -8,8 +8,9 @@
 		<version>0.1.0-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
-	<groupId>org.archifact</groupId>
 	<artifactId>archifacts-examples-jmolecules-spring-data-jpa</artifactId>
+
+	<description>archifacts jMolecules Spring Data JPA example</description>
 
 	<properties>
 		<jmolecules.integration.version>0.3.0</jmolecules.integration.version>

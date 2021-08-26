@@ -11,6 +11,8 @@
 	</parent>
 
 	<artifactId>archifacts-core</artifactId>
+	
+	<description>archifacts Core</description>
 
 	<dependencies>
 		<dependency>

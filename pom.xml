@@ -10,7 +10,10 @@
 	</parent>
 
 	<artifactId>archifacts-aggregator</artifactId>
+	<!-- We need this duplicate version tag to get versions:set working-->
+	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<description>archifacts Aggregator POM</description>
 
 	<modules>
 		<module>parent</module>
