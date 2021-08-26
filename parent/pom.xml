@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.archifacts</groupId>
 	<artifactId>archifacts-parent</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.0.1-alpha-1</version>
 	<packaging>pom</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts Parent POM</description>
@@ -95,27 +95,27 @@
 			<dependency>
 				<groupId>org.archifacts</groupId>
 				<artifactId>archifacts-core</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.0.1-alpha-1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.archifacts</groupId>
 				<artifactId>archifacts-asciidoc</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.0.1-alpha-1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.archifacts</groupId>
 				<artifactId>archifacts-c4-model</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.0.1-alpha-1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.archifacts</groupId>
 				<artifactId>archifacts-c4-asciidoc</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.0.1-alpha-1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.archifacts</groupId>
 				<artifactId>archifacts-jmolecules</artifactId>
-				<version>0.1.0-SNAPSHOT</version>
+				<version>0.0.1-alpha-1</version>
 			</dependency>
 			<dependency>
 				<groupId>com.tngtech.archunit</groupId>
