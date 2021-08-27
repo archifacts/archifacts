@@ -11,6 +11,7 @@
 
 	<artifactId>archifacts-integration-aggregator</artifactId>
 	<packaging>pom</packaging>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts Integration Aggregator POM</description>
 
 	<modules>

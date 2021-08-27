@@ -9,7 +9,7 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-examples-jmolecules-spring-data-jpa</artifactId>
-
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts jMolecules Spring Data JPA example</description>
 
 	<properties>

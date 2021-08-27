@@ -8,6 +8,7 @@
 		<version>0.1.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>archifacts-c4-asciidoc</artifactId>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts C4 Model AsciiDoc integration</description>
 
 	<properties>

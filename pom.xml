@@ -13,6 +13,7 @@
 	<!-- We need this duplicate version tag to get versions:set working-->
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts Aggregator POM</description>
 
 	<modules>

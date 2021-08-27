@@ -9,6 +9,8 @@
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-examples-aggregator</artifactId>
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>archifacts Examples Aggregator POM</description>
 	<packaging>pom</packaging>
 	<modules>
 		<module>jmolecules-spring-data-jpa</module>

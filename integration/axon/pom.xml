@@ -12,6 +12,7 @@
 	</parent>
 
 	<artifactId>archifacts-axon</artifactId>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts Axon Framework integration</description>
 	
 	<properties>

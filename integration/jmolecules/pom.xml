@@ -9,7 +9,7 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-jmolecules</artifactId>
-	
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts jMolecules integration</description>
 
 	<properties>
