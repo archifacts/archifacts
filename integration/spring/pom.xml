@@ -12,7 +12,7 @@
 	</parent>
 
 	<artifactId>archifacts-spring</artifactId>
-	
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts Spring integration</description>
 
 	<properties>

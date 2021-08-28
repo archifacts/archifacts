@@ -9,6 +9,7 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-c4-model</artifactId>
+	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts C4 Model integration</description>
 	
 	<properties>
