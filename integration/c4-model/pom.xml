@@ -13,7 +13,7 @@
 	<description>archifacts C4 Model integration</description>
 	
 	<properties>
-		<structurizr-core.version>1.9.5</structurizr-core.version>
+		<structurizr-core.version>1.9.6</structurizr-core.version>
 	</properties>
 
 	<dependencies>
