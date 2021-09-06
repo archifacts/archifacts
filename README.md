@@ -20,7 +20,7 @@ Nevertheless we try to reduce the breaking changs to a minimum, but there is no 
 ### Gradle
 
 ```Gradle
-testImplementation 'org.archifacts:archifacts-core:0.0.1.alpha1'
+testImplementation 'org.archifacts:archifacts-core:0.0.1-alpha-1'
 ```
 
 ### Maven
@@ -29,7 +29,7 @@ testImplementation 'org.archifacts:archifacts-core:0.0.1.alpha1'
 <dependency>
     <groupId>org.archifacts</groupId>
     <artifactId>archifacts-core</artifactId>
-    <version>0.0.1.alpha1</version>
+    <version>0.0.1-alpha-1</version>
     <scope>test</scope>
 </dependency>
 ```
