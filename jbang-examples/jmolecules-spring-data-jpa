@@ -1,6 +1,4 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//REPOS mavencentral=https://repo1.maven.org/maven2/
-//REPOS github=https://maven.pkg.github.com/archifacts/*
 //DEPS org.archifacts:archifacts-core:0.0.1-alpha-1
 //DEPS org.archifacts:archifacts-jmolecules:0.0.1-alpha-1
 //DEPS org.archifacts:archifacts-c4-asciidoc:0.0.1-alpha-1
