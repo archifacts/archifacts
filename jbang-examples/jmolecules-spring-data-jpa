@@ -1,6 +1,4 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//REPOS mavencentral=https://repo1.maven.org/maven2/
-//REPOS github=https://maven.pkg.github.com/archifacts/*
 //DEPS org.archifacts:archifacts-core:0.1.0-SNAPSHOT
 //DEPS org.archifacts:archifacts-plaintext:0.1.0-SNAPSHOT
 //DEPS org.archifacts:archifacts-jmolecules:0.1.0-SNAPSHOT
@@ -20,12 +18,17 @@ import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.Relati
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.RelationshipDescriptors.ManagedByDescriptor;
 
 import java.io.BufferedWriter;
+import java.io.InputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Optional;
+import java.util.jar.JarFile;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.Container;
@@ -35,11 +38,15 @@ import com.structurizr.model.SoftwareSystem;
 import com.structurizr.view.ComponentView;
 import com.structurizr.view.ContainerView;
 import com.structurizr.view.ViewSet;
+import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
+import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
 import org.archifacts.core.model.Application;
 import org.archifacts.core.model.ArtifactContainer;
+import org.archifacts.core.model.ArtifactContainerType;
 import org.archifacts.core.model.BuildingBlock;
 import org.archifacts.integration.asciidoc.AsciiDoc;
 import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
@@ -56,8 +63,17 @@ public class JmoleculesSpringDataJpa {
 	private static final String ApplicationPackage = "org.jmolecules.examples.jpa";
 	private static final ModuleDescriptor ModuleDescriptor = new ModuleDescriptor(ApplicationPackage);
 
+
+	private JarFile jMoleculesJar() throws IOException {
+		Path tempFile = Files.createTempFile("", ".jar");
+		try (InputStream in = new URL("https://repo1.maven.org/maven2/org/jmolecules/integrations/jmolecules-spring-data-jpa/0.3.0/jmolecules-spring-data-jpa-0.3.0.jar").openStream()) {
+			Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
+		}
+		return new JarFile(tempFile.toFile());
+	}
+
 	private void generateDocumentation() throws IOException {
-		final JavaClasses javaClasses = new ClassFileImporter().importPackages(ApplicationPackage);
+		final JavaClasses javaClasses = new ClassFileImporter().importJar(jMoleculesJar());
 		final Application application = initApplication(javaClasses);
 		writeApplicationOverviewToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.txt"));
 		writeC4ModelToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
