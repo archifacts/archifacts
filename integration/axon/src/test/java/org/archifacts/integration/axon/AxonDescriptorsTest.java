@@ -3,9 +3,10 @@ package org.archifacts.integration.axon;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
@@ -30,9 +31,6 @@ import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-
-import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 final class AxonDescriptorsTest {

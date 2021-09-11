@@ -1,25 +1,20 @@
 package org.archifacts.core.model;
 
-import static java.util.stream.Collectors.collectingAndThen;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
-
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClasses;
 
 import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
-
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaClasses;
 
 /**
  * Offers methods to register descriptors and is capable of building the
@@ -35,20 +30,10 @@ import com.tngtech.archunit.core.domain.JavaClasses;
  */
 public final class ApplicationBuilder {
 
-	private final Set<ArtifactContainerDescriptor> containerDescriptors = new LinkedHashSet<>();
-	private final Set<BuildingBlockDescriptor> buildingBlockDescriptors = new LinkedHashSet<>();
+	private final List<ArtifactContainerDescriptor> containerDescriptors = new ArrayList<>();
+	private final List<BuildingBlockDescriptor> buildingBlockDescriptors = new ArrayList<>();
 	private final Set<SourceBasedArtifactRelationshipDescriptor> sourceBasedRelationshipDescriptors = new LinkedHashSet<>();
 	private final Set<TargetBasedArtifactRelationshipDescriptor> targetBasedRelationshipDescriptors = new LinkedHashSet<>();
-
-	private static final class OriginAwareArtifactContainerDescription {
-		private final ArtifactContainerDescription artifactContainerDescription;
-		private final ArtifactContainerDescriptor origin;
-
-		private OriginAwareArtifactContainerDescription(final ArtifactContainerDescription artifactContainerDescription, final ArtifactContainerDescriptor origin) {
-			this.artifactContainerDescription = artifactContainerDescription;
-			this.origin = origin;
-		}
-	}
 
 	ApplicationBuilder() {
 	}
@@ -111,7 +96,6 @@ public final class ApplicationBuilder {
 	 */
 	public Application buildApplication(final JavaClasses javaClasses) {
 		Objects.requireNonNull(javaClasses, "JavaClasses cannot be null");
-		validateBuildingBlockDescriptors();
 
 		final Application application = new Application();
 
@@ -161,61 +145,17 @@ public final class ApplicationBuilder {
 		return application;
 	}
 
-	private void validateBuildingBlockDescriptors() {
-		final Set<Entry<BuildingBlockType, List<BuildingBlockDescriptor>>> duplicateBuildingBlockTypes = buildingBlockDescriptors
-				.stream()
-				.collect(Collectors.groupingBy(BuildingBlockDescriptor::type))
-				.entrySet()
-				.stream()
-				.filter(count -> count.getValue().size() > 1)
-				.collect(toSet());
-
-		if (!duplicateBuildingBlockTypes.isEmpty()) {
-			final String message = duplicateBuildingBlockTypes.stream().map(this::toErrorMessage).collect(Collectors.joining(", "));
-
-			throw new IllegalStateException(
-					"For the following BuildingBlockTypes multiple descriptors have been registered: " + message);
-		}
-	}
-
-	private String toErrorMessage(final Entry<BuildingBlockType, List<BuildingBlockDescriptor>> entry) {
-		final StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(entry.getKey()).append("(");
-		stringBuilder.append(toErrorMessage(entry.getValue()));
-		stringBuilder.append(")");
-		return stringBuilder.toString();
-	}
-
-	private String toErrorMessage(final List<BuildingBlockDescriptor> descriptors) {
-		return descriptors.stream()
-				.map(Object::getClass)
-				.map(Class::getName)
-				.collect(Collectors.joining(", "));
-	}
 
 	private void addArtifact(final Application application, final Artifact artifact) {
 		containerDescriptors
 				.stream()
 				.map(
 						containerDescriptor -> containerDescriptor.containerNameOf(artifact.getJavaClass())
-								.map(containerName -> new OriginAwareArtifactContainerDescription(new ArtifactContainerDescription(containerDescriptor.type(), containerName), containerDescriptor)))
+								.map(containerName -> new ArtifactContainerDescription(containerDescriptor.type(), containerName)))
 				.filter(Optional::isPresent)
 				.map(Optional::get)
 				.distinct()
-				.collect(collectingAndThen(toList(), descriptions -> {
-					if (descriptions.size() == 1) {
-						return Optional.of(descriptions.get(0).artifactContainerDescription);
-					}
-					if (descriptions.isEmpty()) {
-						return Optional.<ArtifactContainerDescription>empty();
-					}
-					throw new IllegalStateException(
-							"For " + artifact.getName() + " multiple ContainerDescriptors match: " + descriptions.stream()
-									.map(desc -> desc.origin)
-									.map(ArtifactContainerDescriptor::getClass)
-									.map(Class::getName)
-									.collect(Collectors.joining(", ")));
-				}))
+				.findFirst()
 				.ifPresentOrElse(
 						archContainerDescription -> application.addArtifact(archContainerDescription, artifact),
 						() -> application.addArtifact(artifact));
@@ -232,19 +172,7 @@ public final class ApplicationBuilder {
 		return buildingBlockDescriptors
 				.stream()
 				.filter(buildingBlockDescriptor -> buildingBlockDescriptor.isBuildingBlock(javaClass))
-				.collect(collectingAndThen(toList(), descriptors -> {
-					if (descriptors.size() == 1) {
-						return Optional.of(descriptors.get(0));
-					}
-					if (descriptors.isEmpty()) {
-						return Optional.<BuildingBlockDescriptor>empty();
-					}
-					throw new IllegalStateException(
-							"For " + javaClass.getName() + " multiple BuildingBlockDescriptors match: " + descriptors.stream()
-									.map(BuildingBlockDescriptor::getClass)
-									.map(Class::getName)
-									.collect(Collectors.joining(", ")));
-				}))
+				.findFirst()
 				.map(buildingBlockDescriptor -> toBuildingBlock(javaClass, buildingBlockDescriptor))
 				.orElseGet(() -> toMiscArtifact(javaClass));
 	}
