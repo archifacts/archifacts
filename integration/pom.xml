@@ -15,6 +15,7 @@
 	<description>archifacts Integration Aggregator POM</description>
 
 	<modules>
+		<module>plaintext</module>
 		<module>asciidoc</module>
 		<module>c4-model</module>
 		<module>c4-asciidoc</module>

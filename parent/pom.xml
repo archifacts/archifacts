@@ -99,6 +99,11 @@
 			</dependency>
 			<dependency>
 				<groupId>org.archifacts</groupId>
+				<artifactId>archifacts-plaintext</artifactId>
+				<version>0.1.0-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>org.archifacts</groupId>
 				<artifactId>archifacts-asciidoc</artifactId>
 				<version>0.1.0-SNAPSHOT</version>
 			</dependency>

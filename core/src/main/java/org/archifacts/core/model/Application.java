@@ -102,31 +102,4 @@ public final class Application implements HasContainers, HasArtifacts, HasRelati
 	Artifact getArtifactForClass(final JavaClass javaClass) {
 		return artifacts.get(javaClass);
 	}
-
-	public void printOverview() {
-		containers.values().forEach(module -> {
-			System.out.println(module);
-			System.out.println("  Building Blocks:");
-			module.getBuildingBlocks().forEach(buildingBlock -> {
-				System.out.println("    " + buildingBlock);
-			});
-			System.out.println("  Miscellaneous Artifacts:");
-			module.getMiscArtifacts().forEach(miscArtifact -> {
-				System.out.println("    " + miscArtifact);
-			});
-			System.out.println("  External Artifacts:");
-			module.getExternalArtifacts().forEach(externalArtifact -> {
-				System.out.println("    " + externalArtifact);
-			});
-		});
-		System.out.println("Artifacts without module:");
-		artifacts.values().stream()
-				.filter(artifact -> artifact.getContainer().isEmpty())
-				.forEach(artifact -> System.out.println("    " + artifact));
-		System.out.println("Relationships:");
-		relationships.forEach(relationship -> {
-			System.out.println("  " + relationship.getSource() + " " + relationship.getRole() + " " + relationship.getTarget());
-		});
-	}
-
 }
