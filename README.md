@@ -2,18 +2,18 @@
 
 <img width="50%" src="archifacts-1-line.svg">
 
-archifacts is a free ([Apache 2.0 license](https://github.com/archifacts/archifacts/blob/main/LICENSE)) library for describing and detecting architectural building blocks and their relationships in your Java applications.
+*archifacts* is a free ([Apache 2.0 license](https://github.com/archifacts/archifacts/blob/main/LICENSE)) library for describing and detecting architectural building blocks and their relationships in your Java applications.
 
-archifacts heavily relies on [ArchUnit](https://www.archunit.org/) which analyzes the Java bytecode. With the help of descriptors archifacts identifies building blocks, relationships and containers of your application and builds a model.
+*archifacts* heavily relies on [ArchUnit](https://www.archunit.org/) which analyzes the Java bytecode. With the help of descriptors archifacts identifies building blocks, relationships and containers of your application and builds a model.
 
 Having this model in place you can visualize your application's architecture or verify it against certain rules.
 
 While we already have some support for the former, the latter is subject of future work.
 
 ## Experimental API
-**Caution!** *archifacts* is in a very early state. The API is not intended to be stable. We might introduce breaking changes at any time if we think it improves the overall user experience. lease be aware of this, if you decide to use archifacts.
+**Caution!** *archifacts* is in a very early state. The API is not intended to be stable. We might introduce breaking changes at any time if we think it improves the overall user experience. Please be aware of this, if you decide to use *archifacts*.
 
-Nevertheless we try to reduce the breaking changs to a minimum, but there is no guarantee.
+Nevertheless we try to reduce the breaking changes to a minimum, but there is no guarantee.
 
 ## Usage
 
