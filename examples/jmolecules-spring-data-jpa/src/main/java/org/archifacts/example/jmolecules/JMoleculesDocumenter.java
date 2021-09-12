@@ -21,14 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import org.archifacts.core.model.Application;
-import org.archifacts.core.model.ArtifactContainer;
-import org.archifacts.core.model.BuildingBlock;
-import org.archifacts.integration.asciidoc.AsciiDoc;
-import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
-import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
-import org.archifacts.integration.c4.model.C4ModelTransformer;
-
 import com.structurizr.Workspace;
 import com.structurizr.model.Container;
 import com.structurizr.model.CreateImpliedRelationshipsUnlessSameRelationshipExistsStrategy;
@@ -39,6 +31,15 @@ import com.structurizr.view.ContainerView;
 import com.structurizr.view.ViewSet;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+
+import org.archifacts.core.model.Application;
+import org.archifacts.core.model.ArtifactContainer;
+import org.archifacts.core.model.BuildingBlock;
+import org.archifacts.integration.asciidoc.AsciiDoc;
+import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
+import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
+import org.archifacts.integration.c4.model.C4ModelTransformer;
+import org.archifacts.integration.plaintext.ApplicationOverview;
 
 public class JMoleculesDocumenter {
 
@@ -53,7 +54,19 @@ public class JMoleculesDocumenter {
 	private void generateDocumentation() throws IOException {
 		final JavaClasses javaClasses = new ClassFileImporter().importPackages(ApplicationPackage);
 		final Application application = initApplication(javaClasses);
-		application.printOverview();
+		writeApplicationOverviewToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.txt"));
+		writeC4ModelToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
+	}
+
+	private void writeApplicationOverviewToFile(final Application application, Path outputFile) throws IOException {
+		Files.createDirectories(outputFile.getParent());
+		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
+			new ApplicationOverview(application).writeToWriter(writer);
+		}
+		System.out.println("Application overview written to " + outputFile.toString());
+	}
+
+	private void writeC4ModelToFile(final Application application, Path outputFile) throws IOException {
 		final Workspace c4Workspace = new Workspace("jMolecules - Spring Data JPA Example", null);
 		final ViewSet views = c4Workspace.getViews();
 		final SoftwareSystem softwareSystem = initSoftwareSystem(c4Workspace);
@@ -70,15 +83,11 @@ public class JMoleculesDocumenter {
 				.map(module -> initComponentView(module, views, c4ModelTransformer))
 				.map(ComponentViewPlantUMLDocElement::new)
 				.forEach(asciiDoc::addDocElement);
-		writeDocumentationToFile(asciiDoc);
-	}
-
-	private void writeDocumentationToFile(final AsciiDoc asciiDoc) throws IOException {
-		final Path outputPath = Paths.get("export", "jmolecules-spring-data-jpa-example.adoc");
-		Files.createDirectories(outputPath.getParent());
-		try (BufferedWriter writer = Files.newBufferedWriter(outputPath, StandardCharsets.UTF_8)) {
+		Files.createDirectories(outputFile.getParent());
+		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
 			asciiDoc.writeToWriter(writer);
 		}
+		System.out.println("C4 model written to " + outputFile.toString());
 	}
 
 	private boolean isModule(final ArtifactContainer container) {

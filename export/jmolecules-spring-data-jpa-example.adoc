@@ -1,0 +1,89 @@
+[plantuml, container-view, svg] 
+....
+@startuml
+title jMolecules - Spring Data JPA Example - Containers
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+LAYOUT_WITH_LEGEND()
+
+System_Boundary("1_boundary", "jMolecules - Spring Data JPA Example") {
+  Container(3, "customer", "Module", "")
+  Container(4, "order", "Module", "")
+}
+
+Rel_D(4, 3, "associates")
+@enduml
+....
+
+[plantuml, 4, svg] 
+....
+@startuml
+title jMolecules - Spring Data JPA Example - order - Components
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_WITH_LEGEND()
+
+Container(3, "customer", "Module", "")
+
+Container_Boundary("4_boundary", "order") {
+  Component(15, "LineItemId", "Identifier", "")
+  Component(16, "LineItem", "Entity", "")
+  Component(18, "OrderId", "Identifier", "")
+  Component(19, "Order", "Aggregate Root", "")
+  Component(20, "Orders", "Repository", "")
+}
+
+Rel_D(19, 3, "associates")
+Rel_D(19, 16, "contains")
+Rel_D(19, 18, "identified by")
+Rel_D(16, 15, "identified by")
+Rel_D(19, 20, "managed by")
+@enduml
+....
+
+[plantuml, 3, svg] 
+....
+@startuml
+title jMolecules - Spring Data JPA Example - customer - Components
+
+top to bottom direction
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+LAYOUT_WITH_LEGEND()
+
+Container(4, "order", "Module", "")
+Container(5, "jdk", "Library", "")
+
+Container_Boundary("3_boundary", "customer") {
+  Component(10, "Customer", "Aggregate Root", "")
+  Component(11, "Customers", "Repository", "")
+  Component(12, "SomeEntity", "Entity", "")
+  Component(13, "SampleEvent", "Event", "")
+  Component(6, "CustomerManagement", "Service", "")
+  Component(7, "CustomerId", "Identifier", "")
+  Component(8, "AddressId", "Identifier", "")
+  Component(9, "Address", "Entity", "")
+}
+
+Rel_D(10, 11, "managed by")
+Rel_D(4, 10, "associates")
+Rel_D(10, 9, "contains")
+Rel_D(9, 8, "identified by")
+Rel_D(12, 5, "identified by")
+Rel_D(10, 7, "identified by")
+Rel_D(6, 13, "handles")
+@enduml
+....
+
