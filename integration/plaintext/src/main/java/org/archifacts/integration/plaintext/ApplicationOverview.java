@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import org.archifacts.core.model.Application;
 
-public class ApplicationOverview {
+public final class ApplicationOverview {
     
     private final Application application;
 
@@ -27,7 +27,7 @@ public class ApplicationOverview {
 	}
 
 	public String render() {
-		StringBuilder stringBuilder = new StringBuilder();
+		final StringBuilder stringBuilder = new StringBuilder();
 		application.getContainers().forEach(container -> {
 			stringBuilder.append(container).append('\n');
 			stringBuilder.append("  Building Blocks:").append('\n');

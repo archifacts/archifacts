@@ -8,7 +8,7 @@
 	</parent>
 	<artifactId>archifacts-plaintext</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>archifacts Plain text Output</description>
+	<description>archifacts Plain Text Output</description>
 
 	<dependencies>
 		<dependency>
