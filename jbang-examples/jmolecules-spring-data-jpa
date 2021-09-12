@@ -1,8 +1,8 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS org.archifacts:archifacts-core:0.1.0-SNAPSHOT
-//DEPS org.archifacts:archifacts-plaintext:0.1.0-SNAPSHOT
-//DEPS org.archifacts:archifacts-jmolecules:0.1.0-SNAPSHOT
-//DEPS org.archifacts:archifacts-c4-asciidoc:0.1.0-SNAPSHOT
+//DEPS org.archifacts:archifacts-core:0.1.0
+//DEPS org.archifacts:archifacts-plaintext:0.1.0
+//DEPS org.archifacts:archifacts-jmolecules:0.1.0
+//DEPS org.archifacts:archifacts-c4-asciidoc:0.1.0
 
 import static java.util.function.Predicate.not;
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor;
