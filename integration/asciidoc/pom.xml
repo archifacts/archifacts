@@ -10,5 +10,5 @@
 	</parent>
 	<artifactId>archifacts-asciidoc</artifactId>
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>archifacts AsciDoc integration</description>
+	<description>archifacts AsciiDoc integration</description>
 </project>
