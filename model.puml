@@ -1,0 +1,51 @@
+@startuml 
+class Application
+
+class ArtifactContainer {
+  ArtifactContainerType type
+  String name
+}
+
+package "ArchUnit"{
+  class JavaClass
+}
+
+abstract class Artifact {
+  
+}
+
+Artifact --> JavaClass : backedBy
+
+class BuildingBlock extends Artifact {
+  BuildingBlockType type
+}
+
+note bottom of BuildingBlock 
+described by 
+BuildingBlockDescriptor
+end note
+
+class MiscArtifact extends Artifact
+class ExternalArtifact extends Artifact
+
+class ArtifactRelationship {
+  ArtifactRelationshipRole role
+}
+
+ArtifactRelationship -- "1" Artifact : source
+ArtifactRelationship -- "1" Artifact : target
+
+note top of ArtifactRelationship 
+described by 
+ArtifactRelationshipDescriptor
+end note
+
+Application "1" *-- "*" ArtifactContainer : contains
+
+ArtifactContainer "0..1" o-- "*" Artifact : contains
+note bottom on link 
+described by 
+ArtifactContainerDescriptor
+end note
+
+@enduml 
