@@ -65,7 +65,7 @@ final class JMoleculesDescriptorsTest {
 				.addSourceBasedRelationshipDescriptor(sourceBasedArtifactRelationshipDescriptor)
 				.buildApplication(DOMAIN);
 		
-		final Set<RelationshipPair> actualRelationshipPairs = application.getRelationshipsOfType(sourceBasedArtifactRelationshipDescriptor.role())
+		final Set<RelationshipPair> actualRelationshipPairs = application.getRelationshipsOfRole(sourceBasedArtifactRelationshipDescriptor.role())
 				.stream()
 				.map(r -> new RelationshipPair(r.getSource().getJavaClass().reflect(), r.getTarget().getJavaClass().reflect()))
 				.collect(Collectors.toSet());

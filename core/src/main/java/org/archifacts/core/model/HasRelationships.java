@@ -9,7 +9,7 @@ public interface HasRelationships {
 
 	Set<ArtifactRelationship> getRelationships();
 
-	default Set<ArtifactRelationship> getRelationshipsOfType(final ArtifactRelationshipRole artifactRelationshipRole) {
+	default Set<ArtifactRelationship> getRelationshipsOfRole(final ArtifactRelationshipRole artifactRelationshipRole) {
 		return getRelationships()
 				.stream()
 				.filter(relationship -> relationship.getRole().equals(artifactRelationshipRole))

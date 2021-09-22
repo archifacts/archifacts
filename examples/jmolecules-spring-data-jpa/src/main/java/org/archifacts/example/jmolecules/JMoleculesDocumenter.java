@@ -15,7 +15,6 @@ import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.Relati
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +42,7 @@ import org.archifacts.integration.plaintext.ApplicationOverview;
 
 public class JMoleculesDocumenter {
 
-	public static void main(final String[] args) throws URISyntaxException, IOException {
+	public static void main(final String[] args) throws IOException {
 		new JMoleculesDocumenter().generateDocumentation();
 
 	}

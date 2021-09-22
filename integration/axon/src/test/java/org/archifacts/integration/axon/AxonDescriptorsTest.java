@@ -62,7 +62,7 @@ final class AxonDescriptorsTest {
 				.addSourceBasedRelationshipDescriptor(sourceBasedArtifactRelationshipDescriptor)
 				.buildApplication(DOMAIN);
 
-		assertThat(application.getRelationshipsOfType(sourceBasedArtifactRelationshipDescriptor.role()))
+		assertThat(application.getRelationshipsOfRole(sourceBasedArtifactRelationshipDescriptor.role()))
 				.extracting(r -> r.getSource().getJavaClass().reflect(), r -> r.getTarget().getJavaClass().reflect())
 				.containsExactlyInAnyOrder(expectedTuples);
 	}
