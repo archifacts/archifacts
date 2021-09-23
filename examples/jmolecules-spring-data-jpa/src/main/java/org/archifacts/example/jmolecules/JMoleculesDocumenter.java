@@ -19,6 +19,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.archifacts.core.model.Application;
+import org.archifacts.core.model.ArtifactContainer;
+import org.archifacts.core.model.BuildingBlock;
+import org.archifacts.core.model.BuildingBlockType;
+import org.archifacts.integration.asciidoc.AsciiDoc;
+import org.archifacts.integration.asciidoc.TableDocElement;
+import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
+import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
+import org.archifacts.integration.c4.model.C4ModelTransformer;
+import org.archifacts.integration.plaintext.ApplicationOverview;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.Container;
@@ -31,20 +46,10 @@ import com.structurizr.view.ViewSet;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-import org.archifacts.core.model.Application;
-import org.archifacts.core.model.ArtifactContainer;
-import org.archifacts.core.model.BuildingBlock;
-import org.archifacts.integration.asciidoc.AsciiDoc;
-import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
-import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
-import org.archifacts.integration.c4.model.C4ModelTransformer;
-import org.archifacts.integration.plaintext.ApplicationOverview;
-
 public class JMoleculesDocumenter {
 
 	public static void main(final String[] args) throws IOException {
 		new JMoleculesDocumenter().generateDocumentation();
-
 	}
 
 	private static final String ApplicationPackage = "org.jmolecules.examples.jpa";
@@ -55,6 +60,7 @@ public class JMoleculesDocumenter {
 		final Application application = initApplication(javaClasses);
 		writeApplicationOverviewToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.txt"));
 		writeC4ModelToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
+		writeBuildingBlocksTableToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example-building-blocks.adoc"));
 	}
 
 	private void writeApplicationOverviewToFile(final Application application, Path outputFile) throws IOException {
@@ -141,4 +147,30 @@ public class JMoleculesDocumenter {
 		c4ModelTransformer.getNoContainerContainer().ifPresent(componentView::remove);
 		return componentView;
 	}
+	
+	private void writeBuildingBlocksTableToFile(final Application application, final Path outputFile) throws IOException {
+		final AsciiDoc asciiDoc = new AsciiDoc();
+		
+		final Set<BuildingBlockType> sortedBuildingBlockTypes = application
+				.getBuildingBlocks()
+				.stream()
+				.map(BuildingBlock::getType)
+				.distinct()
+				.sorted(Comparator.comparing(BuildingBlockType::getName))
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+		final TableDocElement<BuildingBlockType> tableDocElement = TableDocElement
+				.forElements(sortedBuildingBlockTypes)
+				.title("Building Blocks")
+				.column("Name", BuildingBlockType::getName)
+				.column("Occurrences", b -> Integer.toString(application.getArtifactsOfType(b).size()))
+				.build();
+		asciiDoc.addDocElement(tableDocElement);
+
+		Files.createDirectories(outputFile.getParent());
+		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
+			asciiDoc.writeToWriter(writer);
+		}
+		System.out.println("Building blocks table written to " + outputFile.toString());
+	}
+	
 }
