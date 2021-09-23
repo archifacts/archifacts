@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.model.Artifact;
-import org.archifacts.core.model.ArtifactRelationshipRole;
 import org.axonframework.messaging.Message;
 
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -14,13 +13,6 @@ import com.tngtech.archunit.core.domain.JavaParameterizedType;
 import com.tngtech.archunit.core.domain.JavaType;
 
 abstract class AbstractHandlerDescriptor implements SourceBasedArtifactRelationshipDescriptor {
-
-	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("handles");
-	
-	@Override
-	public ArtifactRelationshipRole role() {
-		return ROLE;
-	}
 
 	@Override
 	public boolean isSource(final Artifact sourceCandidateArtifact) {

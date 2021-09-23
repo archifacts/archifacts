@@ -8,7 +8,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 final class RepositoryDescriptor implements BuildingBlockDescriptor {
 
-	static final BuildingBlockType TYPE = BuildingBlockType.of("Repository");
+	private static final BuildingBlockType TYPE = BuildingBlockType.of("Repository");
 
 	RepositoryDescriptor() {
 

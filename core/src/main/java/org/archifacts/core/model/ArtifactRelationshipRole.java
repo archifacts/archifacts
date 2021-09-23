@@ -1,7 +1,11 @@
 package org.archifacts.core.model;
 
-import java.util.Objects;
-
+/**
+ * The role of a relationship. Two instances are considered equal if and only if
+ * they are the same instance. Two newly created types with the same names are not
+ * considered equal. This is a necessary limitation to avoid ambiguity when
+ * querying for elements.
+ */
 public final class ArtifactRelationshipRole {
 
 	public static ArtifactRelationshipRole of(final String name) {
@@ -23,20 +27,4 @@ public final class ArtifactRelationshipRole {
 		return name;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(name);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final ArtifactRelationshipRole other = (ArtifactRelationshipRole) obj;
-		return Objects.equals(name, other.name);
-	}
 }

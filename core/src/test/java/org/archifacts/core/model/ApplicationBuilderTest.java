@@ -10,12 +10,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.tngtech.archunit.core.domain.Dependency;
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaField;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
-
 import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
@@ -46,6 +40,12 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.JavaField;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 
@@ -126,9 +126,11 @@ class ApplicationBuilderTest {
 
 		static final class BuildingBlockType1Descriptor implements BuildingBlockDescriptor {
 
+			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType1");
+
 			@Override
 			public BuildingBlockType type() {
-				return BuildingBlockType.of("BuildingBlockType1");
+				return TYPE;
 			}
 
 			@Override
@@ -136,12 +138,14 @@ class ApplicationBuilderTest {
 				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
 			}
 		}
-
+		
 		static final class SecondBuildingBlockType1Descriptor implements BuildingBlockDescriptor {
+
+			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType1-Duplicate");
 
 			@Override
 			public BuildingBlockType type() {
-				return BuildingBlockType.of("BuildingBlockType1-Duplicate");
+				return TYPE;
 			}
 
 			@Override
@@ -152,9 +156,11 @@ class ApplicationBuilderTest {
 
 		static final class BuildingBlockType2Descriptor implements BuildingBlockDescriptor {
 
+			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType2");
+
 			@Override
 			public BuildingBlockType type() {
-				return BuildingBlockType.of("BuildingBlockType2");
+				return TYPE;
 			}
 
 			@Override
@@ -165,9 +171,11 @@ class ApplicationBuilderTest {
 
 		static final class ContainerType1Descriptor implements ArtifactContainerDescriptor {
 
+			private static final ArtifactContainerType TYPE = ArtifactContainerType.of("ContainerType1");
+
 			@Override
 			public ArtifactContainerType type() {
-				return ArtifactContainerType.of("ContainerType1");
+				return TYPE;
 			}
 
 			@Override
@@ -185,9 +193,11 @@ class ApplicationBuilderTest {
 
 		static final class SecondContainerType1Descriptor implements ArtifactContainerDescriptor {
 
+			private static final ArtifactContainerType TYPE = ArtifactContainerType.of("ContainerType1");
+
 			@Override
 			public ArtifactContainerType type() {
-				return ArtifactContainerType.of("ContainerType1");
+				return TYPE;
 			}
 
 			@Override
@@ -205,9 +215,11 @@ class ApplicationBuilderTest {
 
 		static final class ContainerType2Descriptor implements ArtifactContainerDescriptor {
 
+			private static final ArtifactContainerType TYPE = ArtifactContainerType.of("ContainerType2");
+
 			@Override
 			public ArtifactContainerType type() {
-				return ArtifactContainerType.of("ContainerType2");
+				return TYPE;
 			}
 
 			@Override
@@ -225,9 +237,11 @@ class ApplicationBuilderTest {
 
 		static final class NonMatchingBuildingBlockDescriptor implements BuildingBlockDescriptor {
 
+			private static final BuildingBlockType TYPE = BuildingBlockType.of("Non-matching");
+
 			@Override
 			public BuildingBlockType type() {
-				return BuildingBlockType.of("Non-matching");
+				return TYPE;
 			}
 
 			@Override
@@ -238,9 +252,11 @@ class ApplicationBuilderTest {
 
 		static final class ExternalArtifactRelationshipDescriptor implements SourceBasedArtifactRelationshipDescriptor {
 
+			private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("extref");
+
 			@Override
 			public ArtifactRelationshipRole role() {
-				return ArtifactRelationshipRole.of("extref");
+				return ROLE;
 			}
 
 			@Override
@@ -258,9 +274,11 @@ class ApplicationBuilderTest {
 
 		static final class MiscArtifactRelationshipDescriptor implements TargetBasedArtifactRelationshipDescriptor {
 
+			private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("miscref");
+
 			@Override
 			public ArtifactRelationshipRole role() {
-				return ArtifactRelationshipRole.of("miscref");
+				return ROLE;
 			}
 
 			@Override
@@ -329,22 +347,22 @@ class ApplicationBuilderTest {
 					.extracting(BuildingBlock::getType, Artifact::getName,
 							artifact -> artifact.getJavaClass().getName())
 					.containsExactlyInAnyOrder(
-							tuple(BuildingBlockType.of("BuildingBlockType1"),
+							tuple(BuildingBlockType1Descriptor.TYPE,
 									ContainerType1_BuildingBlockType1.class.getSimpleName(),
 									ContainerType1_BuildingBlockType1.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType1"),
+							tuple(BuildingBlockType1Descriptor.TYPE,
 									ContainerType2_BuildingBlockType1.class.getSimpleName(),
 									ContainerType2_BuildingBlockType1.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType1"),
+							tuple(BuildingBlockType1Descriptor.TYPE,
 									NoContainer_BuildingBlockType1.class.getSimpleName(),
 									NoContainer_BuildingBlockType1.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType2"),
+							tuple(BuildingBlockType2Descriptor.TYPE,
 									ContainerType1_BuildingBlockType2.class.getSimpleName(),
 									ContainerType1_BuildingBlockType2.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType2"),
+							tuple(BuildingBlockType2Descriptor.TYPE,
 									ContainerType2_BuildingBlockType2.class.getSimpleName(),
 									ContainerType2_BuildingBlockType2.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType2"),
+							tuple(BuildingBlockType2Descriptor.TYPE,
 									NoContainer_BuildingBlockType2.class.getSimpleName(),
 									NoContainer_BuildingBlockType2.class.getName()));
 		}
@@ -405,16 +423,33 @@ class ApplicationBuilderTest {
 					.extracting(BuildingBlock::getType, Artifact::getName,
 							artifact -> artifact.getJavaClass().getName())
 					.containsExactlyInAnyOrder(
-							tuple(BuildingBlockType.of("BuildingBlockType1"),
+							tuple(BuildingBlockType1Descriptor.TYPE,
 									ContainerType1_BuildingBlockType1.class.getSimpleName(),
 									ContainerType1_BuildingBlockType1.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType1"),
+							tuple(BuildingBlockType1Descriptor.TYPE,
 									ContainerType2_BuildingBlockType1.class.getSimpleName(),
 									ContainerType2_BuildingBlockType1.class.getName()),
-							tuple(BuildingBlockType.of("BuildingBlockType1"),
+							tuple(BuildingBlockType1Descriptor.TYPE,
 									NoContainer_BuildingBlockType1.class.getSimpleName(),
 									NoContainer_BuildingBlockType1.class.getName()));
 		}
+		
+		@Test
+		void assert_that_building_block_types_with_same_names_are_not_considered_equal() {
+			final Application application = Application
+					.builder()
+					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+					.buildApplication(javaClasses);
+			
+			assertThat(application.getArtifactsOfType(BuildingBlockType1Descriptor.TYPE))
+					.extracting(Artifact::getName)
+					.containsExactlyInAnyOrder(
+									ContainerType1_BuildingBlockType1.class.getSimpleName(),
+									ContainerType2_BuildingBlockType1.class.getSimpleName(),
+									NoContainer_BuildingBlockType1.class.getSimpleName());
+			assertThat(application.getArtifactsOfType(BuildingBlockType.of(BuildingBlockType1Descriptor.TYPE.getName()))).isEmpty();
+		}
+		
 	}
 
 	@Nested
@@ -436,7 +471,7 @@ class ApplicationBuilderTest {
 					.orElseThrow();
 			assertThat(testEventArtifact.getContainer()).isPresent().get()
 					.extracting(ArtifactContainer::getName, ArtifactContainer::getType)
-					.containsExactly("Container1", ArtifactContainerType.of("ContainerType1"));
+					.containsExactly("Container1", ContainerType1Descriptor.TYPE);
 		}
 
 		@Test
@@ -455,7 +490,7 @@ class ApplicationBuilderTest {
 					.findFirst().orElseThrow();
 			assertThat(anyClassArtifact.getContainer()).isPresent().get()
 					.extracting(ArtifactContainer::getName, ArtifactContainer::getType)
-					.containsExactly("Container1", ArtifactContainerType.of("ContainerType1"));
+					.containsExactly("Container1", ContainerType1Descriptor.TYPE);
 		}
 
 		@Test
@@ -505,18 +540,35 @@ class ApplicationBuilderTest {
 					.buildApplication(javaClasses);
 
 			assertThat(application.getContainers()).extracting(ArtifactContainer::getName, ArtifactContainer::getType)
-					.containsExactlyInAnyOrder(tuple("Container1", ArtifactContainerType.of("ContainerType1")),
-							tuple("Container2", ArtifactContainerType.of("ContainerType2")));
+					.containsExactlyInAnyOrder(tuple("Container1", ContainerType1Descriptor.TYPE),
+							tuple("Container2",  ContainerType2Descriptor.TYPE));
 		}
 
 		@Test
 		void assert_that_if_multiple_ContainerDescriptors_match_the_first_matching_descriptor_is_used() {
-			final Application application = Application.builder().addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new SecondContainerType1Descriptor()).buildApplication(javaClasses);
+			final Application application = Application
+					.builder()
+					.addContainerDescriptor(new ContainerType1Descriptor())
+					.addContainerDescriptor(new SecondContainerType1Descriptor())
+					.buildApplication(javaClasses);
 
 			assertThat(application.getContainers()).extracting(ArtifactContainer::getName, ArtifactContainer::getType)
-					.containsExactlyInAnyOrder(tuple("Container1", ArtifactContainerType.of("ContainerType1")));
+					.containsExactlyInAnyOrder(tuple("Container1", ContainerType1Descriptor.TYPE));
 		}
+		
+		@Test
+		void assert_that_container_types_with_same_names_are_not_considered_equal() {
+			final Application application = Application
+					.builder()
+					.addContainerDescriptor(new ContainerType1Descriptor())
+					.buildApplication(javaClasses);
+			
+			assertThat(application.getContainersOfType(ContainerType1Descriptor.TYPE))
+					.extracting(ArtifactContainer::getName)
+					.containsExactlyInAnyOrder("Container1");
+			assertThat(application.getContainersOfType(ArtifactContainerType.of(ContainerType1Descriptor.TYPE.getName()))).isEmpty();
+		}
+		
 	}
 
 	@Nested
@@ -536,22 +588,22 @@ class ApplicationBuilderTest {
 					.extracting(ArtifactRelationship::getRole, rel -> rel.getSource().getName(),
 							rel -> rel.getTarget().getName())
 					.containsExactlyInAnyOrder(
-							tuple(ArtifactRelationshipRole.of("extref"),
+							tuple(ExternalArtifactRelationshipDescriptor.ROLE,
 									ContainerType1_BuildingBlockType1.class.getSimpleName(),
 									ContainerType1_ExternalArtifact.class.getSimpleName()),
-							tuple(ArtifactRelationshipRole.of("extref"),
+							tuple(ExternalArtifactRelationshipDescriptor.ROLE,
 									ContainerType2_BuildingBlockType1.class.getSimpleName(),
 									ContainerType2_ExternalArtifact.class.getSimpleName()),
-							tuple(ArtifactRelationshipRole.of("extref"),
+							tuple(ExternalArtifactRelationshipDescriptor.ROLE,
 									NoContainer_BuildingBlockType1.class.getSimpleName(),
 									NoContainer_ExternalArtifact.class.getSimpleName()),
-							tuple(ArtifactRelationshipRole.of("miscref"),
+							tuple(MiscArtifactRelationshipDescriptor.ROLE,
 									ContainerType1_BuildingBlockType2.class.getSimpleName(),
 									ContainerType1_MiscArtifact.class.getSimpleName()),
-							tuple(ArtifactRelationshipRole.of("miscref"),
+							tuple(MiscArtifactRelationshipDescriptor.ROLE,
 									ContainerType2_BuildingBlockType2.class.getSimpleName(),
 									ContainerType2_MiscArtifact.class.getSimpleName()),
-							tuple(ArtifactRelationshipRole.of("miscref"),
+							tuple(MiscArtifactRelationshipDescriptor.ROLE,
 									NoContainer_BuildingBlockType2.class.getSimpleName(),
 									NoContainer_MiscArtifact.class.getSimpleName()));
 		}
@@ -615,6 +667,22 @@ class ApplicationBuilderTest {
 					.collect(Collectors.toSet());
 			assertThat(application.getRelationships()).containsExactlyInAnyOrderElementsOf(allRelationships);
 
+		}
+		
+		@Test
+		void assert_that_roles_with_same_names_are_not_considered_equal() {
+			final Application application = Application
+					.builder()
+					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
+					.buildApplication(javaClasses);
+			
+			assertThat(application.getRelationshipsOfRole(ExternalArtifactRelationshipDescriptor.ROLE))
+					.extracting(a -> a.getSource().getName())
+					.containsExactlyInAnyOrder(
+							"NoContainer_BuildingBlockType1",
+							"ContainerType2_BuildingBlockType1",
+							"ContainerType1_BuildingBlockType1");
+			assertThat(application.getRelationshipsOfRole(ArtifactRelationshipRole.of(ExternalArtifactRelationshipDescriptor.ROLE.getName()))).isEmpty();
 		}
 
 	}
