@@ -5,7 +5,6 @@ import java.util.stream.Stream;
 
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.model.Artifact;
-import org.archifacts.core.model.ArtifactRelationshipRole;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaField;
@@ -13,13 +12,6 @@ import com.tngtech.archunit.core.domain.JavaMember;
 import com.tngtech.archunit.core.domain.JavaMethod;
 
 abstract class AbstractIdentifiedByDescriptor implements SourceBasedArtifactRelationshipDescriptor {
-
-	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("identified by");
-
-	@Override
-	public ArtifactRelationshipRole role() {
-		return ROLE;
-	}
 
 	@Override
 	public boolean isSource(final Artifact sourceCandidateArtifact) {

@@ -1,7 +1,11 @@
 package org.archifacts.core.model;
 
-import java.util.Objects;
-
+/**
+ * The type of a building block. Two instances are considered equal if and only if 
+ * they are the same instance. Two newly created types with the same names are not
+ * considered equal. This is a necessary limitation to avoid ambiguity when querying 
+ * for elements.
+ */
 public final class BuildingBlockType implements Named {
 
 	public static BuildingBlockType of(final String name) {
@@ -17,23 +21,6 @@ public final class BuildingBlockType implements Named {
 	@Override
 	public String getName() {
 		return name;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(name);
-	}
-
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		final BuildingBlockType other = (BuildingBlockType) obj;
-		return Objects.equals(name, other.name);
 	}
 
 	@Override
