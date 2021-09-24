@@ -72,7 +72,7 @@ public final class C4ModelTransformer {
 			this.noContainerContainer = Optional.of(noContainerContainer);
 			return noContainerContainer;
 		});
-		
+
 		final Map<Container, List<Artifact>> containerArtifactsMap = new HashMap<>();
 		application.getArtifacts().forEach(artifact -> {
 			final Container container = artifact.getContainer()
@@ -108,7 +108,7 @@ public final class C4ModelTransformer {
 				.map(Named::getName)
 				.distinct()
 				.count() < named.size();
-	} 
+	}
 
 	private String getTechnology(final Artifact artifact) {
 		if (artifact instanceof BuildingBlock) {

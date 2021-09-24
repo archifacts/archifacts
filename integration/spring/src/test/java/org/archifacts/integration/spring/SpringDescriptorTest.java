@@ -32,12 +32,12 @@ final class SpringDescriptorTest {
 				.builder()
 				.addBuildingBlockDescriptor(buildingBlockDescriptor)
 				.buildApplication(DOMAIN);
-		
+
 		assertThat(application.getArtifactsOfType(buildingBlockDescriptor.type()))
 				.map(b -> b.getJavaClass())
 				.allMatch(j -> j.isEquivalentTo(matchingClass));
 	}
-	
+
 	private static Stream<Arguments> getBuildingBlocks() {
 		return Stream.of(
 				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ConfigurationDescriptor, MyConfiguration.class),
@@ -46,5 +46,5 @@ final class SpringDescriptorTest {
 				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ControllerDescriptor, MyController.class),
 				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ComponentDescriptor, MyComponent.class));
 	}
-	
+
 }

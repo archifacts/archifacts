@@ -13,11 +13,10 @@ final class AggregateIdentifiedByDescriptor extends AbstractIdentifiedByDescript
 	public ArtifactRelationshipRole role() {
 		return ROLE;
 	}
-	
+
 	@Override
 	protected Class<? extends Annotation> getAnnotationClass() {
 		return AggregateIdentifier.class;
 	}
 
 }
-

@@ -16,8 +16,7 @@ public interface ArtifactRelationshipDescriptor {
 	/**
 	 * The role of the {@link ArtifactContainer} which this descriptor describes.
 	 *
-	 * @return the role of the {@link ArtifactContainer} which this descriptor
-	 *         describes. Cannot be null.
+	 * @return the role of the {@link ArtifactContainer} which this descriptor describes. Cannot be null.
 	 */
 	ArtifactRelationshipRole role();
 

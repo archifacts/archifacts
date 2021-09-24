@@ -6,5 +6,5 @@ public class MyAggregateMember3 {
 
 	@EntityId
 	private String id;
-	
+
 }

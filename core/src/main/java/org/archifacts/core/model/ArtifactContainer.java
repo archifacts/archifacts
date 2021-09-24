@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships {
-	
+
 	private final ArtifactContainerDescription description;
 	private Application application;
 

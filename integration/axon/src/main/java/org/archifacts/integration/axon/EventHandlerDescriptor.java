@@ -8,12 +8,12 @@ import org.axonframework.eventhandling.EventHandler;
 final class EventHandlerDescriptor extends AbstractHandlerDescriptor {
 
 	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("handles");
-	
+
 	@Override
 	public ArtifactRelationshipRole role() {
 		return ROLE;
 	}
-		
+
 	@Override
 	protected Class<? extends Annotation> getAnnotationClass() {
 		return EventHandler.class;

@@ -9,7 +9,7 @@ public class MyAggregateRoot implements AggregateRoot<MyAggregateRoot, MyAggrega
 
 	private List<MyEntity> entities;
 	private Association<MyAggregateRoot, MyAggregateRootId> aggregates;
-	
+
 	@Override
 	public MyAggregateRootId getId() {
 		return new MyAggregateRootId();
@@ -18,9 +18,9 @@ public class MyAggregateRoot implements AggregateRoot<MyAggregateRoot, MyAggrega
 	public List<MyEntity> getEntities() {
 		return entities;
 	}
-	
+
 	public Association<MyAggregateRoot, MyAggregateRootId> getAggregates() {
 		return aggregates;
 	}
-	
+
 }

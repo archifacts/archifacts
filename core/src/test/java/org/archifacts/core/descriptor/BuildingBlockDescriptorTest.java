@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-@DisplayNameGeneration( ReplaceUnderscores.class )
+@DisplayNameGeneration(ReplaceUnderscores.class)
 final class BuildingBlockDescriptorTest {
 
 	final static class Classes {
@@ -28,38 +28,38 @@ final class BuildingBlockDescriptorTest {
 		class AnotherClass {
 
 		}
-		
+
 		class SuperClass {
-			
+
 		}
-		
+
 		class ClassExtendingSuperClass extends SuperClass {
-			
+
 		}
-		
+
 		@Annotation
 		class AnnotatedClass {
-			
+
 		}
-		
+
 		@interface Annotation {
-			
+
 		}
-		
+
 	}
 
 	@Test
 	void assertThat_forSimpleNameEndingWith_matches_as_expected() {
 		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forSimpleNameEndingWith(BuildingBlockType.of("Test"), "Suffix");
-	
+
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassWithSuffix.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
 	}
-	
+
 	@Test
 	void assertThat_forAssignableTo_matches_as_expected() {
 		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("Test"), SuperClass.class);
-	
+
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassExtendingSuperClass.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
 	}
@@ -67,21 +67,21 @@ final class BuildingBlockDescriptorTest {
 	@Test
 	void assertThat_forAssignableTo_matches_with_multiple_types_as_expected() {
 		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("Test"), SuperClass.class, ClassWithSuffix.class);
-	
+
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassExtendingSuperClass.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(ClassWithSuffix.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
 	}
-	
+
 	@Test
 	void assertThat_forAnnatatedWith_matches_as_expected() {
 		final BuildingBlockDescriptor buildingBlockDescriptor = BuildingBlockDescriptor.forAnnotatedWith(BuildingBlockType.of("Test"), Annotation.class);
-		
+
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnnotatedClass.class))).isTrue();
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
 	}
 
-	private JavaClass importClass( Class<?> clazz ) {
+	private JavaClass importClass(Class<?> clazz) {
 		return new ClassFileImporter().importClass(clazz);
 	}
 

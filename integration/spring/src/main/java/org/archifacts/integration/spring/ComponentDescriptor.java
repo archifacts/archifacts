@@ -15,7 +15,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
 
 final class ComponentDescriptor implements BuildingBlockDescriptor {
 
-	private static final BuildingBlockDescriptor[] EXCLUDES = {ConfigurationDescriptor, RepositoryDescriptor, ServiceDescriptor, ControllerDescriptor};
+	private static final BuildingBlockDescriptor[] EXCLUDES = { ConfigurationDescriptor, RepositoryDescriptor, ServiceDescriptor, ControllerDescriptor };
 	private static final BuildingBlockType TYPE = BuildingBlockType.of("Component");
 
 	ComponentDescriptor() {

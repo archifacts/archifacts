@@ -7,5 +7,5 @@ public final class MySagaEventHandler {
 	@SagaEventHandler(associationProperty = "id")
 	public void handle(final MyEvent1 event) {
 	}
-	
+
 }

@@ -36,15 +36,15 @@ abstract class AbstractHandlerDescriptor implements SourceBasedArtifactRelations
 
 	private JavaClass toJavaClass(final JavaType javaType) {
 		final JavaClass javaClass = javaType.toErasure();
-		
+
 		if (javaClass.isAssignableTo(Message.class) && javaType instanceof JavaParameterizedType) {
-			final JavaParameterizedType javaParameterizedType = (JavaParameterizedType)javaType;
+			final JavaParameterizedType javaParameterizedType = (JavaParameterizedType) javaType;
 			return javaParameterizedType.getActualTypeArguments().get(0).toErasure();
 		}
-		
+
 		return javaClass;
 	}
-	
+
 	protected abstract Class<? extends Annotation> getAnnotationClass();
 
 }

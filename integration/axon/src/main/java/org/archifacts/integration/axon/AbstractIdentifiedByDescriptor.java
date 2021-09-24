@@ -39,7 +39,7 @@ abstract class AbstractIdentifiedByDescriptor implements SourceBasedArtifactRela
 			throw new IllegalArgumentException(String.format("A JavaMember (%s) annotated with '%s' is neither a field nor a method.", javaMember, getAnnotationClass().getSimpleName()));
 		}
 	}
-	
+
 	protected abstract Class<? extends Annotation> getAnnotationClass();
 
 }
