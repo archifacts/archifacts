@@ -684,6 +684,81 @@ class ApplicationBuilderTest {
 							"ContainerType1_BuildingBlockType1");
 			assertThat(application.getRelationshipsOfRole(ArtifactRelationshipRole.of(ExternalArtifactRelationshipDescriptor.ROLE.getName()))).isEmpty();
 		}
+		
+		@Test
+		void assert_that_outgoing_relationships_of_building_blocks_can_be_queried() {
+			final BuildingBlockDescriptor blockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("test"), ContainerType1_BuildingBlockType1.class);
+			final ExternalArtifactRelationshipDescriptor relationshipDescriptor = new ExternalArtifactRelationshipDescriptor();
+			
+			final Application application = Application
+					.builder()
+					.addBuildingBlockDescriptor(blockDescriptor)
+					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
+					.buildApplication(javaClasses);
+			
+			final BuildingBlock buildingBlock = application.getArtifactsOfType(blockDescriptor.type()).iterator().next();
+			assertThat(buildingBlock.getOutgoingRelationshipsOfRole(relationshipDescriptor.role()))
+					.extracting(r -> r.getRole())
+					.containsExactly(relationshipDescriptor.role());
+			assertThat(buildingBlock.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
+					.isEmpty();
+		}
+		
+		@Test
+		void assert_that_incoming_relationships_of_building_blocks_can_be_queried() {
+			final BuildingBlockDescriptor blockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("test"), NoContainer_MiscArtifact.class);
+			final MiscArtifactRelationshipDescriptor relationshipDescriptor = new MiscArtifactRelationshipDescriptor();
+			
+			final Application application = Application
+					.builder()
+					.addBuildingBlockDescriptor(blockDescriptor)
+					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
+					.buildApplication(javaClasses);
+			
+			final BuildingBlock buildingBlock = application.getArtifactsOfType(blockDescriptor.type()).iterator().next();
+			assertThat(buildingBlock.getIncomingRelationshipsOfRole(relationshipDescriptor.role()))
+					.extracting(r -> r.getRole())
+					.containsExactly(relationshipDescriptor.role());
+			assertThat(buildingBlock.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
+					.isEmpty();
+		}
+		
+		@Test
+		void assert_that_outgoing_relationships_of_artifact_containers_can_be_queried() {
+			final ContainerType1Descriptor containerDescriptor = new ContainerType1Descriptor();
+			final ExternalArtifactRelationshipDescriptor relationshipDescriptor = new ExternalArtifactRelationshipDescriptor();
+			
+			final Application application = Application
+					.builder()
+					.addContainerDescriptor(containerDescriptor)
+					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
+					.buildApplication(javaClasses);
+			 
+			final ArtifactContainer artifactContainera = application.getContainersOfType(containerDescriptor.type()).iterator().next();
+			assertThat(artifactContainera.getOutgoingRelationshipsOfRole(relationshipDescriptor.role()))
+					.extracting(r -> r.getRole())
+					.containsExactly(relationshipDescriptor.role());
+			assertThat(artifactContainera.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
+					.isEmpty();
+		}
+		@Test
+		void assert_that_incoming_relationships_of_artifact_containers_can_be_queried() {
+			final ContainerType1Descriptor containerDescriptor = new ContainerType1Descriptor();
+			final MiscArtifactRelationshipDescriptor relationshipDescriptor = new MiscArtifactRelationshipDescriptor();
+			
+			final Application application = Application
+					.builder()
+					.addContainerDescriptor(containerDescriptor)
+					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
+					.buildApplication(javaClasses);
+			
+			final ArtifactContainer artifactContainera = application.getContainersOfType(containerDescriptor.type()).iterator().next();
+			assertThat(artifactContainera.getIncomingRelationshipsOfRole(relationshipDescriptor.role()))
+					.extracting(r -> r.getRole())
+					.containsExactly(relationshipDescriptor.role());
+			assertThat(artifactContainera.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
+					.isEmpty();
+		}
 
 	}
 
