@@ -162,7 +162,7 @@ public class JMoleculesDocumenter {
 				.forElements(sortedBuildingBlockTypes)
 				.title("Building Blocks")
 				.column("Name", BuildingBlockType::getName)
-				.column("Occurrences", b -> Integer.toString(application.getArtifactsOfType(b).size()))
+				.column("Occurrences", b -> Integer.toString(application.getBuildingBlocksOfType(b).size()))
 				.build();
 		asciiDoc.addDocElement(tableDocElement);
 

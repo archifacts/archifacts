@@ -67,18 +67,20 @@ public final class ArtifactContainer implements HasArtifacts, Named, HasIncoming
 
 	@Override
 	public Set<ArtifactRelationship> getOutgoingRelationships() {
-		return getArtifacts()
-				.stream()
-				.flatMap(a -> a.getOutgoingRelationships().stream())
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+		return Collections.unmodifiableSet(
+			(Set<ArtifactRelationship>) getArtifacts()
+			.stream()
+			.flatMap(a -> a.getOutgoingRelationships().stream())
+			.collect(Collectors.toCollection(LinkedHashSet::new)));
 	}
 
 	@Override
 	public Set<ArtifactRelationship> getIncomingRelationships() {
-		return getArtifacts()
-				.stream()
-				.flatMap(a -> a.getIncomingRelationships().stream())
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+		return Collections.unmodifiableSet(
+			(Set<ArtifactRelationship>) getArtifacts()
+			.stream()
+			.flatMap(a -> a.getIncomingRelationships().stream())
+			.collect(Collectors.toCollection(LinkedHashSet::new)));
 	}
 
 }
