@@ -4,8 +4,10 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-public final class ArtifactContainer implements HasArtifacts, Named {
+public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships {
+	
 	private final ArtifactContainerDescription description;
 	private Application application;
 
@@ -61,6 +63,22 @@ public final class ArtifactContainer implements HasArtifacts, Named {
 			return false;
 		final ArtifactContainer other = (ArtifactContainer) obj;
 		return Objects.equals(description, other.description);
+	}
+
+	@Override
+	public Set<ArtifactRelationship> getOutgoingRelationships() {
+		return getArtifacts()
+				.stream()
+				.flatMap(a -> a.getOutgoingRelationships().stream())
+				.collect(Collectors.toCollection(LinkedHashSet::new));
+	}
+
+	@Override
+	public Set<ArtifactRelationship> getIncomingRelationships() {
+		return getArtifacts()
+				.stream()
+				.flatMap(a -> a.getIncomingRelationships().stream())
+				.collect(Collectors.toCollection(LinkedHashSet::new));
 	}
 
 }

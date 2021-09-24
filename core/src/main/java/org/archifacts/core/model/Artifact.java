@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public abstract class Artifact implements Named {
+public abstract class Artifact implements Named, HasIncomingRelationships, HasOutgoingRelationships {
 
 	private final JavaClass javaClass;
 
@@ -64,10 +64,12 @@ public abstract class Artifact implements Named {
 		return name;
 	}
 
+	@Override
 	public Set<ArtifactRelationship> getIncomingRelationships() {
 		return Collections.unmodifiableSet(incomingRelationships);
 	}
 
+	@Override
 	public Set<ArtifactRelationship> getOutgoingRelationships() {
 		return Collections.unmodifiableSet(outgoingRelationships);
 	}
