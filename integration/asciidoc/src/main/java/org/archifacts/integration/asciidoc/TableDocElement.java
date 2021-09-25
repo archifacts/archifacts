@@ -6,9 +6,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 /**
- * A simple {@link AsciiDocElement} allowing to render a multi-column table based on given elements.
- * The table does not make a defensive copy of the elements so changes in the underlying {@link Iterable} 
- * will also reflect in the table.
+ * A simple {@link AsciiDocElement} allowing to render a multi-column table based on given elements. The table does not make a defensive copy of the elements so changes in the underlying
+ * {@link Iterable} will also reflect in the table.
  * 
  * @param <T> The generic type of the elements within the table.
  */
@@ -16,19 +15,19 @@ public final class TableDocElement<T> implements AsciiDocElement {
 
 	private final List<TableDocElementColumn<T>> columns;
 	private final Iterable<T> elements;
-	private final String title; 
-	
+	private final String title;
+
 	private TableDocElement(final TableDocElementBuilder<T> builder) {
 		// Make a defensive copy of the columns to avoid changes by using the builder a second time.
 		columns = new ArrayList<>(builder.columns);
 		elements = builder.elements;
 		title = builder.title;
 	}
-	
+
 	/**
 	 * Creates a new builder for a table based on the given elements.
 	 * 
-	 * @param <T> The generic type of the elements within the table.
+	 * @param <T>      The generic type of the elements within the table.
 	 * 
 	 * @param elements The elements within the table. Must not be <code>null</code>.
 	 * 
@@ -38,20 +37,20 @@ public final class TableDocElement<T> implements AsciiDocElement {
 	 */
 	public static <T> TableDocElementBuilder<T> forElements(final Iterable<T> elements) {
 		Objects.requireNonNull(elements, "The elements must not be null.");
-		
+
 		return new TableDocElementBuilder<>(elements);
 	}
-	
+
 	@Override
 	public String render() {
 		final StringBuilder stringBuilder = new StringBuilder();
-		
+
 		renderTitle(stringBuilder);
 		renderStartEndTag(stringBuilder);
 		renderHeader(stringBuilder);
 		renderElements(stringBuilder);
 		renderStartEndTag(stringBuilder);
-		
+
 		return stringBuilder.toString();
 	}
 
@@ -72,14 +71,13 @@ public final class TableDocElement<T> implements AsciiDocElement {
 				stringBuilder.append(column.title);
 			}
 		}
-		
+
 		stringBuilder.append('\n');
 	}
-	
 
 	private void renderElements(final StringBuilder stringBuilder) {
 		stringBuilder.append('\n');
-		
+
 		for (final T element : elements) {
 			for (final TableDocElementColumn<T> column : columns) {
 				final String label = column.labelExtractor.apply(element);
@@ -87,7 +85,7 @@ public final class TableDocElement<T> implements AsciiDocElement {
 			}
 			stringBuilder.append('\n');
 		}
-		
+
 		stringBuilder.append('\n');
 	}
 
@@ -100,35 +98,35 @@ public final class TableDocElement<T> implements AsciiDocElement {
 	}
 
 	private static final class TableDocElementColumn<T> {
-		
+
 		private final String title;
 		private final Function<T, String> labelExtractor;
- 
+
 		private TableDocElementColumn(final String title, final Function<T, String> labelExtractor) {
 			this.title = title;
 			this.labelExtractor = labelExtractor;
 		}
-		
+
 	}
-	
+
 	public static class TableDocElementBuilder<T> {
-		
+
 		private final List<TableDocElementColumn<T>> columns = new ArrayList<>();
 		private final Iterable<T> elements;
 		private String title;
-		
+
 		private TableDocElementBuilder(final Iterable<T> elements) {
 			this.elements = elements;
 		}
-		
+
 		public TableDocElement<T> build() {
 			return new TableDocElement<>(this);
 		}
-		
+
 		/**
 		 * Add another column to this builder.
 		 * 
-		 * @param columnTitle The title of the column.
+		 * @param columnTitle    The title of the column.
 		 * @param labelExtractor The function which is applied on the elements to extract the labels. Must not be <code>null</code>.
 		 * 
 		 * @return The builder instance.
@@ -137,11 +135,11 @@ public final class TableDocElement<T> implements AsciiDocElement {
 		 */
 		public TableDocElementBuilder<T> column(final String columnTitle, final Function<T, String> labelExtractor) {
 			Objects.requireNonNull(labelExtractor, "The label extractor must not be null.");
-			
+
 			columns.add(new TableDocElementColumn<>(columnTitle, labelExtractor));
 			return this;
 		}
-		
+
 		/**
 		 * Add another column without label to this builder.
 		 * 
@@ -154,7 +152,7 @@ public final class TableDocElement<T> implements AsciiDocElement {
 		public TableDocElementBuilder<T> column(final Function<T, String> labelExtractor) {
 			return column(null, labelExtractor);
 		}
-		
+
 		/**
 		 * Sets the optional title of the table.
 		 * 
@@ -166,7 +164,7 @@ public final class TableDocElement<T> implements AsciiDocElement {
 			this.title = title;
 			return this;
 		}
-		
+
 	}
-	
+
 }

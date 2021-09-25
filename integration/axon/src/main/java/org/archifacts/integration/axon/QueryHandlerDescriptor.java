@@ -8,12 +8,12 @@ import org.axonframework.queryhandling.QueryHandler;
 final class QueryHandlerDescriptor extends AbstractHandlerDescriptor {
 
 	private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("handles");
-	
+
 	@Override
 	public ArtifactRelationshipRole role() {
 		return ROLE;
 	}
-		
+
 	@Override
 	protected Class<? extends Annotation> getAnnotationClass() {
 		return QueryHandler.class;

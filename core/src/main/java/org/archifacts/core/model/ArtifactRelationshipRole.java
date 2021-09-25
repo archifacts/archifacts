@@ -1,10 +1,8 @@
 package org.archifacts.core.model;
 
 /**
- * The role of a relationship. Two instances are considered equal if and only if
- * they are the same instance. Two newly created types with the same names are not
- * considered equal. This is a necessary limitation to avoid ambiguity when
- * querying for elements.
+ * The role of a relationship. Two instances are considered equal if and only if they are the same instance. Two newly created types with the same names are not considered equal. This is a necessary
+ * limitation to avoid ambiguity when querying for elements.
  */
 public final class ArtifactRelationshipRole {
 

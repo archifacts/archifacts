@@ -17,36 +17,36 @@ public class MyAggregateRoot {
 
 	@AggregateIdentifier
 	private MyAggregateRootId id;
-	
+
 	@AggregateMember
 	private MyAggregateMember1 myAggregateMember1;
-	
+
 	@AggregateMember
 	private Map<String, MyAggregateMember2> myAggregateMember2;
-	
+
 	@AggregateMember
 	private Set<MyAggregateMember3> myAggregateMember3;
-	
+
 	@AggregateMember
-	@SuppressWarnings( "rawtypes" )
+	@SuppressWarnings("rawtypes")
 	private Map untypedAggregateMemberMap;
-	
+
 	@AggregateMember
-	@SuppressWarnings( "rawtypes" )
+	@SuppressWarnings("rawtypes")
 	private Set untypedAggregateMemberCollection;
-	
+
 	@CommandHandler
 	public MyAggregateRoot(final MyCommand1 command) {
 		apply(new MyEvent1(command.getId()));
 	}
-	
+
 	@EventSourcingHandler
 	public void handle(final MyEvent1 event) {
 		id = event.getId();
 	}
-	
+
 	@CommandHandler
 	public void handle(final CommandMessage<MyCommand2> command) {
 	}
-	
+
 }

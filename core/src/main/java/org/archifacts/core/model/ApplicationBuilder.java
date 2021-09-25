@@ -17,11 +17,9 @@ import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
 
 /**
- * Offers methods to register descriptors and is capable of building the
- * {@link Application} by applying those descriptors.
+ * Offers methods to register descriptors and is capable of building the {@link Application} by applying those descriptors.
  *
- * An instance of {@link ApplicationBuilder} can be obtained by calling
- * {@link Application#builder()}.
+ * An instance of {@link ApplicationBuilder} can be obtained by calling {@link Application#builder()}.
  *
  * Note: Adding descriptors is not thread-safe!
  *
@@ -89,9 +87,7 @@ public final class ApplicationBuilder {
 	/**
 	 * Build the {@link Application} by applying the descriptors.
 	 *
-	 * @param javaClasses The application's scope. All the classes which are part of
-	 *                    {@link JavaClasses} are classes which are contained in the
-	 *                    application. Cannot be null.
+	 * @param javaClasses The application's scope. All the classes which are part of {@link JavaClasses} are classes which are contained in the application. Cannot be null.
 	 * @return the {@link Application}
 	 */
 	public Application buildApplication(final JavaClasses javaClasses) {
@@ -144,7 +140,6 @@ public final class ApplicationBuilder {
 
 		return application;
 	}
-
 
 	private void addArtifact(final Application application, final Artifact artifact) {
 		containerDescriptors

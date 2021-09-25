@@ -37,7 +37,7 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 	private Stream<JavaMember> getAggregateMembersOrFields(final JavaClass sourceClass) {
 		return sourceClass.getMembers()
 				.stream()
-				.filter(m -> m.isMetaAnnotatedWith(AggregateMember.class) && isNotUntypedCollectionOrMap(getType(m))); 
+				.filter(m -> m.isMetaAnnotatedWith(AggregateMember.class) && isNotUntypedCollectionOrMap(getType(m)));
 	}
 
 	@Override
@@ -49,7 +49,7 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 
 	private JavaType getType(final JavaMember javaMember) {
 		if (javaMember instanceof JavaField) {
-			return ((JavaField) javaMember).getType( );
+			return ((JavaField) javaMember).getType();
 		} else if (javaMember instanceof JavaMethod) {
 			return ((JavaMethod) javaMember).getReturnType();
 		} else {
@@ -59,7 +59,7 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 
 	private JavaClass getJavaClass(final JavaType type) {
 		final JavaClass erasure = type.toErasure();
-		
+
 		if (type instanceof JavaParameterizedType && erasure.isAssignableTo(Collection.class)) {
 			final JavaType collectionType = ((JavaParameterizedType) type).getActualTypeArguments().get(0);
 			return collectionType.toErasure();
@@ -68,7 +68,7 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 			final JavaType valueType = ((JavaParameterizedType) type).getActualTypeArguments().get(1);
 			return valueType.toErasure();
 		}
-		
+
 		return erasure;
 	}
 
@@ -77,5 +77,5 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 		final boolean isUntypedMap = type.toErasure().isAssignableTo(Map.class) && !(type instanceof JavaParameterizedType);
 		return !(isUntypedCollection || isUntypedMap);
 	}
-	
+
 }

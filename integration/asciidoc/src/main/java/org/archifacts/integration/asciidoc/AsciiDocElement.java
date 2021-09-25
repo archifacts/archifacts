@@ -1,8 +1,7 @@
 package org.archifacts.integration.asciidoc;
 
 /**
- * Implementations of this interface are considered renderable AsciiDoc elements. The implementations  
- * are responsible themselves for providing valid AsciiDoc.
+ * Implementations of this interface are considered renderable AsciiDoc elements. The implementations are responsible themselves for providing valid AsciiDoc.
  */
 @FunctionalInterface
 public interface AsciiDocElement {
@@ -13,5 +12,5 @@ public interface AsciiDocElement {
 	 * @return The AsciiDoc String representing the element. Should not be <code>null</code>.
 	 */
 	String render();
-	
+
 }
