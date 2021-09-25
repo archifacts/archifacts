@@ -1,10 +1,11 @@
 package org.archifacts.core.model;
 
+import static org.archifacts.core.model.ArchifactsCollectors.toUnmodifiableLinkedSet;
+
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships {
 
@@ -70,7 +71,7 @@ public final class ArtifactContainer implements HasArtifacts, Named, HasIncoming
 		return getArtifacts()
 				.stream()
 				.flatMap(a -> a.getOutgoingRelationships().stream())
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+				.collect(toUnmodifiableLinkedSet());
 	}
 
 	@Override
@@ -78,7 +79,7 @@ public final class ArtifactContainer implements HasArtifacts, Named, HasIncoming
 		return getArtifacts()
 				.stream()
 				.flatMap(a -> a.getIncomingRelationships().stream())
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+				.collect(toUnmodifiableLinkedSet());
 	}
 
 }

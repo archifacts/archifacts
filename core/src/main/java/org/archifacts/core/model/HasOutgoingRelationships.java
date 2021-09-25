@@ -1,8 +1,8 @@
 package org.archifacts.core.model;
 
-import java.util.LinkedHashSet;
+import static org.archifacts.core.model.ArchifactsCollectors.toUnmodifiableLinkedSet;
+
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public interface HasOutgoingRelationships {
 
@@ -12,6 +12,6 @@ public interface HasOutgoingRelationships {
 		return getOutgoingRelationships()
 				.stream()
 				.filter(r -> r.getRole().equals(role))
-				.collect(Collectors.toCollection(LinkedHashSet::new));
+				.collect(toUnmodifiableLinkedSet());
 	}
 }

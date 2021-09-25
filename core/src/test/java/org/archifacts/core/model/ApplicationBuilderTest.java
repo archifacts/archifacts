@@ -2,11 +2,14 @@ package org.archifacts.core.model;
 
 import static org.archifacts.core.model.ApplicationBuilderTest.Classes.createAnonymousClass;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.tuple;
+import static org.junit.jupiter.api.Named.named;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -40,6 +43,10 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import com.tngtech.archunit.core.domain.Dependency;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -48,7 +55,6 @@ import com.tngtech.archunit.core.domain.JavaField;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
-
 class ApplicationBuilderTest {
 
 	private static JavaClasses javaClasses;
@@ -330,6 +336,41 @@ class ApplicationBuilderTest {
 	}
 
 	@Nested
+	class ApplicationTests {
+
+		@Nested
+		@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+		class UnmodifiableCollections {
+
+			Arguments argument(final String name, final Function<Application, Set<?>> method) {
+				return Arguments.of(named(name, method));
+			}
+
+			Stream<Arguments> arguments() {
+				return Stream.of(
+						argument("getArtifacts", Application::getArtifacts),
+						argument("getBuildingBlocks", Application::getBuildingBlocks),
+						argument("getBuildingBlocksOfType", app -> app.getBuildingBlocksOfType(BuildingBlockType.of("TestType"))),
+						argument("getContainers", Application::getContainers),
+						argument("getContainersOfType", app -> app.getContainersOfType(ArtifactContainerType.of("TestType"))),
+						argument("getMiscArtifacts", Application::getMiscArtifacts),
+						argument("getExternalArtifacts", Application::getExternalArtifacts),
+						argument("getRelationships", Application::getRelationships),
+						argument("getRelationshipsOfRole", app -> app.getRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))));
+			}
+
+			@ParameterizedTest(name = "{0}")
+			@MethodSource("arguments")
+			void assert_that_collections_are_unmodifiable(final Function<Application, Set<?>> setProvider) {
+				final Application application = Application
+						.builder()
+						.buildApplication(javaClasses);
+				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(application).add(null));
+			}
+		}
+	}
+
+	@Nested
 	class Artifacts {
 
 		@Test
@@ -441,15 +482,42 @@ class ApplicationBuilderTest {
 					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
 					.buildApplication(javaClasses);
 
-			assertThat(application.getArtifactsOfType(BuildingBlockType1Descriptor.TYPE))
+			assertThat(application.getBuildingBlocksOfType(BuildingBlockType1Descriptor.TYPE))
 					.extracting(Artifact::getName)
 					.containsExactlyInAnyOrder(
 							ContainerType1_BuildingBlockType1.class.getSimpleName(),
 							ContainerType2_BuildingBlockType1.class.getSimpleName(),
 							NoContainer_BuildingBlockType1.class.getSimpleName());
-			assertThat(application.getArtifactsOfType(BuildingBlockType.of(BuildingBlockType1Descriptor.TYPE.getName()))).isEmpty();
+			assertThat(application.getBuildingBlocksOfType(BuildingBlockType.of(BuildingBlockType1Descriptor.TYPE.getName()))).isEmpty();
 		}
 
+		@Nested
+		@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+		class UnmodifiableCollections {
+
+			Arguments argument(final String name, final Function<Artifact, Set<?>> method) {
+				return Arguments.of(named(name, method));
+			}
+
+			Stream<Arguments> arguments() {
+				return Stream.of(
+						argument("getIncomingRelationships", Artifact::getIncomingRelationships),
+						argument("getIncomingRelationshipsOfRole", artifact -> artifact.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))),
+						argument("getOutgoingRelationships", Artifact::getOutgoingRelationships),
+						argument("getOutgoingRelationshipsOfRole", artifact -> artifact.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))));
+			}
+
+			@ParameterizedTest(name = "{0}")
+			@MethodSource("arguments")
+			void assert_that_collections_are_unmodifiable(final Function<Artifact, Set<?>> setProvider) {
+				final Application application = Application
+						.builder()
+						.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+						.buildApplication(javaClasses);
+				final Artifact artifact = application.getArtifacts().iterator().next();
+				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(artifact).add(null));
+			}
+		}
 	}
 
 	@Nested
@@ -569,6 +637,38 @@ class ApplicationBuilderTest {
 			assertThat(application.getContainersOfType(ArtifactContainerType.of(ContainerType1Descriptor.TYPE.getName()))).isEmpty();
 		}
 
+		@Nested
+		@TestInstance(TestInstance.Lifecycle.PER_CLASS)
+		class UnmodifiableCollections {
+
+			Arguments argument(final String name, final Function<ArtifactContainer, Set<?>> method) {
+				return Arguments.of(named(name, method));
+			}
+
+			Stream<Arguments> arguments() {
+				return Stream.of(
+						argument("getArtifacts", ArtifactContainer::getArtifacts),
+						argument("getBuildingBlocks", ArtifactContainer::getBuildingBlocks),
+						argument("getBuildingBlocksOfType", container -> container.getBuildingBlocksOfType(BuildingBlockType.of("TestType"))),
+						argument("getMiscArtifacts", ArtifactContainer::getMiscArtifacts),
+						argument("getExternalArtifacts", ArtifactContainer::getExternalArtifacts),
+						argument("getIncomingRelationships", ArtifactContainer::getIncomingRelationships),
+						argument("getIncomingRelationshipsOfRole", container -> container.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))),
+						argument("getOutgoingRelationships", ArtifactContainer::getOutgoingRelationships),
+						argument("getOutgoingRelationshipsOfRole", container -> container.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))));
+			}
+
+			@ParameterizedTest(name = "{0}")
+			@MethodSource("arguments")
+			void assert_that_collections_are_unmodifiable(final Function<ArtifactContainer, Set<?>> setProvider) {
+				final Application application = Application
+						.builder()
+						.addContainerDescriptor(new ContainerType1Descriptor())
+						.buildApplication(javaClasses);
+				final ArtifactContainer container = application.getContainers().iterator().next();
+				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(container).add(null));
+			}
+		}
 	}
 
 	@Nested
@@ -696,7 +796,7 @@ class ApplicationBuilderTest {
 					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
 
-			final BuildingBlock buildingBlock = application.getArtifactsOfType(blockDescriptor.type()).iterator().next();
+			final BuildingBlock buildingBlock = application.getBuildingBlocksOfType(blockDescriptor.type()).iterator().next();
 			assertThat(buildingBlock.getOutgoingRelationshipsOfRole(relationshipDescriptor.role()))
 					.extracting(r -> r.getRole())
 					.containsExactly(relationshipDescriptor.role());
@@ -715,7 +815,7 @@ class ApplicationBuilderTest {
 					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
 
-			final BuildingBlock buildingBlock = application.getArtifactsOfType(blockDescriptor.type()).iterator().next();
+			final BuildingBlock buildingBlock = application.getBuildingBlocksOfType(blockDescriptor.type()).iterator().next();
 			assertThat(buildingBlock.getIncomingRelationshipsOfRole(relationshipDescriptor.role()))
 					.extracting(r -> r.getRole())
 					.containsExactly(relationshipDescriptor.role());

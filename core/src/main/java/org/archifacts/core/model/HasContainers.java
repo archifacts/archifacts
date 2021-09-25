@@ -1,8 +1,7 @@
 package org.archifacts.core.model;
 
-import static java.util.stream.Collectors.toCollection;
+import static org.archifacts.core.model.ArchifactsCollectors.toUnmodifiableLinkedSet;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 
 public interface HasContainers {
@@ -13,7 +12,7 @@ public interface HasContainers {
 		return getContainers()
 				.stream()
 				.filter(container -> container.getType().equals(artifactContainerType))
-				.collect(toCollection(LinkedHashSet::new));
+				.collect(toUnmodifiableLinkedSet());
 	}
 
 }

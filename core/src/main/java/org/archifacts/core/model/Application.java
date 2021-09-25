@@ -1,5 +1,6 @@
 package org.archifacts.core.model;
 
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -50,7 +51,7 @@ public final class Application implements HasContainers, HasArtifacts, HasRelati
 
 	@Override
 	public Set<ArtifactRelationship> getRelationships() {
-		return Set.copyOf(relationships);
+		return Collections.unmodifiableSet(relationships);
 	}
 
 	void addContainer(final ArtifactContainer container) {

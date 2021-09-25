@@ -33,7 +33,7 @@ final class SpringDescriptorTest {
 				.addBuildingBlockDescriptor(buildingBlockDescriptor)
 				.buildApplication(DOMAIN);
 
-		assertThat(application.getArtifactsOfType(buildingBlockDescriptor.type()))
+		assertThat(application.getBuildingBlocksOfType(buildingBlockDescriptor.type()))
 				.map(b -> b.getJavaClass())
 				.allMatch(j -> j.isEquivalentTo(matchingClass));
 	}
