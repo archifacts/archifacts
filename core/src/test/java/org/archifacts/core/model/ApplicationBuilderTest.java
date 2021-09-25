@@ -2,6 +2,7 @@ package org.archifacts.core.model;
 
 import static org.archifacts.core.model.ApplicationBuilderTest.Classes.createAnonymousClass;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Named.named;
@@ -11,12 +12,6 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.tngtech.archunit.core.domain.Dependency;
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaField;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
@@ -43,7 +38,6 @@ import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.MiscArtifact
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.NonMatchingBuildingBlockDescriptor;
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondBuildingBlockType1Descriptor;
 import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondContainerType1Descriptor;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -53,6 +47,12 @@ import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+
+import com.tngtech.archunit.core.domain.Dependency;
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.domain.JavaField;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
 class ApplicationBuilderTest {
@@ -342,7 +342,7 @@ class ApplicationBuilderTest {
 		@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 		class UnmodifiableCollections {
 
-			Arguments argument(String name, Function<Application, Set<?>> method) {
+			Arguments argument(final String name, final Function<Application, Set<?>> method) {
 				return Arguments.of(named(name, method));
 			}
 
@@ -361,11 +361,11 @@ class ApplicationBuilderTest {
 
 			@ParameterizedTest(name = "{0}")
 			@MethodSource("arguments")
-			void assert_that_collections_are_unmodifiable(Function<Application, Set<?>> setProvider) {
+			void assert_that_collections_are_unmodifiable(final Function<Application, Set<?>> setProvider) {
 				final Application application = Application
 						.builder()
 						.buildApplication(javaClasses);
-				Assertions.assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(application).add(null));
+				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(application).add(null));
 			}
 		}
 	}
@@ -495,7 +495,7 @@ class ApplicationBuilderTest {
 		@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 		class UnmodifiableCollections {
 
-			Arguments argument(String name, Function<Artifact, Set<?>> method) {
+			Arguments argument(final String name, final Function<Artifact, Set<?>> method) {
 				return Arguments.of(named(name, method));
 			}
 
@@ -509,13 +509,13 @@ class ApplicationBuilderTest {
 
 			@ParameterizedTest(name = "{0}")
 			@MethodSource("arguments")
-			void assert_that_collections_are_unmodifiable(Function<Artifact, Set<?>> setProvider) {
+			void assert_that_collections_are_unmodifiable(final Function<Artifact, Set<?>> setProvider) {
 				final Application application = Application
 						.builder()
 						.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
 						.buildApplication(javaClasses);
 				final Artifact artifact = application.getArtifacts().iterator().next();
-				Assertions.assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(artifact).add(null));
+				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(artifact).add(null));
 			}
 		}
 	}
@@ -641,7 +641,7 @@ class ApplicationBuilderTest {
 		@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 		class UnmodifiableCollections {
 
-			Arguments argument(String name, Function<ArtifactContainer, Set<?>> method) {
+			Arguments argument(final String name, final Function<ArtifactContainer, Set<?>> method) {
 				return Arguments.of(named(name, method));
 			}
 
@@ -660,13 +660,13 @@ class ApplicationBuilderTest {
 
 			@ParameterizedTest(name = "{0}")
 			@MethodSource("arguments")
-			void assert_that_collections_are_unmodifiable(Function<ArtifactContainer, Set<?>> setProvider) {
+			void assert_that_collections_are_unmodifiable(final Function<ArtifactContainer, Set<?>> setProvider) {
 				final Application application = Application
 						.builder()
 						.addContainerDescriptor(new ContainerType1Descriptor())
 						.buildApplication(javaClasses);
 				final ArtifactContainer container = application.getContainers().iterator().next();
-				Assertions.assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(container).add(null));
+				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(container).add(null));
 			}
 		}
 	}
