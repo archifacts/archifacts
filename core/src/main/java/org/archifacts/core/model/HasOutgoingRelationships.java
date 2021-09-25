@@ -11,9 +11,9 @@ public interface HasOutgoingRelationships {
 
 	default Set<ArtifactRelationship> getOutgoingRelationshipsOfRole(final ArtifactRelationshipRole role) {
 		return Collections.unmodifiableSet(
-				(Set<ArtifactRelationship>)getOutgoingRelationships()
-				.stream()
-				.filter(r -> r.getRole().equals(role))
-				.collect(Collectors.toCollection(LinkedHashSet::new)));
+				(Set<ArtifactRelationship>) getOutgoingRelationships()
+						.stream()
+						.filter(r -> r.getRole().equals(role))
+						.collect(Collectors.toCollection(LinkedHashSet::new)));
 	}
 }

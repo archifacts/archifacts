@@ -12,7 +12,7 @@ final class BuildingBlockDescriptorForAssignableTo implements BuildingBlockDescr
 	private final BuildingBlockType buildingBlockType;
 	private final Class<?>[] types;
 
-	BuildingBlockDescriptorForAssignableTo(final BuildingBlockType buildingBlockType, final Class<?> ...types) {
+	BuildingBlockDescriptorForAssignableTo(final BuildingBlockType buildingBlockType, final Class<?>... types) {
 		this.buildingBlockType = Objects.requireNonNull(buildingBlockType, "The building block type must not be null.");
 		this.types = Objects.requireNonNull(types, "The types must not be null.");
 	}

@@ -23,32 +23,32 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 final class C4ModelTransformerTest {
 
 	static final class Classes1 {
-		
+
 		static final class UniqueClass {
 		}
-		
+
 		static final class AmbiguousClass {
 		}
-		
+
 		static Object createAnonymousClass() {
 			return new Object() {
 			};
 		}
-		
+
 	}
-	
+
 	static final class Classes2 {
-		
+
 		static final class AmbiguousClass {
 		}
-		
+
 		static Object createAnonymousClass() {
 			return new Object() {
 			};
 		}
-		
+
 	}
-	
+
 	static final class ClassesSeparatingArtifactContainerDescriptor implements ArtifactContainerDescriptor {
 
 		@Override
@@ -64,69 +64,71 @@ final class C4ModelTransformerTest {
 				return Optional.of("Classes-2");
 			}
 		}
-		
+
 	}
-	
+
 	@Test
 	void assert_that_container_can_contain_classes_with_ambigous_names() {
 		final Application application = Application
 				.builder()
 				.buildApplication(importClasses(Classes1.AmbiguousClass.class, Classes2.AmbiguousClass.class));
-		
-		final C4ModelTransformer transformer = createTransformer( application);
+
+		final C4ModelTransformer transformer = createTransformer(application);
 		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(Classes1.AmbiguousClass.class.getName(), Classes2.AmbiguousClass.class.getName());
 	}
-	
+
 	@Test
 	void assert_that_different_containers_can_contain_classes_with_ambigous_names() {
 		final Application application = Application
 				.builder()
 				.addContainerDescriptor(new ClassesSeparatingArtifactContainerDescriptor())
 				.buildApplication(importClasses(Classes1.AmbiguousClass.class, Classes2.AmbiguousClass.class));
-		
-		final C4ModelTransformer transformer = createTransformer( application);
-		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(Classes1.AmbiguousClass.class.getSimpleName(), Classes2.AmbiguousClass.class.getSimpleName());
+
+		final C4ModelTransformer transformer = createTransformer(application);
+		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(Classes1.AmbiguousClass.class.getSimpleName(),
+				Classes2.AmbiguousClass.class.getSimpleName());
 	}
-	
+
 	@Test
 	void assert_that_container_can_contain_classes_with_unique_names() {
 		final Application application = Application
 				.builder()
 				.buildApplication(importClasses(Classes1.UniqueClass.class));
-		
-		final C4ModelTransformer transformer = createTransformer( application);
+
+		final C4ModelTransformer transformer = createTransformer(application);
 		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(Classes1.UniqueClass.class.getSimpleName());
 	}
-	
+
 	@Test
 	void assert_that_transformer_can_handle_anonymous_classes() {
 		final Application application = Application
 				.builder()
 				.buildApplication(importClasses(Classes1.createAnonymousClass().getClass()));
-		
+
 		final C4ModelTransformer transformer = createTransformer(application);
 		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactly(C4ModelTransformerTest.class.getSimpleName() + "$" + Classes1.class.getSimpleName() + "$1");
 	}
-	
+
 	@Test
 	void assert_that_container_can_contain_anonymous_classes_with_ambigous_names() {
 		final Application application = Application
 				.builder()
 				.buildApplication(importClasses(Classes1.createAnonymousClass().getClass(), Classes2.createAnonymousClass().getClass()));
-		
-		final C4ModelTransformer transformer = createTransformer( application);
-		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(C4ModelTransformerTest.class.getSimpleName() + "$" +  Classes1.class.getSimpleName() + "$1", C4ModelTransformerTest.class.getSimpleName() + "$" + Classes2.class.getSimpleName() + "$1");
+
+		final C4ModelTransformer transformer = createTransformer(application);
+		assertThat(transformer.getComponents(a -> true)).map(Component::getName).containsExactlyInAnyOrder(C4ModelTransformerTest.class.getSimpleName() + "$" + Classes1.class.getSimpleName() + "$1",
+				C4ModelTransformerTest.class.getSimpleName() + "$" + Classes2.class.getSimpleName() + "$1");
 	}
-	
-	private JavaClasses importClasses(final Class<?> ...classes) {
+
+	private JavaClasses importClasses(final Class<?>... classes) {
 		return new ClassFileImporter().importClasses(classes);
 	}
-	
-	private C4ModelTransformer createTransformer( final Application application) {
+
+	private C4ModelTransformer createTransformer(final Application application) {
 		final Workspace workspace = new Workspace("Test", null);
 		final Model model = workspace.getModel();
 		final SoftwareSystem softwareSystem = model.addSoftwareSystem("Test");
 		return new C4ModelTransformer(application, softwareSystem);
 	}
-	
+
 }

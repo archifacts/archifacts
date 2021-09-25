@@ -12,9 +12,7 @@ import org.apache.logging.log4j.Logger;
 import com.tngtech.archunit.core.domain.JavaClass;
 
 /**
- * Represents the whole application which contains {@link ArtifactContainer
- * ArtifactContainers}, {@link Artifact Artifacts} and
- * {@link ArtifactRelationship ArtifactRelationships}.
+ * Represents the whole application which contains {@link ArtifactContainer ArtifactContainers}, {@link Artifact Artifacts} and {@link ArtifactRelationship ArtifactRelationships}.
  *
  * Note: Adding elements is not thread-safe!
  *
@@ -30,8 +28,7 @@ public final class Application implements HasContainers, HasArtifacts, HasRelati
 	private final Set<ArtifactRelationship> relationships = new LinkedHashSet<>();
 
 	/**
-	 * returns an {@link ApplicationBuilder} in order to initialze the
-	 * {@link Application}.
+	 * returns an {@link ApplicationBuilder} in order to initialze the {@link Application}.
 	 *
 	 * @return an {@link ApplicationBuilder}
 	 */

@@ -147,10 +147,10 @@ public class JMoleculesDocumenter {
 		c4ModelTransformer.getNoContainerContainer().ifPresent(componentView::remove);
 		return componentView;
 	}
-	
+
 	private void writeBuildingBlocksTableToFile(final Application application, final Path outputFile) throws IOException {
 		final AsciiDoc asciiDoc = new AsciiDoc();
-		
+
 		final Set<BuildingBlockType> sortedBuildingBlockTypes = application
 				.getBuildingBlocks()
 				.stream()
@@ -172,5 +172,5 @@ public class JMoleculesDocumenter {
 		}
 		System.out.println("Building blocks table written to " + outputFile.toString());
 	}
-	
+
 }

@@ -12,10 +12,10 @@ public interface HasContainers {
 
 	default Set<ArtifactContainer> getContainersOfType(final ArtifactContainerType artifactContainerType) {
 		return Collections.unmodifiableSet(
-			(Set<ArtifactContainer>)getContainers()
-				.stream()
-				.filter(container -> container.getType().equals(artifactContainerType))
-				.collect(toCollection(LinkedHashSet::new)));
+				(Set<ArtifactContainer>) getContainers()
+						.stream()
+						.filter(container -> container.getType().equals(artifactContainerType))
+						.collect(toCollection(LinkedHashSet::new)));
 	}
 
 }

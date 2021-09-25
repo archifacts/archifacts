@@ -7,14 +7,14 @@ import java.util.Objects;
 import org.archifacts.core.model.Application;
 
 public final class ApplicationOverview {
-    
-    private final Application application;
+
+	private final Application application;
 
 	public ApplicationOverview(final Application application) {
 		this.application = application;
 	}
-    
-    /**
+
+	/**
 	 * Writes the current application overview into the given writer. The writer is neither flushed nor closed.
 	 * 
 	 * @param writer The writer. Must not be <code>null</code>.

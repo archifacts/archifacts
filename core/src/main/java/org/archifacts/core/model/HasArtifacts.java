@@ -12,10 +12,10 @@ public interface HasArtifacts {
 
 	default Set<BuildingBlock> getBuildingBlocksOfType(final BuildingBlockType buildingBlockType) {
 		return Collections.unmodifiableSet(
-			(Set<BuildingBlock>)getArtifactsOfType(BuildingBlock.class)
-			.stream()
-			.filter(buildingBlock -> buildingBlock.getType().equals(buildingBlockType))
-			.collect(toCollection(LinkedHashSet::new)));
+				(Set<BuildingBlock>) getArtifactsOfType(BuildingBlock.class)
+						.stream()
+						.filter(buildingBlock -> buildingBlock.getType().equals(buildingBlockType))
+						.collect(toCollection(LinkedHashSet::new)));
 	}
 
 	default Set<BuildingBlock> getBuildingBlocks() {
@@ -32,11 +32,11 @@ public interface HasArtifacts {
 
 	private <T extends Artifact> Set<T> getArtifactsOfType(final Class<T> type) {
 		return Collections.unmodifiableSet(
-			(Set<T>)getArtifacts()
-			.stream()
-			.filter(type::isInstance)
-			.map(type::cast)
-			.collect(toCollection(LinkedHashSet::new)));
+				(Set<T>) getArtifacts()
+						.stream()
+						.filter(type::isInstance)
+						.map(type::cast)
+						.collect(toCollection(LinkedHashSet::new)));
 	}
 
 }

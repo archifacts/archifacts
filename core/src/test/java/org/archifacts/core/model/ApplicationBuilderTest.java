@@ -144,7 +144,7 @@ class ApplicationBuilderTest {
 				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
 			}
 		}
-		
+
 		static final class SecondBuildingBlockType1Descriptor implements BuildingBlockDescriptor {
 
 			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType1-Duplicate");
@@ -335,7 +335,6 @@ class ApplicationBuilderTest {
 		}
 	}
 
-
 	@Nested
 	class ApplicationTests {
 
@@ -349,24 +348,23 @@ class ApplicationBuilderTest {
 
 			Stream<Arguments> arguments() {
 				return Stream.of(
-					argument("getArtifacts", Application::getArtifacts),
-					argument("getBuildingBlocks", Application::getBuildingBlocks),
-					argument("getBuildingBlocksOfType", app -> app.getBuildingBlocksOfType(BuildingBlockType.of("TestType"))),
-					argument("getContainers", Application::getContainers),
-					argument("getContainersOfType", app -> app.getContainersOfType(ArtifactContainerType.of("TestType"))),
-					argument("getMiscArtifacts", Application::getMiscArtifacts),
-					argument("getExternalArtifacts", Application::getExternalArtifacts),
-					argument("getRelationships", Application::getRelationships),
-					argument("getRelationshipsOfRole", app -> app.getRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole")))
-					);
+						argument("getArtifacts", Application::getArtifacts),
+						argument("getBuildingBlocks", Application::getBuildingBlocks),
+						argument("getBuildingBlocksOfType", app -> app.getBuildingBlocksOfType(BuildingBlockType.of("TestType"))),
+						argument("getContainers", Application::getContainers),
+						argument("getContainersOfType", app -> app.getContainersOfType(ArtifactContainerType.of("TestType"))),
+						argument("getMiscArtifacts", Application::getMiscArtifacts),
+						argument("getExternalArtifacts", Application::getExternalArtifacts),
+						argument("getRelationships", Application::getRelationships),
+						argument("getRelationshipsOfRole", app -> app.getRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))));
 			}
 
 			@ParameterizedTest(name = "{0}")
 			@MethodSource("arguments")
 			void assert_that_collections_are_unmodifiable(Function<Application, Set<?>> setProvider) {
 				final Application application = Application
-				.builder()
-				.buildApplication(javaClasses);
+						.builder()
+						.buildApplication(javaClasses);
 				Assertions.assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(application).add(null));
 			}
 		}
@@ -476,20 +474,20 @@ class ApplicationBuilderTest {
 									NoContainer_BuildingBlockType1.class.getSimpleName(),
 									NoContainer_BuildingBlockType1.class.getName()));
 		}
-		
+
 		@Test
 		void assert_that_building_block_types_with_same_names_are_not_considered_equal() {
 			final Application application = Application
 					.builder()
 					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
 					.buildApplication(javaClasses);
-			
+
 			assertThat(application.getBuildingBlocksOfType(BuildingBlockType1Descriptor.TYPE))
 					.extracting(Artifact::getName)
 					.containsExactlyInAnyOrder(
-									ContainerType1_BuildingBlockType1.class.getSimpleName(),
-									ContainerType2_BuildingBlockType1.class.getSimpleName(),
-									NoContainer_BuildingBlockType1.class.getSimpleName());
+							ContainerType1_BuildingBlockType1.class.getSimpleName(),
+							ContainerType2_BuildingBlockType1.class.getSimpleName(),
+							NoContainer_BuildingBlockType1.class.getSimpleName());
 			assertThat(application.getBuildingBlocksOfType(BuildingBlockType.of(BuildingBlockType1Descriptor.TYPE.getName()))).isEmpty();
 		}
 
@@ -503,20 +501,19 @@ class ApplicationBuilderTest {
 
 			Stream<Arguments> arguments() {
 				return Stream.of(
-					argument("getIncomingRelationships", Artifact::getIncomingRelationships),
-					argument("getIncomingRelationshipsOfRole", artifact -> artifact.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))),
-					argument("getOutgoingRelationships", Artifact::getOutgoingRelationships),
-					argument("getOutgoingRelationshipsOfRole", artifact -> artifact.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole")))
-					);
+						argument("getIncomingRelationships", Artifact::getIncomingRelationships),
+						argument("getIncomingRelationshipsOfRole", artifact -> artifact.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))),
+						argument("getOutgoingRelationships", Artifact::getOutgoingRelationships),
+						argument("getOutgoingRelationshipsOfRole", artifact -> artifact.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))));
 			}
 
 			@ParameterizedTest(name = "{0}")
 			@MethodSource("arguments")
 			void assert_that_collections_are_unmodifiable(Function<Artifact, Set<?>> setProvider) {
 				final Application application = Application
-				.builder()
-				.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-				.buildApplication(javaClasses);
+						.builder()
+						.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+						.buildApplication(javaClasses);
 				final Artifact artifact = application.getArtifacts().iterator().next();
 				Assertions.assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(artifact).add(null));
 			}
@@ -612,7 +609,7 @@ class ApplicationBuilderTest {
 
 			assertThat(application.getContainers()).extracting(ArtifactContainer::getName, ArtifactContainer::getType)
 					.containsExactlyInAnyOrder(tuple("Container1", ContainerType1Descriptor.TYPE),
-							tuple("Container2",  ContainerType2Descriptor.TYPE));
+							tuple("Container2", ContainerType2Descriptor.TYPE));
 		}
 
 		@Test
@@ -626,14 +623,14 @@ class ApplicationBuilderTest {
 			assertThat(application.getContainers()).extracting(ArtifactContainer::getName, ArtifactContainer::getType)
 					.containsExactlyInAnyOrder(tuple("Container1", ContainerType1Descriptor.TYPE));
 		}
-		
+
 		@Test
 		void assert_that_container_types_with_same_names_are_not_considered_equal() {
 			final Application application = Application
 					.builder()
 					.addContainerDescriptor(new ContainerType1Descriptor())
 					.buildApplication(javaClasses);
-			
+
 			assertThat(application.getContainersOfType(ContainerType1Descriptor.TYPE))
 					.extracting(ArtifactContainer::getName)
 					.containsExactlyInAnyOrder("Container1");
@@ -650,25 +647,24 @@ class ApplicationBuilderTest {
 
 			Stream<Arguments> arguments() {
 				return Stream.of(
-					argument("getArtifacts", ArtifactContainer::getArtifacts),
-					argument("getBuildingBlocks", ArtifactContainer::getBuildingBlocks),
-					argument("getBuildingBlocksOfType", container -> container.getBuildingBlocksOfType(BuildingBlockType.of("TestType"))),
-					argument("getMiscArtifacts", ArtifactContainer::getMiscArtifacts),
-					argument("getExternalArtifacts", ArtifactContainer::getExternalArtifacts),
-					argument("getIncomingRelationships", ArtifactContainer::getIncomingRelationships),
-					argument("getIncomingRelationshipsOfRole", container -> container.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))),
-					argument("getOutgoingRelationships", ArtifactContainer::getOutgoingRelationships),
-					argument("getOutgoingRelationshipsOfRole", container -> container.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole")))
-					);
+						argument("getArtifacts", ArtifactContainer::getArtifacts),
+						argument("getBuildingBlocks", ArtifactContainer::getBuildingBlocks),
+						argument("getBuildingBlocksOfType", container -> container.getBuildingBlocksOfType(BuildingBlockType.of("TestType"))),
+						argument("getMiscArtifacts", ArtifactContainer::getMiscArtifacts),
+						argument("getExternalArtifacts", ArtifactContainer::getExternalArtifacts),
+						argument("getIncomingRelationships", ArtifactContainer::getIncomingRelationships),
+						argument("getIncomingRelationshipsOfRole", container -> container.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))),
+						argument("getOutgoingRelationships", ArtifactContainer::getOutgoingRelationships),
+						argument("getOutgoingRelationshipsOfRole", container -> container.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("TestRole"))));
 			}
 
 			@ParameterizedTest(name = "{0}")
 			@MethodSource("arguments")
 			void assert_that_collections_are_unmodifiable(Function<ArtifactContainer, Set<?>> setProvider) {
 				final Application application = Application
-				.builder()
-				.addContainerDescriptor(new ContainerType1Descriptor())
-				.buildApplication(javaClasses);
+						.builder()
+						.addContainerDescriptor(new ContainerType1Descriptor())
+						.buildApplication(javaClasses);
 				final ArtifactContainer container = application.getContainers().iterator().next();
 				Assertions.assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(container).add(null));
 			}
@@ -772,14 +768,14 @@ class ApplicationBuilderTest {
 			assertThat(application.getRelationships()).containsExactlyInAnyOrderElementsOf(allRelationships);
 
 		}
-		
+
 		@Test
 		void assert_that_roles_with_same_names_are_not_considered_equal() {
 			final Application application = Application
 					.builder()
 					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
-			
+
 			assertThat(application.getRelationshipsOfRole(ExternalArtifactRelationshipDescriptor.ROLE))
 					.extracting(a -> a.getSource().getName())
 					.containsExactlyInAnyOrder(
@@ -788,18 +784,18 @@ class ApplicationBuilderTest {
 							"ContainerType1_BuildingBlockType1");
 			assertThat(application.getRelationshipsOfRole(ArtifactRelationshipRole.of(ExternalArtifactRelationshipDescriptor.ROLE.getName()))).isEmpty();
 		}
-		
+
 		@Test
 		void assert_that_outgoing_relationships_of_building_blocks_can_be_queried() {
 			final BuildingBlockDescriptor blockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("test"), ContainerType1_BuildingBlockType1.class);
 			final ExternalArtifactRelationshipDescriptor relationshipDescriptor = new ExternalArtifactRelationshipDescriptor();
-			
+
 			final Application application = Application
 					.builder()
 					.addBuildingBlockDescriptor(blockDescriptor)
 					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
-			
+
 			final BuildingBlock buildingBlock = application.getBuildingBlocksOfType(blockDescriptor.type()).iterator().next();
 			assertThat(buildingBlock.getOutgoingRelationshipsOfRole(relationshipDescriptor.role()))
 					.extracting(r -> r.getRole())
@@ -807,18 +803,18 @@ class ApplicationBuilderTest {
 			assertThat(buildingBlock.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
 					.isEmpty();
 		}
-		
+
 		@Test
 		void assert_that_incoming_relationships_of_building_blocks_can_be_queried() {
 			final BuildingBlockDescriptor blockDescriptor = BuildingBlockDescriptor.forAssignableTo(BuildingBlockType.of("test"), NoContainer_MiscArtifact.class);
 			final MiscArtifactRelationshipDescriptor relationshipDescriptor = new MiscArtifactRelationshipDescriptor();
-			
+
 			final Application application = Application
 					.builder()
 					.addBuildingBlockDescriptor(blockDescriptor)
 					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
-			
+
 			final BuildingBlock buildingBlock = application.getBuildingBlocksOfType(blockDescriptor.type()).iterator().next();
 			assertThat(buildingBlock.getIncomingRelationshipsOfRole(relationshipDescriptor.role()))
 					.extracting(r -> r.getRole())
@@ -826,18 +822,18 @@ class ApplicationBuilderTest {
 			assertThat(buildingBlock.getIncomingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
 					.isEmpty();
 		}
-		
+
 		@Test
 		void assert_that_outgoing_relationships_of_artifact_containers_can_be_queried() {
 			final ContainerType1Descriptor containerDescriptor = new ContainerType1Descriptor();
 			final ExternalArtifactRelationshipDescriptor relationshipDescriptor = new ExternalArtifactRelationshipDescriptor();
-			
+
 			final Application application = Application
 					.builder()
 					.addContainerDescriptor(containerDescriptor)
 					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
-			 
+
 			final ArtifactContainer artifactContainera = application.getContainersOfType(containerDescriptor.type()).iterator().next();
 			assertThat(artifactContainera.getOutgoingRelationshipsOfRole(relationshipDescriptor.role()))
 					.extracting(r -> r.getRole())
@@ -845,17 +841,18 @@ class ApplicationBuilderTest {
 			assertThat(artifactContainera.getOutgoingRelationshipsOfRole(ArtifactRelationshipRole.of("non-existing")))
 					.isEmpty();
 		}
+
 		@Test
 		void assert_that_incoming_relationships_of_artifact_containers_can_be_queried() {
 			final ContainerType1Descriptor containerDescriptor = new ContainerType1Descriptor();
 			final MiscArtifactRelationshipDescriptor relationshipDescriptor = new MiscArtifactRelationshipDescriptor();
-			
+
 			final Application application = Application
 					.builder()
 					.addContainerDescriptor(containerDescriptor)
 					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
-			
+
 			final ArtifactContainer artifactContainera = application.getContainersOfType(containerDescriptor.type()).iterator().next();
 			assertThat(artifactContainera.getIncomingRelationshipsOfRole(relationshipDescriptor.role()))
 					.extracting(r -> r.getRole())

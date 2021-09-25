@@ -13,7 +13,7 @@ public final class SpringDescriptors {
 	}
 
 	public static final class BuildingBlockDescriptors {
-		
+
 		private BuildingBlockDescriptors() {
 		}
 
@@ -22,7 +22,7 @@ public final class SpringDescriptors {
 		public static final BuildingBlockDescriptor ConfigurationDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Configuration"), Configuration.class);
 		public static final BuildingBlockDescriptor ControllerDescriptor = BuildingBlockDescriptor.forMetaAnnotatedWith(BuildingBlockType.of("Controller"), Controller.class);
 		public static final BuildingBlockDescriptor ComponentDescriptor = new ComponentDescriptor();
-		
+
 	}
 
 	public static final class RelationshipDescriptors {
@@ -33,9 +33,9 @@ public final class SpringDescriptors {
 	}
 
 	public static final class ContainerDescriptors {
-		
+
 		private ContainerDescriptors() {
 		}
-		
+
 	}
 }

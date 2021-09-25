@@ -7,5 +7,5 @@ public class MyEventHandler {
 	@DomainEventHandler
 	public void handle(MyEvent event) {
 	}
-	
+
 }

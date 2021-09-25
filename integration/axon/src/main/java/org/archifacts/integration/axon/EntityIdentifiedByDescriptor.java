@@ -13,7 +13,7 @@ final class EntityIdentifiedByDescriptor extends AbstractIdentifiedByDescriptor 
 	public ArtifactRelationshipRole role() {
 		return ROLE;
 	}
-	
+
 	@Override
 	protected Class<? extends Annotation> getAnnotationClass() {
 		return EntityId.class;

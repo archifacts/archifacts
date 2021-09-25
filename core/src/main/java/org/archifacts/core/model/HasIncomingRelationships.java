@@ -12,9 +12,9 @@ public interface HasIncomingRelationships {
 	default Set<ArtifactRelationship> getIncomingRelationshipsOfRole(final ArtifactRelationshipRole role) {
 		return Collections.unmodifiableSet(
 				(Set<ArtifactRelationship>) getIncomingRelationships()
-				.stream()
-				.filter(r -> r.getRole().equals(role))
-				.collect(Collectors.toCollection(LinkedHashSet::new)));
+						.stream()
+						.filter(r -> r.getRole().equals(role))
+						.collect(Collectors.toCollection(LinkedHashSet::new)));
 	}
 
 }
