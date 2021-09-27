@@ -65,14 +65,21 @@ public final class TableDocElement<T> implements AsciiDocElement {
 	}
 
 	private void renderHeader(final StringBuilder stringBuilder) {
-		for (final TableDocElementColumn<T> column : columns) {
-			stringBuilder.append('|');
-			if (column.title != null) {
-				stringBuilder.append(column.title);
+		final boolean atLeastOneColumnTitleIsNotNull = columns
+				.stream()
+				.map(c -> c.title)
+				.anyMatch(t -> t != null);
+		
+		if (atLeastOneColumnTitleIsNotNull) {
+			for (final TableDocElementColumn<T> column : columns) {
+				stringBuilder.append('|');
+				if (column.title != null) {
+					stringBuilder.append(column.title);
+				}
 			}
+	
+			stringBuilder.append('\n');
 		}
-
-		stringBuilder.append('\n');
 	}
 
 	private void renderElements(final StringBuilder stringBuilder) {
