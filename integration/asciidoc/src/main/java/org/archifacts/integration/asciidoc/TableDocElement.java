@@ -19,9 +19,9 @@ public final class TableDocElement<T> implements AsciiDocElement {
 
 	private TableDocElement(final TableDocElementBuilder<T> builder) {
 		// Make a defensive copy of the columns to avoid changes by using the builder a second time.
-		columns = new ArrayList<>(builder.columns);
-		elements = builder.elements;
-		title = builder.title;
+		columns = new ArrayList<>(builder.getColumns());
+		elements = builder.getElements();
+		title = builder.getTitle();
 	}
 
 	/**
@@ -67,14 +67,14 @@ public final class TableDocElement<T> implements AsciiDocElement {
 	private void renderHeader(final StringBuilder stringBuilder) {
 		final boolean atLeastOneColumnTitleIsNotNull = columns
 				.stream()
-				.map(c -> c.title)
-				.anyMatch(t -> t != null);
+				.map(TableDocElementColumn<T>::getTitle)
+				.anyMatch(Objects::nonNull);
 		
 		if (atLeastOneColumnTitleIsNotNull) {
 			for (final TableDocElementColumn<T> column : columns) {
 				stringBuilder.append('|');
 				if (column.title != null) {
-					stringBuilder.append(column.title);
+					stringBuilder.append(column.getTitle());
 				}
 			}
 	
@@ -87,7 +87,7 @@ public final class TableDocElement<T> implements AsciiDocElement {
 
 		for (final T element : elements) {
 			for (final TableDocElementColumn<T> column : columns) {
-				final String label = column.labelExtractor.apply(element);
+				final String label = column.getLabelExtractor().apply(element);
 				renderElement(stringBuilder, label);
 			}
 			stringBuilder.append('\n');
@@ -112,6 +112,14 @@ public final class TableDocElement<T> implements AsciiDocElement {
 		private TableDocElementColumn(final String title, final Function<T, String> labelExtractor) {
 			this.title = title;
 			this.labelExtractor = labelExtractor;
+		}
+
+		private String getTitle() {
+			return title;
+		}
+
+		private Function<T, String> getLabelExtractor() {
+			return labelExtractor;
 		}
 
 	}
@@ -170,6 +178,18 @@ public final class TableDocElement<T> implements AsciiDocElement {
 		public TableDocElementBuilder<T> title(final String title) {
 			this.title = title;
 			return this;
+		}
+
+		private List<TableDocElementColumn<T>> getColumns() {
+			return columns;
+		}
+
+		private Iterable<T> getElements() {
+			return elements;
+		}
+
+		private String getTitle() {
+			return title;
 		}
 
 	}
