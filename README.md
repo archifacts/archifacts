@@ -20,7 +20,7 @@ Nevertheless we try to reduce the breaking changes to a minimum, but there is no
 ### Gradle
 
 ```Gradle
-testImplementation 'org.archifacts:archifacts-core:0.1.0'
+testImplementation 'org.archifacts:archifacts-core:0.2.0'
 ```
 
 ### Maven
@@ -29,7 +29,7 @@ testImplementation 'org.archifacts:archifacts-core:0.1.0'
 <dependency>
     <groupId>org.archifacts</groupId>
     <artifactId>archifacts-core</artifactId>
-    <version>0.1.0</version>
+    <version>0.2.0</version>
     <scope>test</scope>
 </dependency>
 ```
@@ -39,7 +39,7 @@ Take a look at our [jmolecules example](examples/jmolecules-spring-data-jpa) to 
 
 With [jbang](https://www.jbang.dev/) you can even execute it directly from maven central:
 ```
-jbang org.archifacts:archifacts-examples-jmolecules-spring-data-jpa:0.1.0
+jbang org.archifacts:archifacts-examples-jmolecules-spring-data-jpa:0.2.0
 ```
 After executing you find a freshly generated architecture diagram in your export subfolder.
 
