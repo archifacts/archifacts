@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.archifacts</groupId>
 		<artifactId>archifacts-parent</artifactId>
-		<version>0.2.0</version>
+		<version>0.2.1-SNAPSHOT</version>
 		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-examples-aggregator</artifactId>
