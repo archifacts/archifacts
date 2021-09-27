@@ -1,10 +1,12 @@
 package org.archifacts.integration.asciidoc;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.archifacts.integration.asciidoc.TableDocElement.TableDocElementBuilder;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -16,18 +18,21 @@ final class TableDocElementTest {
 
 	@Test
 	void normal_table_should_be_renderable() {
-		final Iterable<FruitColor> fruits = Arrays.asList(
+		final Collection<FruitColor> fruits = Arrays.asList(
 				new FruitColor("Apple", "Red"),
 				new FruitColor("Banana", "Yellow"),
 				new FruitColor("Pear", "Green"));
 		final TableDocElement<FruitColor> tableDocElement = TableDocElement
 				.forElements(fruits)
 				.title("Fruits")
-				.column("Name", fp -> fp.name)
-				.column("Color", fp -> fp.color)
+				.column("Name", FruitColor::getName)
+				.column("Color", FruitColor::getColor)
 				.build();
 
-		assertThatCode(() -> tableDocElement.render()).doesNotThrowAnyException();
+		final String renderedTable = tableDocElement.render();
+		assertThat(renderedTable).contains("Fruits", "Name", "Color");
+		assertThat(renderedTable).contains(getNames(fruits));
+		assertThat(renderedTable).contains(getColors(fruits));
 	}
 
 	@Test
@@ -48,7 +53,7 @@ final class TableDocElementTest {
 
 	@Test
 	void table_should_be_renderable_when_labels_are_null() {
-		final Iterable<FruitColor> fruits = Arrays.asList(
+		final Collection<FruitColor> fruits = Arrays.asList(
 				new FruitColor("Apple", "Red"),
 				new FruitColor("Banana", "Yellow"),
 				new FruitColor("Pear", "Green"));
@@ -57,9 +62,44 @@ final class TableDocElementTest {
 				.column(fp -> null)
 				.build();
 
-		assertThatCode(() -> tableDocElement.render()).doesNotThrowAnyException();
+		final String renderedTable = tableDocElement.render();
+		assertThat(renderedTable).doesNotContain("Fruits", "Name", "Color");
+		assertThat(renderedTable).doesNotContain(getNames(fruits));
+		assertThat(renderedTable).doesNotContain(getColors(fruits));
+	}
+	
+	@Test
+	void table_should_be_renderable_when_titles_are_null() {
+		final Collection<FruitColor> fruits = Arrays.asList(
+				new FruitColor("Apple", "Red"),
+				new FruitColor("Banana", "Yellow"),
+				new FruitColor("Pear", "Green"));
+		final TableDocElement<FruitColor> tableDocElement = TableDocElement
+				.forElements(fruits)
+				.column(FruitColor::getName)
+				.column(FruitColor::getColor)
+				.build();
+
+		final String renderedTable = tableDocElement.render();
+		assertThat(renderedTable).doesNotContain("Fruits", "Name", "Color");
+		assertThat(renderedTable).contains(getNames(fruits));
+		assertThat(renderedTable).contains(getColors(fruits));
+	}
+	
+	private Iterable<String> getNames(Collection<FruitColor> fruits) {
+		return fruits
+				.stream()
+				.map(FruitColor::getName)
+				.collect(Collectors.toList());
 	}
 
+	private Iterable<String> getColors(Collection<FruitColor> fruits) {
+		return fruits
+				.stream()
+				.map(FruitColor::getColor)
+				.collect(Collectors.toList());
+	}
+	
 	private static class FruitColor {
 
 		private final String name;
@@ -70,6 +110,14 @@ final class TableDocElementTest {
 			this.color = color;
 		}
 
+		public String getName() {
+			return name;
+		}
+
+		public String getColor() {
+			return color;
+		}
+		
 	}
 
 }
