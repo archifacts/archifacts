@@ -1,8 +1,9 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
 //DEPS org.archifacts:archifacts-core:0.2.0
-//DEPS org.archifacts:archifacts-plaintext:0.2.0
 //DEPS org.archifacts:archifacts-jmolecules:0.2.0
 //DEPS org.archifacts:archifacts-c4-asciidoc:0.2.0
+//DEPS org.asciidoctor:asciidoctorj:2.5.2
+//DEPS org.asciidoctor:asciidoctorj-diagram:2.2.1
 
 import static java.util.function.Predicate.not;
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor;
@@ -17,22 +18,43 @@ import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.Relati
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.RelationshipDescriptors.IdentifiedByDescriptor;
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.RelationshipDescriptors.ManagedByDescriptor;
 
-import java.io.BufferedWriter;
-import java.io.InputStream;
+import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URI;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Supplier;
 import java.util.jar.JarFile;
+import java.util.stream.Collectors;
+
+import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
+import org.archifacts.core.model.Application;
+import org.archifacts.core.model.ArtifactContainer;
+import org.archifacts.core.model.ArtifactContainerType;
+import org.archifacts.core.model.BuildingBlock;
+import org.archifacts.core.model.BuildingBlockType;
+import org.archifacts.integration.asciidoc.AsciiDoc;
+import org.archifacts.integration.asciidoc.TableDocElement;
+import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
+import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
+import org.archifacts.integration.c4.model.C4ModelTransformer;
+import org.asciidoctor.Asciidoctor;
+import org.asciidoctor.Options;
+import org.asciidoctor.SafeMode;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.Container;
@@ -47,54 +69,56 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.domain.JavaPackage;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
-import org.archifacts.core.model.Application;
-import org.archifacts.core.model.ArtifactContainer;
-import org.archifacts.core.model.ArtifactContainerType;
-import org.archifacts.core.model.BuildingBlock;
-import org.archifacts.core.model.BuildingBlockType;
-import org.archifacts.integration.asciidoc.AsciiDoc;
-import org.archifacts.integration.asciidoc.TableDocElement;
-import org.archifacts.integration.c4.asciidoc.plantuml.ComponentViewPlantUMLDocElement;
-import org.archifacts.integration.c4.asciidoc.plantuml.ContainerViewPlantUMLDocElement;
-import org.archifacts.integration.c4.model.C4ModelTransformer;
-import org.archifacts.integration.plaintext.ApplicationOverview;
+public class JMoleculesSpringDataJPAExample {
 
-public class JmoleculesSpringDataJpa {
-
-	public static void main(final String[] args) throws URISyntaxException, IOException {
-		new JmoleculesSpringDataJpa().generateDocumentation();
+	public static void main(final String[] args) throws IOException {
+		new JMoleculesSpringDataJPAExample().generateDocumentation();
 
 	}
+
 	private static final String ApplicationPackage = "org.jmolecules.examples.jpa";
 	private static final ModuleDescriptor ModuleDescriptor = new ModuleDescriptor(ApplicationPackage);
 
-
 	private JarFile jMoleculesJar() throws IOException {
 		Path tempFile = Files.createTempFile("", ".jar");
-		try (InputStream in = new URL("https://repo1.maven.org/maven2/org/jmolecules/integrations/jmolecules-spring-data-jpa/0.3.0/jmolecules-spring-data-jpa-0.3.0.jar").openStream()) {
+		try (InputStream in = new URL(
+				"https://repo1.maven.org/maven2/org/jmolecules/integrations/jmolecules-spring-data-jpa/0.3.0/jmolecules-spring-data-jpa-0.3.0.jar")
+						.openStream()) {
 			Files.copy(in, tempFile, StandardCopyOption.REPLACE_EXISTING);
 		}
 		return new JarFile(tempFile.toFile());
 	}
 
-	private void generateDocumentation() throws IOException {
-		final JavaClasses javaClasses = new ClassFileImporter().importJar(jMoleculesJar());
-		final Application application = initApplication(javaClasses);
-		writeApplicationOverviewToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.txt"));
-		writeC4ModelToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example.adoc"));
-		writeBuildingBlocksTableToFile(application, Paths.get("export", "jmolecules-spring-data-jpa-example-building-blocks.adoc"));
+	private void generateDocumentation() throws IOException  {
+		final JavaClasses javaClasses = runWithResult("Reading the application", () -> new ClassFileImporter().importJar(jMoleculesJar()));
+		final Application application = runWithResult("Initializing the archifacts model", () -> initApplication(javaClasses));
+		StringWriter writer = new StringWriter();
+		run("Generating the AsciiDoc documentation", () -> {
+			writeC4ModelToFile(application, writer);
+			writeBuildingBlocksTableToFile(application, writer);
+		});
+		
+		Path htmlFile = Files.createTempFile("jmolecules", ".html");
+		run("Transforming to html", () -> {
+			try (Asciidoctor asciidoctor = Asciidoctor.Factory.create()) {
+				asciidoctor.requireLibrary("asciidoctor-diagram");
+				asciidoctor.convert(writer.toString(), 
+						Options.builder()
+						.backend("html5")
+						.toFile(htmlFile.toFile())
+						.mkDirs(true)
+						.safe(SafeMode.UNSAFE)
+						.build());
+				asciidoctor.shutdown();
+			}
+			
+		});
+		openInBrowser(htmlFile.toUri());
+		System.exit(0);
 	}
+	
 
-	private void writeApplicationOverviewToFile(final Application application, Path outputFile) throws IOException {
-		Files.createDirectories(outputFile.getParent());
-		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-			new ApplicationOverview(application).writeToWriter(writer);
-		}
-		System.out.println("Application overview written to " + outputFile.toString());
-	}
-
-	private void writeC4ModelToFile(final Application application, Path outputFile) throws IOException {
+	private void writeC4ModelToFile(final Application application, Writer writer) throws IOException {
 		final Workspace c4Workspace = new Workspace("jMolecules - Spring Data JPA Example", null);
 		final ViewSet views = c4Workspace.getViews();
 		final SoftwareSystem softwareSystem = initSoftwareSystem(c4Workspace);
@@ -106,16 +130,10 @@ public class JmoleculesSpringDataJpa {
 
 		asciiDoc.addDocElement(new ContainerViewPlantUMLDocElement(containerView));
 
-		c4ModelTransformer.getContainers(this::isModule)
-				.stream()
+		c4ModelTransformer.getContainers(this::isModule).stream()
 				.map(module -> initComponentView(module, views, c4ModelTransformer))
-				.map(ComponentViewPlantUMLDocElement::new)
-				.forEach(asciiDoc::addDocElement);
-		Files.createDirectories(outputFile.getParent());
-		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-			asciiDoc.writeToWriter(writer);
-		}
-		System.out.println("C4 model written to " + outputFile.toString());
+				.map(ComponentViewPlantUMLDocElement::new).forEach(asciiDoc::addDocElement);
+		asciiDoc.writeToWriter(writer);
 	}
 
 	private boolean isModule(final ArtifactContainer container) {
@@ -123,21 +141,16 @@ public class JmoleculesSpringDataJpa {
 	}
 
 	private Application initApplication(final JavaClasses javaClasses) {
-		return Application.builder()
-				.addContainerDescriptor(ModuleDescriptor)
+		return Application.builder().addContainerDescriptor(ModuleDescriptor)
 				.addContainerDescriptor(JdkLibraryDescriptor.INSTANCE)
-				.addBuildingBlockDescriptor(AggregateRootDescriptor)
-				.addBuildingBlockDescriptor(EntityDescriptor)
-				.addBuildingBlockDescriptor(IdentifierDescriptor)
-				.addBuildingBlockDescriptor(EventDescriptor)
-				.addBuildingBlockDescriptor(ServiceDescriptor)
-				.addBuildingBlockDescriptor(RepositoryDescriptor)
+				.addBuildingBlockDescriptor(AggregateRootDescriptor).addBuildingBlockDescriptor(EntityDescriptor)
+				.addBuildingBlockDescriptor(IdentifierDescriptor).addBuildingBlockDescriptor(EventDescriptor)
+				.addBuildingBlockDescriptor(ServiceDescriptor).addBuildingBlockDescriptor(RepositoryDescriptor)
 				.addSourceBasedRelationshipDescriptor(EventHandlerDescriptor)
 				.addSourceBasedRelationshipDescriptor(IdentifiedByDescriptor)
 				.addSourceBasedRelationshipDescriptor(ManagedByDescriptor)
 				.addSourceBasedRelationshipDescriptor(AggregateRootAssociationDescriptor)
-				.addSourceBasedRelationshipDescriptor(ContainedEntityDescriptor)
-				.buildApplication(javaClasses);
+				.addSourceBasedRelationshipDescriptor(ContainedEntityDescriptor).buildApplication(javaClasses);
 
 	}
 
@@ -148,9 +161,11 @@ public class JmoleculesSpringDataJpa {
 		return softwareSystem;
 	}
 
-	private ContainerView initContainerView(final SoftwareSystem softwareSystem, final ViewSet views, final C4ModelTransformer c4ModelTransformer) {
+	private ContainerView initContainerView(final SoftwareSystem softwareSystem, final ViewSet views,
+			final C4ModelTransformer c4ModelTransformer) {
 
-		final ContainerView containerView = views.createContainerView(softwareSystem, "container-view", "Module overview");
+		final ContainerView containerView = views.createContainerView(softwareSystem, "container-view",
+				"Module overview");
 		containerView.addAllContainers();
 		containerView.enableAutomaticLayout();
 		c4ModelTransformer.getContainers(not(this::isModule)).forEach(containerView::remove);
@@ -158,54 +173,106 @@ public class JmoleculesSpringDataJpa {
 		return containerView;
 	}
 
-	private ComponentView initComponentView(final Container container, final ViewSet views, final C4ModelTransformer c4ModelTransformer) {
+	private ComponentView initComponentView(final Container container, final ViewSet views,
+			final C4ModelTransformer c4ModelTransformer) {
 
 		final ComponentView componentView = views.createComponentView(container, container.getId(), null);
 		componentView.addAllComponents();
 		componentView.addExternalDependencies();
-		c4ModelTransformer.getComponents(not(BuildingBlock.class::isInstance))
-				.stream()
-				.filter(component -> component.getRelationships().isEmpty())
-				.forEach(componentView::remove);
+		c4ModelTransformer.getComponents(not(BuildingBlock.class::isInstance)).stream()
+				.filter(component -> component.getRelationships().isEmpty()).forEach(componentView::remove);
 		c4ModelTransformer.getNoContainerContainer().ifPresent(componentView::remove);
 		return componentView;
 	}
-	
-	private void writeBuildingBlocksTableToFile(final Application application, final Path outputFile) throws IOException {
+
+	private void writeBuildingBlocksTableToFile(final Application application, final Writer writer) throws IOException {
 		final AsciiDoc asciiDoc = new AsciiDoc();
-		
-		final Set<BuildingBlockType> sortedBuildingBlockTypes = application
-				.getBuildingBlocks()
-				.stream()
-				.map(BuildingBlock::getType)
-				.distinct()
-				.sorted(Comparator.comparing(BuildingBlockType::getName))
+
+		final Set<BuildingBlockType> sortedBuildingBlockTypes = application.getBuildingBlocks().stream()
+				.map(BuildingBlock::getType).distinct().sorted(Comparator.comparing(BuildingBlockType::getName))
 				.collect(Collectors.toCollection(LinkedHashSet::new));
-		final TableDocElement<BuildingBlockType> tableDocElement = TableDocElement
-				.forElements(sortedBuildingBlockTypes)
-				.title("Building Blocks")
-				.column("Name", BuildingBlockType::getName)
-				.column("Occurrences", b -> Integer.toString(application.getBuildingBlocksOfType(b).size()))
-				.build();
+		final TableDocElement<BuildingBlockType> tableDocElement = TableDocElement.forElements(sortedBuildingBlockTypes)
+				.title("Building Blocks").column("Name", BuildingBlockType::getName)
+				.column("Occurrences", b -> Integer.toString(application.getBuildingBlocksOfType(b).size())).build();
 		asciiDoc.addDocElement(tableDocElement);
 
-		Files.createDirectories(outputFile.getParent());
-		try (BufferedWriter writer = Files.newBufferedWriter(outputFile, StandardCharsets.UTF_8)) {
-			asciiDoc.writeToWriter(writer);
-		}
-		System.out.println("Building blocks table written to " + outputFile.toString());
+		asciiDoc.writeToWriter(writer);
 	}
 
+	private void openInBrowser(URI uri) throws IOException {
+
+		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		final String uriString = uri.toString();
+		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+			run("Starting the browser to access " + uriString, () -> desktop.browse(uri));
+		} else {
+			System.out.println("Cannot open the browser. You can access the html output at " + uriString);
+			run("Copying URL to clipboard... " + uriString, () -> {
+				StringSelection stringSelection = new StringSelection(uriString);
+				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				clipboard.setContents(stringSelection, null);
+			});
+		}
+
+	}
+	
+	private <T> T runWithResult(String name, ThrowingSupplier<T> task){
+		System.out.print(name + "...");
+		Instant start = Instant.now();
+		T result = task.get();
+		Instant finish = Instant.now();
+		System.out.println(" done (took: " + Duration.between(start, finish).toMillis() + " ms)");
+		return result;
+	
+	}
+	
+	private void run(String name, ThrowingRunnable task){
+		runWithResult(name, () -> {
+			task.run();
+			return null;
+		});
+	}
+
+	@FunctionalInterface
+	interface ThrowingSupplier<U> extends Supplier<U> {
+
+	    @Override
+	    default U get() {
+	        try {
+	            return getThrows();
+	        } catch (Exception e) {
+	            throw new RuntimeException(e);
+	        }
+	    }
+
+	    U getThrows() throws Exception;
+	}
+	
+	@FunctionalInterface
+	interface ThrowingRunnable extends Runnable {
+		
+		@Override
+		default void run() {
+			try {
+				getThrows();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+		
+		void getThrows() throws Exception;
+	}
+	
 	private static final class JdkLibraryDescriptor implements ArtifactContainerDescriptor {
 
 		static final ArtifactContainerType TYPE = ArtifactContainerType.of("Library");
-	
+
 		static final JdkLibraryDescriptor INSTANCE = new JdkLibraryDescriptor();
-	
+
 		private JdkLibraryDescriptor() {
-	
+
 		}
-	
+
 		@Override
 		public Optional<String> containerNameOf(final JavaClass javaClass) {
 			if (javaClass.getPackageName().startsWith("java.")) {
@@ -214,29 +281,29 @@ public class JmoleculesSpringDataJpa {
 				return Optional.empty();
 			}
 		}
-	
+
 		@Override
 		public ArtifactContainerType type() {
 			return TYPE;
 		}
-	
+
 	}
 
 	private static final class ModuleDescriptor implements ArtifactContainerDescriptor {
 
 		private static final ArtifactContainerType TYPE = ArtifactContainerType.of("Module");
-	
+
 		private final String basePackage;
-	
+
 		ModuleDescriptor(final String basePackage) {
 			this.basePackage = basePackage;
 		}
-	
+
 		@Override
 		public Optional<String> containerNameOf(final JavaClass javaClass) {
 			return moduleOf(javaClass.getPackage());
 		}
-	
+
 		private Optional<String> moduleOf(final JavaPackage javaPackage) {
 			return toJavaOptional(javaPackage.getParent()).map(parent -> {
 				if (basePackage.equals(parent.getName())) {
@@ -246,11 +313,11 @@ public class JmoleculesSpringDataJpa {
 				}
 			}).orElse(Optional.<String>empty());
 		}
-	
+
 		private <T> Optional<T> toJavaOptional(final com.tngtech.archunit.base.Optional<T> optional) {
-			return optional.transform(Optional::of).or(Optional.empty());
+			return optional.map(Optional::of).orElse(Optional.empty());
 		}
-	
+
 		@Override
 		public ArtifactContainerType type() {
 			return TYPE;

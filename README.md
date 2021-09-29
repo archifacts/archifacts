@@ -37,9 +37,9 @@ testImplementation 'org.archifacts:archifacts-core:0.2.0'
 ## How to get started
 Take a look at our [jmolecules example](examples/jmolecules-spring-data-jpa) to get an idea about how to use *archifacts*.
 
-With [jbang](https://www.jbang.dev/) you can even execute it directly from maven central:
+With [jbang](https://www.jbang.dev/) you can even execute it directly from GitHub:
 ```
-jbang org.archifacts:archifacts-examples-jmolecules-spring-data-jpa:0.2.0
+jbang https://github.com/archifacts/archifacts/blob/main/jbang-examples/JMoleculesSpringDataJPAExample.java
 ```
 After executing you find a freshly generated architecture diagram in your export subfolder.
 
