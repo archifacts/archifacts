@@ -1,4 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
+//JAVA 11+
 //DEPS org.archifacts:archifacts-core:0.2.0
 //DEPS org.archifacts:archifacts-jmolecules:0.2.0
 //DEPS org.archifacts:archifacts-c4-asciidoc:0.2.0
@@ -31,6 +32,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.NumberFormat;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Comparator;
@@ -71,6 +73,8 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class JMoleculesSpringDataJPAExample {
 
+	private static final NumberFormat numberFormatter = NumberFormat.getInstance();
+	
 	public static void main(final String[] args) throws IOException {
 		new JMoleculesSpringDataJPAExample().generateDocumentation();
 
@@ -79,7 +83,7 @@ public class JMoleculesSpringDataJPAExample {
 	private static final String ApplicationPackage = "org.jmolecules.examples.jpa";
 	private static final ModuleDescriptor ModuleDescriptor = new ModuleDescriptor(ApplicationPackage);
 
-	private JarFile jMoleculesJar() throws IOException {
+	private JarFile jMoleculesExampleJar() throws IOException {
 		Path tempFile = Files.createTempFile("", ".jar");
 		try (InputStream in = new URL(
 				"https://repo1.maven.org/maven2/org/jmolecules/integrations/jmolecules-spring-data-jpa/0.3.0/jmolecules-spring-data-jpa-0.3.0.jar")
@@ -90,7 +94,8 @@ public class JMoleculesSpringDataJPAExample {
 	}
 
 	private void generateDocumentation() throws IOException  {
-		final JavaClasses javaClasses = runWithResult("Reading the application", () -> new ClassFileImporter().importJar(jMoleculesJar()));
+		JarFile jMoleculesExampleJar = runWithResult("Downloading jMolecules example", this::jMoleculesExampleJar);
+		final JavaClasses javaClasses = runWithResult("Reading the application", () -> new ClassFileImporter().importJar(jMoleculesExampleJar));
 		final Application application = runWithResult("Initializing the archifacts model", () -> initApplication(javaClasses));
 		StringWriter writer = new StringWriter();
 		run("Generating the AsciiDoc documentation", () -> {
@@ -109,7 +114,6 @@ public class JMoleculesSpringDataJPAExample {
 						.mkDirs(true)
 						.safe(SafeMode.UNSAFE)
 						.build());
-				asciidoctor.shutdown();
 			}
 			
 		});
@@ -201,15 +205,15 @@ public class JMoleculesSpringDataJPAExample {
 
 	private void openInBrowser(URI uri) throws IOException {
 
-		Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+		final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		final String uriString = uri.toString();
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
 			run("Starting the browser to access " + uriString, () -> desktop.browse(uri));
 		} else {
 			System.out.println("Cannot open the browser. You can access the html output at " + uriString);
 			run("Copying URL to clipboard... " + uriString, () -> {
-				StringSelection stringSelection = new StringSelection(uriString);
-				Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+				final StringSelection stringSelection = new StringSelection(uriString);
+				final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 				clipboard.setContents(stringSelection, null);
 			});
 		}
@@ -218,10 +222,10 @@ public class JMoleculesSpringDataJPAExample {
 	
 	private <T> T runWithResult(String name, ThrowingSupplier<T> task){
 		System.out.print(name + "...");
-		Instant start = Instant.now();
-		T result = task.get();
-		Instant finish = Instant.now();
-		System.out.println(" done (took: " + Duration.between(start, finish).toMillis() + " ms)");
+		final Instant start = Instant.now();
+		final T result = task.get();
+		final Instant finish = Instant.now();
+		System.out.println(" done (took: " + numberFormatter.format(Duration.between(start, finish).toMillis()) + " ms)");
 		return result;
 	
 	}
