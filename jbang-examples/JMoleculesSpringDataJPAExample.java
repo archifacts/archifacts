@@ -5,6 +5,7 @@
 //DEPS org.archifacts:archifacts-c4-asciidoc:0.2.0
 //DEPS org.asciidoctor:asciidoctorj:2.5.2
 //DEPS org.asciidoctor:asciidoctorj-diagram:2.2.1
+//DEPS org.eclipse.jetty:jetty-server:11.0.6
 
 import static java.util.function.Predicate.not;
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor;
@@ -20,9 +21,6 @@ import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.Relati
 import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.RelationshipDescriptors.ManagedByDescriptor;
 
 import java.awt.Desktop;
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringWriter;
@@ -57,6 +55,8 @@ import org.archifacts.integration.c4.model.C4ModelTransformer;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 
 import com.structurizr.Workspace;
 import com.structurizr.model.Container;
@@ -74,8 +74,9 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 public class JMoleculesSpringDataJPAExample {
 
 	private static final NumberFormat numberFormatter = NumberFormat.getInstance();
+	private static final int SERVER_PORT = 8080;
 	
-	public static void main(final String[] args) throws IOException {
+	public static void main(final String[] args) throws Exception {
 		new JMoleculesSpringDataJPAExample().generateDocumentation();
 
 	}
@@ -93,7 +94,7 @@ public class JMoleculesSpringDataJPAExample {
 		return new JarFile(tempFile.toFile());
 	}
 
-	private void generateDocumentation() throws IOException  {
+	private void generateDocumentation() throws Exception  {
 		JarFile jMoleculesExampleJar = runWithResult("Downloading jMolecules example", this::jMoleculesExampleJar);
 		final JavaClasses javaClasses = runWithResult("Reading the application", () -> new ClassFileImporter().importJar(jMoleculesExampleJar));
 		final Application application = runWithResult("Initializing the archifacts model", () -> initApplication(javaClasses));
@@ -102,8 +103,8 @@ public class JMoleculesSpringDataJPAExample {
 			writeC4ModelToFile(application, writer);
 			writeBuildingBlocksTableToFile(application, writer);
 		});
-		
-		Path htmlFile = Files.createTempFile("jmolecules", ".html");
+		Path jMoleculesDirectory = Files.createTempDirectory("jmolecules");
+		final Path htmlFile = jMoleculesDirectory.resolve("jmolecules.html");
 		run("Transforming to html", () -> {
 			try (Asciidoctor asciidoctor = Asciidoctor.Factory.create()) {
 				asciidoctor.requireLibrary("asciidoctor-diagram");
@@ -115,12 +116,29 @@ public class JMoleculesSpringDataJPAExample {
 						.safe(SafeMode.UNSAFE)
 						.build());
 			}
-			
+			 
 		});
-		openInBrowser(htmlFile.toUri());
+		
+		serveDocumentation(htmlFile);
+		openInBrowser("http://localhost:8080");
+		System.out.println("Press enter to stop...");
+		System.in.read();
 		System.exit(0);
 	}
 	
+	private void serveDocumentation(Path htmlFile) throws Exception {
+		run("Starting web server at port " + SERVER_PORT, () -> {
+			Server server = new Server(8080);
+			
+			ResourceHandler resourceHandler = new ResourceHandler();
+			resourceHandler.setWelcomeFiles(new String[] {htmlFile.getFileName().toString()});
+			resourceHandler.setDirAllowed(true);
+			resourceHandler.setResourceBase(htmlFile.getParent().toAbsolutePath().toString());
+			server.setHandler(resourceHandler);
+			
+			server.start();
+		});
+	}
 
 	private void writeC4ModelToFile(final Application application, Writer writer) throws IOException {
 		final Workspace c4Workspace = new Workspace("jMolecules - Spring Data JPA Example", null);
@@ -203,21 +221,11 @@ public class JMoleculesSpringDataJPAExample {
 		asciiDoc.writeToWriter(writer);
 	}
 
-	private void openInBrowser(URI uri) throws IOException {
-
+	private void openInBrowser(String url) throws IOException {
 		final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-		final String uriString = uri.toString();
 		if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-			run("Starting the browser to access " + uriString, () -> desktop.browse(uri));
-		} else {
-			System.out.println("Cannot open the browser. You can access the html output at " + uriString);
-			run("Copying URL to clipboard... " + uriString, () -> {
-				final StringSelection stringSelection = new StringSelection(uriString);
-				final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-				clipboard.setContents(stringSelection, null);
-			});
+			run("Starting the browser to access " + url, () -> desktop.browse(new URI(url)));
 		}
-
 	}
 	
 	private <T> T runWithResult(String name, ThrowingSupplier<T> task){
