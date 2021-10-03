@@ -43,6 +43,8 @@ jbang https://github.com/archifacts/archifacts/blob/main/jbang-examples/JMolecul
 ```
 After executing a webserver is launched which serves the documentation at port 8080. If a browser is available the URL [http://localhost:8080/](http://localhost:8080/) is opened automatically.
 
+As a prerequisite you need GraphViz to be installed. For more information, see [PlantUML not working](https://github.com/de-jcup/eclipse-asciidoctor-editor/wiki/FAQ#plantuml-not-working).
+
 ## Why is it called 'archifacts'?
 
 *archifacts* is a made-up word out of *architects*, *artifacts* and *facts*.
