@@ -43,11 +43,6 @@ jbang https://github.com/archifacts/archifacts/blob/main/jbang-examples/JMolecul
 ```
 After executing a webserver is launched which serves the documentation at port 8080. If a browser is available the URL [http://localhost:8080/](http://localhost:8080/) is opened automatically.
 
-If you don't want to install jbang, but have Docker in plce you can run this command:
-```
-docker run -v `pwd`:/ws --workdir=/ws -p 8080:8080 jbangdev/jbang-action  https://github.com/archifacts/archifacts/blob/main/jbang-examples/JMoleculesSpringDataJPAExample.java
-```
-
 ## Why is it called 'archifacts'?
 
 *archifacts* is a made-up word out of *architects*, *artifacts* and *facts*.
