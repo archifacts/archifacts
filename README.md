@@ -20,7 +20,7 @@ Nevertheless we try to reduce the breaking changes to a minimum, but there is no
 ### Gradle
 
 ```Gradle
-testImplementation 'org.archifacts:archifacts-core:0.2.0'
+implementation 'org.archifacts:archifacts-core:0.2.0'
 ```
 
 ### Maven
@@ -30,7 +30,6 @@ testImplementation 'org.archifacts:archifacts-core:0.2.0'
     <groupId>org.archifacts</groupId>
     <artifactId>archifacts-core</artifactId>
     <version>0.2.0</version>
-    <scope>test</scope>
 </dependency>
 ```
 
