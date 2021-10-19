@@ -8,6 +8,12 @@ import java.util.Objects;
 
 public final class AsciiDoc {
 
+	private final String title;
+	
+	public AsciiDoc(final String title) {
+		this.title = title;
+	}
+
 	private final List<AsciiDocElement> docElements = new ArrayList<>();
 
 	public void addDocElement(final AsciiDocElement docElement) {
@@ -28,6 +34,7 @@ public final class AsciiDoc {
 
 	private String render() {
 		final StringBuilder stringBuilder = new StringBuilder();
+		stringBuilder.append("= ").append(title).append("\n\n");
 		docElements
 				.stream()
 				.map(AsciiDocElement::render)
