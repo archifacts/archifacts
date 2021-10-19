@@ -34,15 +34,11 @@ implementation 'org.archifacts:archifacts-core:0.2.0'
 ```
 
 ## How to get started
-Take a look at our [jmolecules example](examples/jmolecules-spring-data-jpa) to get an idea about how to use *archifacts*.
+Take a look at our [Fraktalio demo application example](https://github.com/archifacts/fraktalio-example) to get an idea about how to use *archifacts*.
 
-With [jbang](https://www.jbang.dev/) you can even execute it directly from GitHub:
-```
-jbang https://github.com/archifacts/archifacts/blob/main/jbang-examples/JMoleculesSpringDataJPAExample.java
-```
-After executing a webserver is launched which serves the documentation at port 8080. If a browser is available the URL [http://localhost:8080/](http://localhost:8080/) is opened automatically.
+The projects documents the [Fraktalio demo application](https://github.com/fraktalio) which is a Spring Boot and Axon Framework based microservice system, implemented in Java and Kotlin.
 
-As a prerequisite you need GraphViz to be installed. For more information, see [PlantUML not working](https://github.com/de-jcup/eclipse-asciidoctor-editor/wiki/FAQ#plantuml-not-working).
+The generated documentation is deployed using GitHub Actions. You can find it [here](https://archifacts.github.io/fraktalio-example/)
 
 ## Why is it called 'archifacts'?
 
