@@ -2,6 +2,9 @@ package org.archifacts.integration.spring;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
@@ -27,24 +30,26 @@ final class SpringDescriptorTest {
 
 	@ParameterizedTest
 	@MethodSource("getBuildingBlocks")
-	void assertThat_building_blocks_are_recognized(final BuildingBlockDescriptor buildingBlockDescriptor, final Class<?> matchingClass) {
+	void assertThat_building_blocks_are_recognized(final BuildingBlockDescriptor buildingBlockDescriptor, final Class<?>... matchingClasses) {
 		final Application application = Application
 				.builder()
 				.addBuildingBlockDescriptor(buildingBlockDescriptor)
 				.buildApplication(DOMAIN);
 
+		final Set<String> expectedClassNames = Arrays.stream(matchingClasses).map(Class::getName).collect(Collectors.toSet());
+		
 		assertThat(application.getBuildingBlocksOfType(buildingBlockDescriptor.type()))
-				.map(b -> b.getJavaClass())
-				.allMatch(j -> j.isEquivalentTo(matchingClass));
+				.map(b -> b.getJavaClass().getName())
+				.allMatch(name -> expectedClassNames.contains(name));
 	}
 
 	private static Stream<Arguments> getBuildingBlocks() {
 		return Stream.of(
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ConfigurationDescriptor, MyConfiguration.class),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ServiceDescriptor, MyService.class),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.RepositoryDescriptor, MyRepository.class),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ControllerDescriptor, MyController.class),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ComponentDescriptor, MyComponent.class));
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ConfigurationDescriptor, new Class[] {MyConfiguration.class}),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ServiceDescriptor, new Class[] {MyService.class}),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.RepositoryDescriptor, new Class[] {MyRepository.class}),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ControllerDescriptor, new Class[] {MyController.class}),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ComponentDescriptor, new Class[] {MyComponent.class, MyConfiguration.class, MyService.class, MyRepository.class, MyController.class}));
 	}
 
 }
