@@ -14,7 +14,7 @@ import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.core.domain.JavaParameterizedType;
 import com.tngtech.archunit.core.domain.JavaType;
 
-public class EntityDescriptor implements BuildingBlockDescriptor{
+final class EntityDescriptor implements BuildingBlockDescriptor{
 
 	private static final BuildingBlockType TYPE = BuildingBlockType.of("Entity");
 

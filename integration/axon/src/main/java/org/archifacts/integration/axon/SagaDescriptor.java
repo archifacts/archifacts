@@ -6,7 +6,7 @@ import org.axonframework.modelling.saga.StartSaga;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public class SagaDescriptor implements BuildingBlockDescriptor {
+final class SagaDescriptor implements BuildingBlockDescriptor {
 
 	private static final BuildingBlockType TYPE = BuildingBlockType.of("Saga");
 
