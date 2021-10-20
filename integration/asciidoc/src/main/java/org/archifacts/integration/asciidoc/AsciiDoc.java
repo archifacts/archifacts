@@ -11,6 +11,7 @@ public final class AsciiDoc {
 	private final String title;
 	
 	public AsciiDoc(final String title) {
+		Objects.requireNonNull(title, "The title must not be null.");
 		this.title = title;
 	}
 
