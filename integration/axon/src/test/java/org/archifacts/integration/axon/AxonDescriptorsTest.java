@@ -3,10 +3,10 @@ package org.archifacts.integration.axon;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.tuple;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
@@ -24,6 +24,7 @@ import org.archifacts.integration.axon.domain.MyEventHandler;
 import org.archifacts.integration.axon.domain.MyQuery1;
 import org.archifacts.integration.axon.domain.MyQuery2;
 import org.archifacts.integration.axon.domain.MyQueryHandler;
+import org.archifacts.integration.axon.domain.MySaga;
 import org.archifacts.integration.axon.domain.MySagaEventHandler;
 import org.assertj.core.groups.Tuple;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -32,6 +33,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import com.tngtech.archunit.core.domain.JavaClasses;
+import com.tngtech.archunit.core.importer.ClassFileImporter;
+
 @DisplayNameGeneration(ReplaceUnderscores.class)
 final class AxonDescriptorsTest {
 
@@ -39,19 +43,23 @@ final class AxonDescriptorsTest {
 
 	@ParameterizedTest
 	@MethodSource("getBuildingBlocks")
-	void assertThat_building_blocks_are_recognized(final BuildingBlockDescriptor buildingBlockDescriptor, final Class<?> matchingClass) {
+	void assertThat_building_blocks_are_recognized(final BuildingBlockDescriptor buildingBlockDescriptor, final Class<?>... matchingClasses) {
 		final Application application = Application
 				.builder()
 				.addBuildingBlockDescriptor(buildingBlockDescriptor)
 				.buildApplication(DOMAIN);
 
+		final Set<String> expectedClassNames = Arrays.stream(matchingClasses).map(Class::getName).collect(Collectors.toSet());
+		
 		assertThat(application.getBuildingBlocksOfType(buildingBlockDescriptor.type()))
-				.map(b -> b.getJavaClass())
-				.allMatch(j -> j.isEquivalentTo(matchingClass));
+				.map(b -> b.getJavaClass().getName())
+				.allMatch(name -> expectedClassNames.contains(name));
 	}
 
 	private static Stream<Arguments> getBuildingBlocks() {
-		return Stream.of(Arguments.of(AxonDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor, MyAggregateRoot.class));
+		return Stream.of(Arguments.of(AxonDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor, new Class[] {MyAggregateRoot.class}),
+				Arguments.of(AxonDescriptors.BuildingBlockDescriptors.EntityDescriptor, new Class[] {MyAggregateMember1.class, MyAggregateMember2.class, MyAggregateMember3.class}),
+				Arguments.of(AxonDescriptors.BuildingBlockDescriptors.SagaDescriptor, new Class[] {MySaga.class}));
 	}
 
 	@ParameterizedTest

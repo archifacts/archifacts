@@ -77,7 +77,7 @@ public class JMoleculesDocumenter {
 		final SoftwareSystem softwareSystem = initSoftwareSystem(c4Workspace);
 		final C4ModelTransformer c4ModelTransformer = new C4ModelTransformer(application, softwareSystem);
 
-		final AsciiDoc asciiDoc = new AsciiDoc();
+		final AsciiDoc asciiDoc = new AsciiDoc("jMolecules - Spring Data JPA Example");
 
 		final ContainerView containerView = initContainerView(softwareSystem, views, c4ModelTransformer);
 
@@ -149,7 +149,7 @@ public class JMoleculesDocumenter {
 	}
 
 	private void writeBuildingBlocksTableToFile(final Application application, final Path outputFile) throws IOException {
-		final AsciiDoc asciiDoc = new AsciiDoc();
+		final AsciiDoc asciiDoc = new AsciiDoc("jMolecules - Spring Data JPA Example");
 
 		final Set<BuildingBlockType> sortedBuildingBlockTypes = application
 				.getBuildingBlocks()

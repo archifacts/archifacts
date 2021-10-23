@@ -14,6 +14,8 @@ public final class AxonDescriptors {
 		}
 
 		public static final BuildingBlockDescriptor AggregateRootDescriptor = new AggregateRootDescriptor();
+		public static final BuildingBlockDescriptor EntityDescriptor = new EntityDescriptor();
+		public static final BuildingBlockDescriptor SagaDescriptor = new SagaDescriptor();
 
 	}
 
