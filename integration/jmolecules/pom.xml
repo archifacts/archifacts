@@ -13,7 +13,7 @@
 	<description>archifacts jMolecules integration</description>
 
 	<properties>
-		<jmolecules.version>1.3.0</jmolecules.version>
+		<jmolecules.version>1.4.0</jmolecules.version>
 	</properties>
 
 	<dependencies>
