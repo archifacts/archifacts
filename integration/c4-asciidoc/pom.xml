@@ -12,7 +12,7 @@
 	<description>archifacts C4 Model AsciiDoc integration</description>
 
 	<properties>
-		<structurizr-export.version>1.2.0</structurizr-export.version>
+		<structurizr-export.version>1.2.1</structurizr-export.version>
 	</properties>
 
 	<dependencies>
