@@ -8,13 +8,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import com.tngtech.archunit.core.domain.JavaClass;
-import com.tngtech.archunit.core.domain.JavaClasses;
-
 import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
+import org.archifacts.core.descriptor.ArtifactRelationshipDescriptor;
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
+
+import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaClasses;
 
 /**
  * Offers methods to register descriptors and is capable of building the {@link Application} by applying those descriptors.
@@ -83,6 +84,25 @@ public final class ApplicationBuilder {
 		targetBasedRelationshipDescriptors.add(targetBasedArtifactRelationshipDescriptor);
 		return this;
 	}
+	
+	/**
+	 * Registers a {@link ArtifactRelationshipDescriptor}.
+	 *
+	 * @param artifactRelationshipDescriptor the descriptor to be added,
+	 * @return this instance for method-chaining cannot be null
+	 */
+	public ApplicationBuilder addRelationshipDescriptor(final ArtifactRelationshipDescriptor artifactRelationshipDescriptor) {
+		Objects.requireNonNull(artifactRelationshipDescriptor, "The ArtifactRelationshipDescriptor cannot be null");
+		if (artifactRelationshipDescriptor instanceof SourceBasedArtifactRelationshipDescriptor) {
+			return addSourceBasedRelationshipDescriptor((SourceBasedArtifactRelationshipDescriptor) artifactRelationshipDescriptor);
+		}
+		if (artifactRelationshipDescriptor instanceof TargetBasedArtifactRelationshipDescriptor) {
+			return addTargetBasedRelationshipDescriptor((TargetBasedArtifactRelationshipDescriptor) artifactRelationshipDescriptor);
+		}
+		throw new IllegalArgumentException("The ArtifactRelationshipDescriptor is of an unexpected type '" + artifactRelationshipDescriptor.getClass().getName() + "'.");
+	}
+	
+	
 
 	/**
 	 * Build the {@link Application} by applying the descriptors.
