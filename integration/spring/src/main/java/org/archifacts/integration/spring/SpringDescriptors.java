@@ -1,6 +1,8 @@
 package org.archifacts.integration.spring;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
+import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
+import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.model.BuildingBlockType;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -30,6 +32,9 @@ public final class SpringDescriptors {
 
 		private RelationshipDescriptors() {
 		}
+		
+		public static final SourceBasedArtifactRelationshipDescriptor EventListenerDescriptor = new EventListenerDescriptor();
+		public static final TargetBasedArtifactRelationshipDescriptor ManagedByDescriptor = new ManagedByDescriptor();
 
 	}
 

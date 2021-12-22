@@ -1,6 +1,6 @@
-package org.archifacts.integration.jmolecules;
+package org.archifacts.integration.spring;
 
-import static org.archifacts.integration.jmolecules.JMoleculesDescriptors.BuildingBlockDescriptors.RepositoryDescriptor;
+import static org.archifacts.integration.spring.SpringDescriptors.BuildingBlockDescriptors.RepositoryDescriptor;
 
 import java.util.stream.Stream;
 
@@ -8,8 +8,7 @@ import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactRelationshipRole;
 import org.archifacts.core.model.BuildingBlock;
-import org.jmolecules.ddd.types.Repository;
-import org.jmolecules.spring.AssociationResolver;
+import org.springframework.data.repository.Repository;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaParameterizedType;
@@ -37,7 +36,7 @@ final class ManagedByDescriptor implements TargetBasedArtifactRelationshipDescri
 	public Stream<JavaClass> sources(final JavaClass sourceClass) {
 		return sourceClass.getInterfaces()
 				.stream()
-				.filter(candidate -> candidate.toErasure().isAssignableTo(AssociationResolver.class) || candidate.toErasure().isAssignableTo(Repository.class))
+				.filter(candidate -> candidate.toErasure().isAssignableTo(Repository.class))
 				.filter(JavaParameterizedType.class::isInstance)
 				.map(JavaParameterizedType.class::cast)
 				.map(type -> type.getActualTypeArguments().get(0))

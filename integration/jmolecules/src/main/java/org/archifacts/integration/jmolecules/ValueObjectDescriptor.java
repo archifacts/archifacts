@@ -2,15 +2,15 @@ package org.archifacts.integration.jmolecules;
 
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
 import org.archifacts.core.model.BuildingBlockType;
-import org.jmolecules.ddd.types.Entity;
+import org.jmolecules.ddd.types.ValueObject;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-final class EntityDescriptor implements BuildingBlockDescriptor {
+final class ValueObjectDescriptor implements BuildingBlockDescriptor {
 
-	private static final BuildingBlockType TYPE = BuildingBlockType.of("Entity");
+	private static final BuildingBlockType TYPE = BuildingBlockType.of("Value Object");
 
-	EntityDescriptor() {
+	ValueObjectDescriptor() {
 
 	}
 
@@ -21,7 +21,7 @@ final class EntityDescriptor implements BuildingBlockDescriptor {
 
 	@Override
 	public boolean isBuildingBlock(final JavaClass javaClass) {
-		return javaClass.isAssignableTo(Entity.class) || javaClass.isMetaAnnotatedWith(org.jmolecules.ddd.annotation.Entity.class);
+		return javaClass.isAssignableTo(ValueObject.class) || javaClass.isMetaAnnotatedWith(org.jmolecules.ddd.annotation.ValueObject.class);
 	}
 
 }

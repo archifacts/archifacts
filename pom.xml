@@ -20,7 +20,6 @@
 		<module>parent</module>
 		<module>core</module>
 		<module>integration</module>
-		<module>examples</module>
 	</modules>
 
 </project>
