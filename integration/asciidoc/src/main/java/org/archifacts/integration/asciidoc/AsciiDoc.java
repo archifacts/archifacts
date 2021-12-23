@@ -39,7 +39,7 @@ public final class AsciiDoc {
 		docElements
 				.stream()
 				.map(AsciiDocElement::render)
-				.forEach(renderedDocElement -> stringBuilder.append(renderedDocElement).append('\n'));
+				.forEach(renderedDocElement -> stringBuilder.append(renderedDocElement).append("\n\n"));
 		return stringBuilder.toString();
 	}
 }
