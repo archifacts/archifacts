@@ -3,11 +3,12 @@ package org.archifacts.core.model;
 import static org.archifacts.core.model.ArchifactsCollectors.toUnmodifiableLinkedSet;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships {
+public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships, Comparable<ArtifactContainer> {
 
 	private final ArtifactContainerDescription description;
 	private Application application;
@@ -80,6 +81,12 @@ public final class ArtifactContainer implements HasArtifacts, Named, HasIncoming
 				.stream()
 				.flatMap(a -> a.getIncomingRelationships().stream())
 				.collect(toUnmodifiableLinkedSet());
+	}
+
+	@Override
+	public int compareTo(ArtifactContainer o) {
+		return Comparator.comparing((ArtifactContainer a) -> a.description)
+				.compare(this, o);
 	}
 
 }
