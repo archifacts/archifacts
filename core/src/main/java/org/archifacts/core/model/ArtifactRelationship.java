@@ -2,7 +2,7 @@ package org.archifacts.core.model;
 
 import java.util.Objects;
 
-public final class ArtifactRelationship {
+public final class ArtifactRelationship implements Archifact {
 
 	private final Artifact source;
 	private final Artifact target;

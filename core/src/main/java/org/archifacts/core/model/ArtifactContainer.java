@@ -8,7 +8,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships, Comparable<ArtifactContainer> {
+public final class ArtifactContainer implements Archifact, HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships, Comparable<ArtifactContainer> {
 
 	private final ArtifactContainerDescription description;
 	private Application application;
