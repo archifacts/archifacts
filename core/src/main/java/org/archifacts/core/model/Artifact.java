@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public abstract class Artifact implements Named, HasIncomingRelationships, HasOutgoingRelationships {
+public abstract class Artifact implements Archifact, Named, HasIncomingRelationships, HasOutgoingRelationships {
 
 	private final JavaClass javaClass;
 
