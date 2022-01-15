@@ -43,7 +43,7 @@ public class C4ModelBuilder {
 		return artifact.getContainer().map(
 				container -> Collections.<ModelItem>singleton(lookup.container(container).addComponent(artifact.getName(), artifact.getJavaClass().getName(), null,
 						getTypeName(artifact))))
-				.orElseThrow(() -> new IllegalStateException("No container present"));
+				.orElseThrow(() -> new IllegalStateException("No container present for " + artifact));
 	}
 
 	private final Set<ModelItem> defaultTransformation(ArtifactRelationship relationship, C4ModelLookup lookup) {
