@@ -33,12 +33,12 @@ final class IdentifiedByDescriptor implements SourceBasedArtifactRelationshipDes
 	@Override
 	public Stream<JavaClass> targets(final JavaClass sourceClass) {
 		return sourceClass.getInterfaces()
-			.stream()
-			.filter(candidate -> candidate.toErasure().isAssignableTo(Entity.class))
-			.filter(JavaParameterizedType.class::isInstance)
-			.map(JavaParameterizedType.class::cast)
-			.map(type -> type.getActualTypeArguments().get(1))
-			.map(JavaType::toErasure);
+				.stream()
+				.filter(candidate -> candidate.toErasure().isAssignableTo(Entity.class))
+				.filter(JavaParameterizedType.class::isInstance)
+				.map(JavaParameterizedType.class::cast)
+				.map(type -> type.getActualTypeArguments().get(1))
+				.map(JavaType::toErasure);
 	}
-	
+
 }

@@ -121,7 +121,7 @@ class ApplicationBuilderTest {
 
 		}
 
-		static final Object createAnonymousClass() {
+		static Object createAnonymousClass() {
 			return new Object() {
 
 			};

@@ -13,12 +13,12 @@ public interface HasArtifacts {
 	default Set<BuildingBlock> getBuildingBlocksOfType(final BuildingBlockType buildingBlockType) {
 		return getBuildingBlocksOfTypes(buildingBlockType);
 	}
-	
+
 	default Set<BuildingBlock> getBuildingBlocksOfTypes(final BuildingBlockType... buildingBlockTypes) {
 		final List<BuildingBlockType> buildigBlockTypeList = Arrays.asList(buildingBlockTypes);
 		return getArtifactsOfType(BuildingBlock.class)
 				.stream()
-				.filter(buildingBlock ->  buildigBlockTypeList.contains(buildingBlock.getType()))
+				.filter(buildingBlock -> buildigBlockTypeList.contains(buildingBlock.getType()))
 				.collect(toUnmodifiableLinkedSet());
 	}
 

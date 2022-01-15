@@ -7,6 +7,6 @@ import org.archifacts.core.model.Archifact;
 
 import com.structurizr.model.ModelItem;
 
-public interface ComputationFunction<ARCHIFACT extends Archifact> extends BiFunction<ARCHIFACT, C4ModelLookup, Set<ModelItem>>{
+public interface ComputationFunction<ARCHIFACT extends Archifact> extends BiFunction<ARCHIFACT, C4ModelLookup, Set<ModelItem>> {
 
 }

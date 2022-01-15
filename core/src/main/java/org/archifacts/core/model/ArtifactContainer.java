@@ -57,12 +57,15 @@ public final class ArtifactContainer implements Archifact, HasArtifacts, Named, 
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final ArtifactContainer other = (ArtifactContainer) obj;
 		return Objects.equals(description, other.description);
 	}
@@ -84,8 +87,8 @@ public final class ArtifactContainer implements Archifact, HasArtifacts, Named, 
 	}
 
 	@Override
-	public int compareTo(ArtifactContainer o) {
-		return Comparator.comparing((ArtifactContainer a) -> a.description)
+	public int compareTo(final ArtifactContainer o) {
+		return Comparator.comparing((final ArtifactContainer a) -> a.description)
 				.compare(this, o);
 	}
 

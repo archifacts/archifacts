@@ -50,16 +50,16 @@ final class AxonDescriptorsTest {
 				.buildApplication(DOMAIN);
 
 		final Set<String> expectedClassNames = Arrays.stream(matchingClasses).map(Class::getName).collect(Collectors.toSet());
-		
+
 		assertThat(application.getBuildingBlocksOfType(buildingBlockDescriptor.type()))
 				.map(b -> b.getJavaClass().getName())
 				.allMatch(name -> expectedClassNames.contains(name));
 	}
 
 	private static Stream<Arguments> getBuildingBlocks() {
-		return Stream.of(Arguments.of(AxonDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor, new Class[] {MyAggregateRoot.class}),
-				Arguments.of(AxonDescriptors.BuildingBlockDescriptors.EntityDescriptor, new Class[] {MyAggregateMember1.class, MyAggregateMember2.class, MyAggregateMember3.class}),
-				Arguments.of(AxonDescriptors.BuildingBlockDescriptors.SagaDescriptor, new Class[] {MySaga.class}));
+		return Stream.of(Arguments.of(AxonDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor, new Class[] { MyAggregateRoot.class }),
+				Arguments.of(AxonDescriptors.BuildingBlockDescriptors.EntityDescriptor, new Class[] { MyAggregateMember1.class, MyAggregateMember2.class, MyAggregateMember3.class }),
+				Arguments.of(AxonDescriptors.BuildingBlockDescriptors.SagaDescriptor, new Class[] { MySaga.class }));
 	}
 
 	@ParameterizedTest

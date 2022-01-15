@@ -14,7 +14,7 @@ import com.tngtech.archunit.core.domain.JavaMethod;
 import com.tngtech.archunit.core.domain.JavaParameterizedType;
 import com.tngtech.archunit.core.domain.JavaType;
 
-final class EntityDescriptor implements BuildingBlockDescriptor{
+final class EntityDescriptor implements BuildingBlockDescriptor {
 
 	private static final BuildingBlockType TYPE = BuildingBlockType.of("Entity");
 
@@ -24,21 +24,22 @@ final class EntityDescriptor implements BuildingBlockDescriptor{
 	}
 
 	@Override
-	public boolean isBuildingBlock(JavaClass javaClass) {
+	public boolean isBuildingBlock(final JavaClass javaClass) {
 		return javaClass.getDirectDependenciesToSelf()
-			.stream()
-			.flatMap(dep -> dep.getOriginClass().getMembers().stream())
-			.filter(field -> field.isMetaAnnotatedWith(AggregateMember.class))
-			.map(this::getType)
-			.filter(this::isNotUntypedCollectionOrMap)
-			.map(this::getJavaClass)
-			.anyMatch(javaClass::equals);
+				.stream()
+				.flatMap(dep -> dep.getOriginClass().getMembers().stream())
+				.filter(field -> field.isMetaAnnotatedWith(AggregateMember.class))
+				.map(this::getType)
+				.filter(this::isNotUntypedCollectionOrMap)
+				.map(this::getJavaClass)
+				.anyMatch(javaClass::equals);
 	}
-	
+
 	private JavaType getType(final JavaMember javaMember) {
 		if (javaMember instanceof JavaField) {
 			return ((JavaField) javaMember).getType();
-		} else if (javaMember instanceof JavaMethod) {
+		}
+		if (javaMember instanceof JavaMethod) {
 			return ((JavaMethod) javaMember).getReturnType();
 		} else {
 			throw new IllegalArgumentException(String.format("A JavaMember (%s) annotated with '%s' is neither a field nor a method.", javaMember, AggregateMember.class.getSimpleName()));
@@ -59,11 +60,11 @@ final class EntityDescriptor implements BuildingBlockDescriptor{
 
 		return erasure;
 	}
-	
+
 	private boolean isNotUntypedCollectionOrMap(final JavaType type) {
 		final boolean isUntypedCollection = type.toErasure().isAssignableTo(Collection.class) && !(type instanceof JavaParameterizedType);
 		final boolean isUntypedMap = type.toErasure().isAssignableTo(Map.class) && !(type instanceof JavaParameterizedType);
-		return !(isUntypedCollection || isUntypedMap);
+		return (!isUntypedCollection && !isUntypedMap);
 	}
 
 }

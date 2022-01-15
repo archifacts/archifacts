@@ -11,19 +11,19 @@ public final class ModelItemComputationRule<ARCHIFACT extends Archifact> impleme
 
 	private final Predicate<ARCHIFACT> predicate;
 	private final ComputationFunction<ARCHIFACT> computation;
-	
-	ModelItemComputationRule(Predicate<ARCHIFACT> predicate, ComputationFunction<ARCHIFACT> computation) {
+
+	ModelItemComputationRule(final Predicate<ARCHIFACT> predicate, final ComputationFunction<ARCHIFACT> computation) {
 		this.predicate = predicate;
 		this.computation = computation;
 	}
 
 	@Override
-	public boolean test(ARCHIFACT archifact) {
+	public boolean test(final ARCHIFACT archifact) {
 		return predicate.test(archifact);
 	}
 
 	@Override
-	public Set<ModelItem> apply(ARCHIFACT archifact, C4ModelLookup lookup) {
+	public Set<ModelItem> apply(final ARCHIFACT archifact, final C4ModelLookup lookup) {
 		return computation.apply(archifact, lookup);
 	}
 

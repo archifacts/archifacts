@@ -37,7 +37,7 @@ final class SpringDescriptorTest {
 				.buildApplication(DOMAIN);
 
 		final Set<String> expectedClassNames = Arrays.stream(matchingClasses).map(Class::getName).collect(Collectors.toSet());
-		
+
 		assertThat(application.getBuildingBlocksOfType(buildingBlockDescriptor.type()))
 				.map(b -> b.getJavaClass().getName())
 				.allMatch(name -> expectedClassNames.contains(name));
@@ -45,11 +45,12 @@ final class SpringDescriptorTest {
 
 	private static Stream<Arguments> getBuildingBlocks() {
 		return Stream.of(
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ConfigurationDescriptor, new Class[] {MyConfiguration.class}),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ServiceDescriptor, new Class[] {MyService.class}),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.RepositoryDescriptor, new Class[] {MyRepository.class}),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ControllerDescriptor, new Class[] {MyController.class}),
-				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ComponentDescriptor, new Class[] {MyComponent.class, MyConfiguration.class, MyService.class, MyRepository.class, MyController.class}));
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ConfigurationDescriptor, new Class[] { MyConfiguration.class }),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ServiceDescriptor, new Class[] { MyService.class }),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.RepositoryDescriptor, new Class[] { MyRepository.class }),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ControllerDescriptor, new Class[] { MyController.class }),
+				Arguments.of(SpringDescriptors.BuildingBlockDescriptors.ComponentDescriptor,
+						new Class[] { MyComponent.class, MyConfiguration.class, MyService.class, MyRepository.class, MyController.class }));
 	}
 
 }

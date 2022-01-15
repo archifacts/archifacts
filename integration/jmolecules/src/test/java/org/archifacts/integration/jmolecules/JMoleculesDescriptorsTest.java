@@ -67,7 +67,7 @@ final class JMoleculesDescriptorsTest {
 
 	static class VarargsAggregator implements ArgumentsAggregator {
 		@Override
-		public Object aggregateArguments(ArgumentsAccessor accessor, ParameterContext context) throws ArgumentsAggregationException {
+		public Object aggregateArguments(final ArgumentsAccessor accessor, final ParameterContext context) throws ArgumentsAggregationException {
 			return accessor.toList().stream()
 					.skip(context.getIndex())
 					.toArray(Class[]::new);

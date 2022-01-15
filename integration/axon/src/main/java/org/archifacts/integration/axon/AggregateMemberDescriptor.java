@@ -50,7 +50,8 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 	private JavaType getType(final JavaMember javaMember) {
 		if (javaMember instanceof JavaField) {
 			return ((JavaField) javaMember).getType();
-		} else if (javaMember instanceof JavaMethod) {
+		}
+		if (javaMember instanceof JavaMethod) {
 			return ((JavaMethod) javaMember).getReturnType();
 		} else {
 			throw new IllegalArgumentException(String.format("A JavaMember (%s) annotated with '%s' is neither a field nor a method.", javaMember, AggregateMember.class.getSimpleName()));
@@ -75,7 +76,7 @@ final class AggregateMemberDescriptor implements SourceBasedArtifactRelationship
 	private boolean isNotUntypedCollectionOrMap(final JavaType type) {
 		final boolean isUntypedCollection = type.toErasure().isAssignableTo(Collection.class) && !(type instanceof JavaParameterizedType);
 		final boolean isUntypedMap = type.toErasure().isAssignableTo(Map.class) && !(type instanceof JavaParameterizedType);
-		return !(isUntypedCollection || isUntypedMap);
+		return (!isUntypedCollection && !isUntypedMap);
 	}
 
 }

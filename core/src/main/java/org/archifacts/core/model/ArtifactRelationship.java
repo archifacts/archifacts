@@ -38,12 +38,15 @@ public final class ArtifactRelationship implements Archifact {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final ArtifactRelationship other = (ArtifactRelationship) obj;
 		return Objects.equals(role, other.role) && Objects.equals(source, other.source) && Objects.equals(target, other.target);
 	}

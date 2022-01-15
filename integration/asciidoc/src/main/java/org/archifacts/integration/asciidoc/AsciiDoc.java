@@ -9,7 +9,7 @@ import java.util.Objects;
 public final class AsciiDoc {
 
 	private final String title;
-	
+
 	public AsciiDoc(final String title) {
 		Objects.requireNonNull(title, "The title must not be null.");
 		this.title = title;
@@ -23,9 +23,9 @@ public final class AsciiDoc {
 
 	/**
 	 * Writes the current AsciiDoc state into the given writer. The writer is neither flushed nor closed.
-	 * 
+	 *
 	 * @param writer The writer. Must not be <code>null</code>.
-	 * 
+	 *
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void writeToWriter(final Writer writer) throws IOException {

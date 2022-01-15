@@ -18,25 +18,25 @@ public class C4Model {
 	private final Workspace workspace;
 	private final SoftwareSystem softwareSystem;
 
-	public C4Model(Workspace workspace, SoftwareSystem softwareSystem, Map<Archifact, Set<ModelItem>> archifactMap) {
+	public C4Model(final Workspace workspace, final SoftwareSystem softwareSystem, final Map<Archifact, Set<ModelItem>> archifactMap) {
 		this.workspace = workspace;
 		this.softwareSystem = softwareSystem;
 		this.archifactMap = archifactMap;
 	}
 
-	public Component component(Archifact archifact) {
+	public Component component(final Archifact archifact) {
 		return modelElement(archifact, Component.class);
 	}
 
-	public Relationship relationship(Archifact archifact) {
+	public Relationship relationship(final Archifact archifact) {
 		return modelElement(archifact, Relationship.class);
 	}
 
-	public Container container(Archifact archifact) {
+	public Container container(final Archifact archifact) {
 		return modelElement(archifact, Container.class);
 	}
 
-	private <T extends ModelItem> T modelElement(Archifact archifact, Class<T> elementType) {
+	private <T extends ModelItem> T modelElement(final Archifact archifact, final Class<T> elementType) {
 		return archifactMap.get(archifact)
 				.stream()
 				.filter(elementType::isInstance)
@@ -44,16 +44,16 @@ public class C4Model {
 				.findFirst()
 				.orElseThrow();
 	}
-	
+
 	public Workspace workspace() {
 		return workspace;
 	}
-	
+
 	public SoftwareSystem softwareSystem() {
 		return softwareSystem;
 	}
-	
-	public static C4ModelBuilder builder(Workspace workspace) {
+
+	public static C4ModelBuilder builder(final Workspace workspace) {
 		return new C4ModelBuilder(workspace);
 	}
 

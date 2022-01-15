@@ -39,46 +39,46 @@ public class C4ModelBuilder {
 	private final Workspace workspace;
 	private final SoftwareSystem softwareSystem;
 
-	private final Set<ModelItem> defaultTransformation(Artifact artifact, C4ModelLookup lookup) {
+	private final Set<ModelItem> defaultTransformation(final Artifact artifact, final C4ModelLookup lookup) {
 		return artifact.getContainer().map(
 				container -> Collections.<ModelItem>singleton(lookup.container(container).addComponent(artifact.getName(), artifact.getJavaClass().getName(), null,
 						getTypeName(artifact))))
 				.orElseThrow(() -> new IllegalStateException("No container present for " + artifact));
 	}
 
-	private final Set<ModelItem> defaultTransformation(ArtifactRelationship relationship, C4ModelLookup lookup) {
+	private final Set<ModelItem> defaultTransformation(final ArtifactRelationship relationship, final C4ModelLookup lookup) {
 		return Collections.<ModelItem>singleton(lookup.component(relationship.getSource())
 				.uses(lookup.component(relationship.getTarget()), relationship.getRole().getName()));
 	}
 
-	private final Set<ModelItem> defaultTransformation(ArtifactContainer container, C4ModelLookup lookup) {
+	private final Set<ModelItem> defaultTransformation(final ArtifactContainer container, final C4ModelLookup lookup) {
 		return Collections.<ModelItem>singleton(lookup.softwareSystem().addContainer(container.getName(),
 				null, container.getType().getName()));
 	}
 
-	C4ModelBuilder(Workspace workspace) {
+	C4ModelBuilder(final Workspace workspace) {
 		this.workspace = workspace;
 		this.softwareSystem = initSoftwareSystem(workspace);
 	}
 
-	private SoftwareSystem initSoftwareSystem(Workspace workspace) {
+	private SoftwareSystem initSoftwareSystem(final Workspace workspace) {
 		final Model model = workspace.getModel();
 		model.setImpliedRelationshipsStrategy(new CreateImpliedRelationshipsUnlessSameRelationshipExistsStrategy());
 		return model.addSoftwareSystem(workspace.getName());
 	}
 
-	public void container(ArtifactContainer artifactContainer) {
+	public void container(final ArtifactContainer artifactContainer) {
 		containers.add(artifactContainer);
 	}
 
-	public void artifact(Artifact artifact) {
+	public void artifact(final Artifact artifact) {
 		artifacts.add(artifact);
 	}
 
-	public void relationship(ArtifactRelationship relationship) {
+	public void relationship(final ArtifactRelationship relationship) {
 		relationships.add(relationship);
 	}
-	
+
 	public ComputationRuleBuilderPredicateStage<ArtifactContainer> containerRule() {
 		return new ComputationRuleBuilder<>(containerComputer);
 	}
@@ -86,56 +86,53 @@ public class C4ModelBuilder {
 	public ComputationRuleBuilderPredicateStage<Artifact> artifactRule() {
 		return new ComputationRuleBuilder<>(artifactComputer);
 	}
-	
+
 	public ComputationRuleBuilderPredicateStage<ArtifactRelationship> relartionshipRule() {
 		return new ComputationRuleBuilder<>(relationshipComputer);
 	}
-	
+
 	public C4Model build() {
 		containers.forEach(containerComputer::compute);
 		artifacts.forEach(artifactComputer::compute);
 		relationships.forEach(relationshipComputer::compute);
 
-		Map<Archifact, Set<ModelItem>> archifactMap = new HashMap<>();
+		final Map<Archifact, Set<ModelItem>> archifactMap = new HashMap<>();
 		archifactMap.putAll(containerComputer.getMappings());
 		archifactMap.putAll(artifactComputer.getMappings());
 		archifactMap.putAll(relationshipComputer.getMappings());
 		return new C4Model(workspace, softwareSystem, archifactMap);
 	}
 
-	
-
-
 	public interface ComputationRuleBuilderPredicateStage<ARCHIFACT extends Archifact> {
-		public ComputationRuleBuilderBuildStage<ARCHIFACT> predicate(Predicate<ARCHIFACT> predicate);
+		ComputationRuleBuilderBuildStage<ARCHIFACT> predicate(Predicate<ARCHIFACT> predicate);
 	}
 
 	public interface ComputationRuleBuilderBuildStage<ARCHIFACT extends Archifact> {
-		public C4ModelBuilder computation(ComputationFunction<ARCHIFACT> computation);
+		C4ModelBuilder computation(ComputationFunction<ARCHIFACT> computation);
 	}
 
 	public final class ComputationRuleBuilder<ARCHIFACT extends Archifact> implements ComputationRuleBuilderPredicateStage<ARCHIFACT>, ComputationRuleBuilderBuildStage<ARCHIFACT> {
 		private final C4ModelComputer<ARCHIFACT> c4ModelComputer;
 		private Predicate<ARCHIFACT> predicate;
 
-		private ComputationRuleBuilder(C4ModelComputer<ARCHIFACT> c4ModelComputer) {
+		private ComputationRuleBuilder(final C4ModelComputer<ARCHIFACT> c4ModelComputer) {
 			this.c4ModelComputer = c4ModelComputer;
 		}
 
 		@Override
-		public ComputationRuleBuilderBuildStage<ARCHIFACT> predicate(Predicate<ARCHIFACT> predicate) {
+		public ComputationRuleBuilderBuildStage<ARCHIFACT> predicate(final Predicate<ARCHIFACT> predicate) {
 			this.predicate = predicate;
 			return this;
 		}
 
 		@Override
-		public C4ModelBuilder computation(ComputationFunction<ARCHIFACT> computation) {
-			c4ModelComputer.addComputationRule(new ModelItemComputationRule<ARCHIFACT>(predicate, computation));
+		public C4ModelBuilder computation(final ComputationFunction<ARCHIFACT> computation) {
+			c4ModelComputer.addComputationRule(new ModelItemComputationRule<>(predicate, computation));
 			return C4ModelBuilder.this;
 		}
 
 	}
-	
+
 	private class Lookup implements C4ModelLookup {
 
 		@Override
@@ -143,7 +140,7 @@ public class C4ModelBuilder {
 			return softwareSystem;
 		}
 
-		private <T extends Archifact, R extends ModelItem> R lookup(T archifact, C4ModelComputer<T> computer, Class<R> returnType) {
+		private <T extends Archifact, R extends ModelItem> R lookup(final T archifact, final C4ModelComputer<T> computer, final Class<R> returnType) {
 			final Set<ModelItem> modelItems = computer.compute(archifact);
 			if (modelItems.isEmpty()) {
 				throw new IllegalStateException("No model item found for " + archifact);
@@ -154,29 +151,28 @@ public class C4ModelBuilder {
 			final ModelItem modelItem = modelItems.iterator().next();
 			if (returnType.isInstance(modelItem)) {
 				return returnType.cast(modelItem);
-			} else {
-				throw new IllegalStateException("Element is not of expected type: " + archifact);
 			}
+			throw new IllegalStateException("Element is not of expected type: " + archifact);
 		}
 
 		@Override
-		public Component component(Artifact artifact) {
+		public Component component(final Artifact artifact) {
 			return lookup(artifact, artifactComputer, Component.class);
 		}
 
 		@Override
-		public Container container(ArtifactContainer artifactContainer) {
+		public Container container(final ArtifactContainer artifactContainer) {
 			return lookup(artifactContainer, containerComputer, Container.class);
 		}
 
 		@Override
-		public Relationship relationship(ArtifactRelationship artifactRelationship) {
+		public Relationship relationship(final ArtifactRelationship artifactRelationship) {
 			return lookup(artifactRelationship, relationshipComputer, Relationship.class);
 		}
 
 	}
 
-	private static String getTypeName(Artifact artifact) {
+	private static String getTypeName(final Artifact artifact) {
 
 		if (artifact instanceof BuildingBlock) {
 			return ((BuildingBlock) artifact).getType().getName();

@@ -84,7 +84,7 @@ public final class ApplicationBuilder {
 		targetBasedRelationshipDescriptors.add(targetBasedArtifactRelationshipDescriptor);
 		return this;
 	}
-	
+
 	/**
 	 * Registers a {@link ArtifactRelationshipDescriptor}.
 	 *
@@ -101,8 +101,6 @@ public final class ApplicationBuilder {
 		}
 		throw new IllegalArgumentException("The ArtifactRelationshipDescriptor is of an unexpected type '" + artifactRelationshipDescriptor.getClass().getName() + "'.");
 	}
-	
-	
 
 	/**
 	 * Build the {@link Application} by applying the descriptors.
@@ -174,7 +172,7 @@ public final class ApplicationBuilder {
 				.ifPresentOrElse(
 						archContainerDescription -> application.addArtifact(archContainerDescription, artifact),
 						() -> application.addArtifact(artifact));
-		;
+
 	}
 
 	private Stream<Artifact> toArtifacts(final JavaClasses javaClasses) {

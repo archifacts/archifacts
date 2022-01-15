@@ -13,7 +13,7 @@ public interface HasIncomingRelationships {
 	default Set<ArtifactRelationship> getIncomingRelationshipsOfRole(final ArtifactRelationshipRole role) {
 		return getIncomingRelationshipsOfRoles(role);
 	}
-	
+
 	default Set<ArtifactRelationship> getIncomingRelationshipsOfRoles(final ArtifactRelationshipRole... roles) {
 		final List<ArtifactRelationshipRole> roleList = Arrays.asList(roles);
 		return getIncomingRelationships()

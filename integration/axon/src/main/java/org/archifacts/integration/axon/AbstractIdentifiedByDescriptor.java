@@ -33,7 +33,8 @@ abstract class AbstractIdentifiedByDescriptor implements SourceBasedArtifactRela
 	private JavaClass getType(final JavaMember javaMember) {
 		if (javaMember instanceof JavaField) {
 			return ((JavaField) javaMember).getRawType();
-		} else if (javaMember instanceof JavaMethod) {
+		}
+		if (javaMember instanceof JavaMethod) {
 			return ((JavaMethod) javaMember).getRawReturnType();
 		} else {
 			throw new IllegalArgumentException(String.format("A JavaMember (%s) annotated with '%s' is neither a field nor a method.", javaMember, getAnnotationClass().getSimpleName()));

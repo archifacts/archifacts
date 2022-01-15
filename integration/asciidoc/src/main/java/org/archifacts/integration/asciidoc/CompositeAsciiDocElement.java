@@ -5,20 +5,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public final class CompositeAsciiDocElement implements AsciiDocElement{
+public final class CompositeAsciiDocElement implements AsciiDocElement {
 
 	private List<AsciiDocElement> elements;
 
-	private CompositeAsciiDocElement(Builder builder) {
+	private CompositeAsciiDocElement(final Builder builder) {
 		this.elements = Collections.unmodifiableList(builder.elements);
 	}
-	
+
 	@Override
 	public String render() {
 		return elements
-			.stream()
-			.map(AsciiDocElement::render)
-			.collect(Collectors.joining("\n"));
+				.stream()
+				.map(AsciiDocElement::render)
+				.collect(Collectors.joining("\n"));
 	}
 
 	public static Builder builder() {
@@ -31,7 +31,7 @@ public final class CompositeAsciiDocElement implements AsciiDocElement{
 		private Builder() {
 		}
 
-		public Builder element(AsciiDocElement element) {
+		public Builder element(final AsciiDocElement element) {
 			this.elements.add(element);
 			return this;
 		}

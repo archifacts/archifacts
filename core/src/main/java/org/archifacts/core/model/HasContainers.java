@@ -13,7 +13,7 @@ public interface HasContainers {
 	default Set<ArtifactContainer> getContainersOfType(final ArtifactContainerType artifactContainerType) {
 		return getContainersOfTypes(artifactContainerType);
 	}
-	
+
 	default Set<ArtifactContainer> getContainersOfTypes(final ArtifactContainerType... artifactContainerTypes) {
 		final List<ArtifactContainerType> artifactContainerTypeList = Arrays.asList(artifactContainerTypes);
 		return getContainers()

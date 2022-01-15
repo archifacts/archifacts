@@ -19,7 +19,7 @@ final class EventListenerDescriptor implements SourceBasedArtifactRelationshipDe
 	public ArtifactRelationshipRole role() {
 		return ROLE;
 	}
-	
+
 	@Override
 	public boolean isSource(final Artifact sourceCandidateArtifact) {
 		return sourceCandidateArtifact.getJavaClass().getCodeUnits()
@@ -39,7 +39,5 @@ final class EventListenerDescriptor implements SourceBasedArtifactRelationshipDe
 	private boolean isValidHandler(final JavaCodeUnit codeUnit) {
 		return codeUnit.isMetaAnnotatedWith(EventListener.class) && !codeUnit.getParameterTypes().isEmpty();
 	}
-
-
 
 }

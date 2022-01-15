@@ -29,9 +29,9 @@ public final class ArtifactContainerType implements Named, Comparable<ArtifactCo
 	}
 
 	@Override
-	public int compareTo(ArtifactContainerType o) {
-		 return Comparator.comparing(ArtifactContainerType::getName)
-	              .compare(this, o);
+	public int compareTo(final ArtifactContainerType o) {
+		return Comparator.comparing(ArtifactContainerType::getName)
+				.compare(this, o);
 	}
 
 }
