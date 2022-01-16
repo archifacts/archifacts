@@ -11,7 +11,7 @@ import org.archifacts.core.model.ArtifactRelationshipRole;
  * @see ArtifactRelationship
  *
  */
-public interface ArtifactRelationshipDescriptor {
+public interface ArtifactRelationshipDescriptor extends Descriptor {
 
 	/**
 	 * The role of the {@link ArtifactContainer} which this descriptor describes.

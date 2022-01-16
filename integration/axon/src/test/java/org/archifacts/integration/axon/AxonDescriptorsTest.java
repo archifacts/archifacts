@@ -46,7 +46,7 @@ final class AxonDescriptorsTest {
 	void assertThat_building_blocks_are_recognized(final BuildingBlockDescriptor buildingBlockDescriptor, final Class<?>... matchingClasses) {
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockDescriptor)
+				.descriptor(buildingBlockDescriptor)
 				.buildApplication(DOMAIN);
 
 		final Set<String> expectedClassNames = Arrays.stream(matchingClasses).map(Class::getName).collect(Collectors.toSet());
@@ -68,7 +68,7 @@ final class AxonDescriptorsTest {
 			final Tuple... expectedTuples) {
 		final Application application = Application
 				.builder()
-				.addSourceBasedRelationshipDescriptor(sourceBasedArtifactRelationshipDescriptor)
+				.descriptor(sourceBasedArtifactRelationshipDescriptor)
 				.buildApplication(DOMAIN);
 
 		assertThat(application.getRelationshipsOfRole(sourceBasedArtifactRelationshipDescriptor.role()))

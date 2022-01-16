@@ -9,8 +9,8 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
-import org.archifacts.core.descriptor.ArtifactRelationshipDescriptor;
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
+import org.archifacts.core.descriptor.Descriptor;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
 
@@ -38,68 +38,33 @@ public final class ApplicationBuilder {
 	}
 
 	/**
-	 * Registers an {@link ArtifactContainerDescriptor}.
+	 * Registers a {@link Descriptor}.
 	 *
-	 * @param artifactContainerDescriptor the descriptor to be added, cannot be null
+	 * Supported descriptors are:
+	 * <ul>
+	 * <li>{@link ArtifactContainerDescriptor}</li>
+	 * <li>{@link BuildingBlockDescriptor}</li>
+	 * <li>{@link SourceBasedArtifactRelationshipDescriptor}</li>
+	 * <li>{@link TargetBasedArtifactRelationshipDescriptor}</li>
+	 * </ul>
+	 *
+	 * @param descriptor the descriptor to be added, cannot be null
 	 * @return this instance for method-chaining
 	 */
-	public ApplicationBuilder addContainerDescriptor(final ArtifactContainerDescriptor artifactContainerDescriptor) {
-		Objects.requireNonNull(artifactContainerDescriptor, "The ArtifactContainerDescriptor cannot be null");
-		this.containerDescriptors.add(artifactContainerDescriptor);
-		return this;
-	}
-
-	/**
-	 * Registers a {@link BuildingBlockDescriptor}.
-	 *
-	 * @param buildingBlockDescriptor the descriptor to be added, cannot be null
-	 * @return this instance for method-chaining
-	 */
-	public ApplicationBuilder addBuildingBlockDescriptor(final BuildingBlockDescriptor buildingBlockDescriptor) {
-		Objects.requireNonNull(buildingBlockDescriptor, "The BuildingBlockDescriptor cannot be null");
-		buildingBlockDescriptors.add(buildingBlockDescriptor);
-		return this;
-	}
-
-	/**
-	 * Registers a {@link SourceBasedArtifactRelationshipDescriptor}.
-	 *
-	 * @param sourceBasedArtifactRelationshipDescriptor the descriptor to be added,
-	 * @return this instance for method-chaining cannot be null
-	 */
-	public ApplicationBuilder addSourceBasedRelationshipDescriptor(final SourceBasedArtifactRelationshipDescriptor sourceBasedArtifactRelationshipDescriptor) {
-		Objects.requireNonNull(sourceBasedArtifactRelationshipDescriptor, "The SourceBasedArtifactRelationshipDescriptor cannot be null");
-		sourceBasedRelationshipDescriptors.add(sourceBasedArtifactRelationshipDescriptor);
-		return this;
-	}
-
-	/**
-	 * Registers a {@link TargetBasedArtifactRelationshipDescriptor}.
-	 *
-	 * @param targetBasedArtifactRelationshipDescriptor the descriptor to be added,
-	 * @return this instance for method-chaining cannot be null
-	 */
-	public ApplicationBuilder addTargetBasedRelationshipDescriptor(final TargetBasedArtifactRelationshipDescriptor targetBasedArtifactRelationshipDescriptor) {
-		Objects.requireNonNull(targetBasedArtifactRelationshipDescriptor, "The TargetBasedArtifactRelationshipDescriptor cannot be null");
-		targetBasedRelationshipDescriptors.add(targetBasedArtifactRelationshipDescriptor);
-		return this;
-	}
-
-	/**
-	 * Registers a {@link ArtifactRelationshipDescriptor}.
-	 *
-	 * @param artifactRelationshipDescriptor the descriptor to be added,
-	 * @return this instance for method-chaining cannot be null
-	 */
-	public ApplicationBuilder addRelationshipDescriptor(final ArtifactRelationshipDescriptor artifactRelationshipDescriptor) {
-		Objects.requireNonNull(artifactRelationshipDescriptor, "The ArtifactRelationshipDescriptor cannot be null");
-		if (artifactRelationshipDescriptor instanceof SourceBasedArtifactRelationshipDescriptor) {
-			return addSourceBasedRelationshipDescriptor((SourceBasedArtifactRelationshipDescriptor) artifactRelationshipDescriptor);
+	public ApplicationBuilder descriptor(final Descriptor descriptor) {
+		Objects.requireNonNull(descriptor, "The Descriptor cannot be null");
+		if (descriptor instanceof ArtifactContainerDescriptor) {
+			this.containerDescriptors.add((ArtifactContainerDescriptor) descriptor);
+		} else if (descriptor instanceof BuildingBlockDescriptor) {
+			this.buildingBlockDescriptors.add((BuildingBlockDescriptor) descriptor);
+		} else if (descriptor instanceof SourceBasedArtifactRelationshipDescriptor) {
+			this.sourceBasedRelationshipDescriptors.add((SourceBasedArtifactRelationshipDescriptor) descriptor);
+		} else if (descriptor instanceof TargetBasedArtifactRelationshipDescriptor) {
+			this.targetBasedRelationshipDescriptors.add((TargetBasedArtifactRelationshipDescriptor) descriptor);
+		} else {
+			throw new IllegalArgumentException("The descriptor has an unexpected type: " + descriptor.getClass().getName());
 		}
-		if (artifactRelationshipDescriptor instanceof TargetBasedArtifactRelationshipDescriptor) {
-			return addTargetBasedRelationshipDescriptor((TargetBasedArtifactRelationshipDescriptor) artifactRelationshipDescriptor);
-		}
-		throw new IllegalArgumentException("The ArtifactRelationshipDescriptor is of an unexpected type '" + artifactRelationshipDescriptor.getClass().getName() + "'.");
+		return this;
 	}
 
 	/**

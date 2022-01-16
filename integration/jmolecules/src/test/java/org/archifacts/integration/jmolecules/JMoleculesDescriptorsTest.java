@@ -44,7 +44,7 @@ final class JMoleculesDescriptorsTest {
 	void assertThat_building_blocks_are_recognized(final BuildingBlockDescriptor buildingBlockDescriptor, @AggregateWith(VarargsAggregator.class) final Class<?>... matchingClasses) {
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockDescriptor)
+				.descriptor(buildingBlockDescriptor)
 				.buildApplication(DOMAIN);
 		final Set<String> expectedClasses = Arrays.stream(matchingClasses)
 				.map(Class::getName)
@@ -80,10 +80,10 @@ final class JMoleculesDescriptorsTest {
 			final RelationshipPair... expectedRelationshipPairs) {
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(JMoleculesDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor)
-				.addBuildingBlockDescriptor(JMoleculesDescriptors.BuildingBlockDescriptors.RepositoryDescriptor)
+				.descriptor(JMoleculesDescriptors.BuildingBlockDescriptors.AggregateRootDescriptor)
+				.descriptor(JMoleculesDescriptors.BuildingBlockDescriptors.RepositoryDescriptor)
 
-				.addRelationshipDescriptor(artifactRelationshipDescriptor)
+				.descriptor(artifactRelationshipDescriptor)
 				.buildApplication(DOMAIN);
 
 		final Set<RelationshipPair> actualRelationshipPairs = application.getRelationshipsOfRole(artifactRelationshipDescriptor.role())

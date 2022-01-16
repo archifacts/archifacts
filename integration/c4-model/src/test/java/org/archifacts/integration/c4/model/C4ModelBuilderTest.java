@@ -87,7 +87,7 @@ public class C4ModelBuilderTest {
 		final JavaClasses javaClasses = new ClassFileImporter().importPackages("org.archifacts.integration.c4.model.domain");
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
+				.descriptor(buildingBlockType1Descriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -103,7 +103,7 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addContainerDescriptor(defaultContainerDescriptor)
+				.descriptor(defaultContainerDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -133,8 +133,8 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -160,9 +160,9 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
-				.addSourceBasedRelationshipDescriptor(referenceDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.descriptor(referenceDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -188,9 +188,9 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
-				.addSourceBasedRelationshipDescriptor(referenceDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.descriptor(referenceDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -225,9 +225,9 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
-				.addSourceBasedRelationshipDescriptor(referenceDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.descriptor(referenceDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -257,9 +257,9 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
-				.addSourceBasedRelationshipDescriptor(referenceDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.descriptor(referenceDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -298,9 +298,9 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
-				.addSourceBasedRelationshipDescriptor(referenceDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.descriptor(referenceDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -335,8 +335,8 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -373,7 +373,7 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addContainerDescriptor(defaultContainerDescriptor)
+				.descriptor(defaultContainerDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
@@ -408,9 +408,9 @@ public class C4ModelBuilderTest {
 
 		final Application application = Application
 				.builder()
-				.addBuildingBlockDescriptor(buildingBlockType1Descriptor)
-				.addContainerDescriptor(defaultContainerDescriptor)
-				.addSourceBasedRelationshipDescriptor(referenceDescriptor)
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.descriptor(referenceDescriptor)
 				.buildApplication(javaClasses);
 
 		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
