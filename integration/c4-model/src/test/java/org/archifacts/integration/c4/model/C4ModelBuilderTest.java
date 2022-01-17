@@ -2,6 +2,7 @@ package org.archifacts.integration.c4.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalStateException;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.assertj.core.api.Assertions.tuple;
 
 import java.util.Optional;
@@ -455,5 +456,51 @@ public class C4ModelBuilderTest {
 				.containsExactlyInAnyOrder(
 						tuple("uses", class1ForBuildingBlockType1, miscArtifact1),
 						tuple("is used by", miscArtifact1, class1ForBuildingBlockType1));
+	}
+
+	@Test
+	void assert_that_an_IllegalStateException_is_thrown_if_an_Archifact_is_not_mapped_to_the_expected_type() {
+		final JavaClasses javaClasses = new ClassFileImporter().importPackages("org.archifacts.integration.c4.model.domain");
+		final Application application = Application
+				.builder()
+				.descriptor(buildingBlockType1Descriptor)
+				.descriptor(defaultContainerDescriptor)
+				.buildApplication(javaClasses);
+
+		final C4ModelBuilder c4ModelBuilder = C4Model.builder(new Workspace(this.getClass().getSimpleName(), null));
+		application.getBuildingBlocksOfType(buildingBlockType1).forEach(c4ModelBuilder::artifact);
+
+		final C4Model c4Model = c4ModelBuilder.build();
+
+		final Artifact miscArtifact1 = application
+				.getArtifacts()
+				.stream()
+				.filter(artifact -> artifact.getName().equals("MiscArtifact1"))
+				.findFirst()
+				.get();
+
+		final Artifact class1ForBuildingBlockType1 = application
+				.getArtifacts()
+				.stream()
+				.filter(artifact -> artifact.getName().equals("Class1ForBuildingBlockType1"))
+				.findFirst()
+				.get();
+
+		assertThatIllegalStateException().isThrownBy(() -> c4Model.component(miscArtifact1))
+				.withMessage("<MiscArtifact> org.archifacts.integration.c4.model.domain.MiscArtifact1 is not mapped to a C4 model item of type com.structurizr.model.Component");
+
+		assertThatIllegalStateException().isThrownBy(() -> c4Model.relationship(miscArtifact1))
+				.withMessage("<MiscArtifact> org.archifacts.integration.c4.model.domain.MiscArtifact1 is not mapped to a C4 model item of type com.structurizr.model.Relationship");
+
+		assertThatIllegalStateException().isThrownBy(() -> c4Model.container(miscArtifact1))
+				.withMessage("<MiscArtifact> org.archifacts.integration.c4.model.domain.MiscArtifact1 is not mapped to a C4 model item of type com.structurizr.model.Container");
+
+		assertThatNoException().isThrownBy(() -> c4Model.component(class1ForBuildingBlockType1));
+
+		assertThatIllegalStateException().isThrownBy(() -> c4Model.relationship(class1ForBuildingBlockType1))
+				.withMessage("<BuildingBlockType1> org.archifacts.integration.c4.model.domain.Class1ForBuildingBlockType1 is not mapped to a C4 model item of type com.structurizr.model.Relationship");
+
+		assertThatIllegalStateException().isThrownBy(() -> c4Model.container(class1ForBuildingBlockType1))
+				.withMessage("<BuildingBlockType1> org.archifacts.integration.c4.model.domain.Class1ForBuildingBlockType1 is not mapped to a C4 model item of type com.structurizr.model.Container");
 	}
 }

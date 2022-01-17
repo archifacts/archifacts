@@ -1,5 +1,7 @@
 package org.archifacts.integration.c4.model;
 
+import static java.util.Collections.emptySet;
+
 import java.util.Map;
 import java.util.Set;
 
@@ -37,12 +39,12 @@ public class C4Model {
 	}
 
 	private <T extends ModelItem> T modelElement(final Archifact archifact, final Class<T> elementType) {
-		return archifactMap.get(archifact)
+		return archifactMap.getOrDefault(archifact, emptySet())
 				.stream()
 				.filter(elementType::isInstance)
 				.map(elementType::cast)
 				.findFirst()
-				.orElseThrow();
+				.orElseThrow(() -> new IllegalStateException(String.format("%s is not mapped to a C4 model item of type %s", archifact, elementType.getName())));
 	}
 
 	public Workspace workspace() {
