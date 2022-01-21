@@ -121,7 +121,7 @@ class ApplicationBuilderTest {
 
 		}
 
-		static final Object createAnonymousClass() {
+		static Object createAnonymousClass() {
 			return new Object() {
 
 			};
@@ -307,31 +307,8 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_null_cannot_be_added_as_BuildingBlockDescriptor() {
 			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.addBuildingBlockDescriptor(null))
-					.withMessage("The BuildingBlockDescriptor cannot be null");
-		}
-
-		@Test
-		void assert_that_null_cannot_be_added_as_ContainerDescriptor() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.addContainerDescriptor(null))
-					.withMessage("The ArtifactContainerDescriptor cannot be null");
-		}
-
-		@Test
-		void assert_that_null_cannot_be_added_as_SourceBasedRelationshipDescriptor() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatNullPointerException()
-					.isThrownBy(() -> applicationBuilder.addSourceBasedRelationshipDescriptor(null))
-					.withMessage("The SourceBasedArtifactRelationshipDescriptor cannot be null");
-		}
-
-		@Test
-		void assert_that_null_cannot_be_added_as_TargetBasedRelationshipDescriptor() {
-			final ApplicationBuilder applicationBuilder = Application.builder();
-			assertThatNullPointerException()
-					.isThrownBy(() -> applicationBuilder.addTargetBasedRelationshipDescriptor(null))
-					.withMessage("The TargetBasedArtifactRelationshipDescriptor cannot be null");
+			assertThatNullPointerException().isThrownBy(() -> applicationBuilder.descriptor(null))
+					.withMessage("The Descriptor cannot be null");
 		}
 	}
 
@@ -376,13 +353,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_matching_BuildingBlockDescriptor_creates_a_BuildingBlock() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			assertThat(application.getBuildingBlocks())
 					.extracting(BuildingBlock::getType, Artifact::getName,
@@ -411,13 +388,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_MiscArtifact_is_created_if_no_BuildingBlockDescriptor_matches() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			assertThat(application.getMiscArtifacts())
 					.extracting(Artifact::getName, artifact -> artifact.getJavaClass().getName())
@@ -435,13 +412,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_ExternalArtifact_is_created() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			assertThat(application.getExternalArtifacts())
 					.extracting(Artifact::getName, artifact -> artifact.getJavaClass().getName())
@@ -457,8 +434,8 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_if_multiple_BuildingBlockDescriptors_match_the_first_matching_descriptor_is_used() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new SecondBuildingBlockType1Descriptor()).buildApplication(javaClasses);
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new SecondBuildingBlockType1Descriptor()).buildApplication(javaClasses);
 
 			assertThat(application.getBuildingBlocks())
 					.extracting(BuildingBlock::getType, Artifact::getName,
@@ -479,7 +456,7 @@ class ApplicationBuilderTest {
 		void assert_that_building_block_types_with_same_names_are_not_considered_equal() {
 			final Application application = Application
 					.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
 					.buildApplication(javaClasses);
 
 			assertThat(application.getBuildingBlocksOfType(BuildingBlockType1Descriptor.TYPE))
@@ -512,7 +489,7 @@ class ApplicationBuilderTest {
 			void assert_that_collections_are_unmodifiable(final Function<Artifact, Set<?>> setProvider) {
 				final Application application = Application
 						.builder()
-						.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
+						.descriptor(new BuildingBlockType1Descriptor())
 						.buildApplication(javaClasses);
 				final Artifact artifact = application.getArtifacts().iterator().next();
 				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(artifact).add(null));
@@ -526,13 +503,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_BuildingBlock_can_have_a_container() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			final Artifact testEventArtifact = application.getArtifacts().stream().filter(artifact -> artifact
 					.getJavaClass().getName().equals(ContainerType1_BuildingBlockType1.class.getName())).findFirst()
@@ -545,13 +522,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_MiscArtifact_can_have_a_container() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			final Artifact anyClassArtifact = application.getArtifacts().stream().filter(
 					artifact -> artifact.getJavaClass().getName().equals(ContainerType1_MiscArtifact.class.getName()))
@@ -564,13 +541,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_BuildingBlock_can_have_no_container() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			final Artifact testEventArtifact = application.getArtifacts().stream().filter(artifact -> artifact
 					.getJavaClass().getName().equals(NoContainer_BuildingBlockType1.class.getName())).findFirst()
@@ -581,13 +558,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_MiscArtifact_can_have_no_container() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			final Artifact testEventArtifact = application.getArtifacts().stream().filter(
 					artifact -> artifact.getJavaClass().getName().equals(NoContainer_MiscArtifact.class.getName()))
@@ -598,13 +575,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_expected_containers_are_present() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 
 			assertThat(application.getContainers()).extracting(ArtifactContainer::getName, ArtifactContainer::getType)
@@ -616,8 +593,8 @@ class ApplicationBuilderTest {
 		void assert_that_if_multiple_ContainerDescriptors_match_the_first_matching_descriptor_is_used() {
 			final Application application = Application
 					.builder()
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new SecondContainerType1Descriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new SecondContainerType1Descriptor())
 					.buildApplication(javaClasses);
 
 			assertThat(application.getContainers()).extracting(ArtifactContainer::getName, ArtifactContainer::getType)
@@ -628,7 +605,7 @@ class ApplicationBuilderTest {
 		void assert_that_container_types_with_same_names_are_not_considered_equal() {
 			final Application application = Application
 					.builder()
-					.addContainerDescriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType1Descriptor())
 					.buildApplication(javaClasses);
 
 			assertThat(application.getContainersOfType(ContainerType1Descriptor.TYPE))
@@ -663,7 +640,7 @@ class ApplicationBuilderTest {
 			void assert_that_collections_are_unmodifiable(final Function<ArtifactContainer, Set<?>> setProvider) {
 				final Application application = Application
 						.builder()
-						.addContainerDescriptor(new ContainerType1Descriptor())
+						.descriptor(new ContainerType1Descriptor())
 						.buildApplication(javaClasses);
 				final ArtifactContainer container = application.getContainers().iterator().next();
 				assertThatExceptionOfType(UnsupportedOperationException.class).isThrownBy(() -> setProvider.apply(container).add(null));
@@ -676,13 +653,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_that_relationships_are_created() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 			assertThat(application.getRelationships())
 					.extracting(ArtifactRelationship::getRole, rel -> rel.getSource().getName(),
@@ -714,13 +691,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_artifacts_in_container() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 
 			application.getContainers().forEach(container -> {
@@ -745,13 +722,13 @@ class ApplicationBuilderTest {
 		@Test
 		void assert_relationships() {
 			final Application application = Application.builder()
-					.addBuildingBlockDescriptor(new BuildingBlockType1Descriptor())
-					.addBuildingBlockDescriptor(new BuildingBlockType2Descriptor())
-					.addBuildingBlockDescriptor(new NonMatchingBuildingBlockDescriptor())
-					.addContainerDescriptor(new ContainerType1Descriptor())
-					.addContainerDescriptor(new ContainerType2Descriptor())
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
-					.addTargetBasedRelationshipDescriptor(new MiscArtifactRelationshipDescriptor())
+					.descriptor(new BuildingBlockType1Descriptor())
+					.descriptor(new BuildingBlockType2Descriptor())
+					.descriptor(new NonMatchingBuildingBlockDescriptor())
+					.descriptor(new ContainerType1Descriptor())
+					.descriptor(new ContainerType2Descriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new MiscArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 
 			application.getRelationships().forEach(relationship -> {
@@ -773,7 +750,7 @@ class ApplicationBuilderTest {
 		void assert_that_roles_with_same_names_are_not_considered_equal() {
 			final Application application = Application
 					.builder()
-					.addSourceBasedRelationshipDescriptor(new ExternalArtifactRelationshipDescriptor())
+					.descriptor(new ExternalArtifactRelationshipDescriptor())
 					.buildApplication(javaClasses);
 
 			assertThat(application.getRelationshipsOfRole(ExternalArtifactRelationshipDescriptor.ROLE))
@@ -792,8 +769,8 @@ class ApplicationBuilderTest {
 
 			final Application application = Application
 					.builder()
-					.addBuildingBlockDescriptor(blockDescriptor)
-					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
+					.descriptor(blockDescriptor)
+					.descriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
 
 			final BuildingBlock buildingBlock = application.getBuildingBlocksOfType(blockDescriptor.type()).iterator().next();
@@ -811,8 +788,8 @@ class ApplicationBuilderTest {
 
 			final Application application = Application
 					.builder()
-					.addBuildingBlockDescriptor(blockDescriptor)
-					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
+					.descriptor(blockDescriptor)
+					.descriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
 
 			final BuildingBlock buildingBlock = application.getBuildingBlocksOfType(blockDescriptor.type()).iterator().next();
@@ -830,8 +807,8 @@ class ApplicationBuilderTest {
 
 			final Application application = Application
 					.builder()
-					.addContainerDescriptor(containerDescriptor)
-					.addSourceBasedRelationshipDescriptor(relationshipDescriptor)
+					.descriptor(containerDescriptor)
+					.descriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
 
 			final ArtifactContainer artifactContainera = application.getContainersOfType(containerDescriptor.type()).iterator().next();
@@ -849,8 +826,8 @@ class ApplicationBuilderTest {
 
 			final Application application = Application
 					.builder()
-					.addContainerDescriptor(containerDescriptor)
-					.addTargetBasedRelationshipDescriptor(relationshipDescriptor)
+					.descriptor(containerDescriptor)
+					.descriptor(relationshipDescriptor)
 					.buildApplication(javaClasses);
 
 			final ArtifactContainer artifactContainera = application.getContainersOfType(containerDescriptor.type()).iterator().next();

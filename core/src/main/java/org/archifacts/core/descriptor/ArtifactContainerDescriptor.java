@@ -14,7 +14,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
  * @see ArtifactContainer
  *
  */
-public interface ArtifactContainerDescriptor {
+public interface ArtifactContainerDescriptor extends Descriptor {
 
 	/**
 	 * The type of the {@link ArtifactContainer} which this descriptor describes.

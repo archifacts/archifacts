@@ -14,7 +14,7 @@ import com.tngtech.archunit.core.domain.JavaClass;
  * @see BuildingBlock
  *
  */
-public interface BuildingBlockDescriptor {
+public interface BuildingBlockDescriptor extends Descriptor {
 
 	/**
 	 * The type of the {@link BuildingBlock} which this descriptor describes.

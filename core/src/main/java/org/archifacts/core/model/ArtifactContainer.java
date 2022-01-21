@@ -3,11 +3,12 @@ package org.archifacts.core.model;
 import static org.archifacts.core.model.ArchifactsCollectors.toUnmodifiableLinkedSet;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public final class ArtifactContainer implements HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships {
+public final class ArtifactContainer implements Archifact, HasArtifacts, Named, HasIncomingRelationships, HasOutgoingRelationships, Comparable<ArtifactContainer> {
 
 	private final ArtifactContainerDescription description;
 	private Application application;
@@ -56,12 +57,15 @@ public final class ArtifactContainer implements HasArtifacts, Named, HasIncoming
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final ArtifactContainer other = (ArtifactContainer) obj;
 		return Objects.equals(description, other.description);
 	}
@@ -80,6 +84,12 @@ public final class ArtifactContainer implements HasArtifacts, Named, HasIncoming
 				.stream()
 				.flatMap(a -> a.getIncomingRelationships().stream())
 				.collect(toUnmodifiableLinkedSet());
+	}
+
+	@Override
+	public int compareTo(final ArtifactContainer o) {
+		return Comparator.comparing((final ArtifactContainer a) -> a.description)
+				.compare(this, o);
 	}
 
 }

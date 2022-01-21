@@ -31,12 +31,15 @@ public final class BuildingBlock extends Artifact {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final BuildingBlock other = (BuildingBlock) obj;
 		return Objects.equals(type, other.type);
 	}

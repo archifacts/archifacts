@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.archifacts</groupId>
 		<artifactId>archifacts-parent</artifactId>
-		<version>0.2.1-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>archifacts-jmolecules</artifactId>
@@ -13,7 +13,8 @@
 	<description>archifacts jMolecules integration</description>
 
 	<properties>
-		<jmolecules.version>1.3.0</jmolecules.version>
+		<jmolecules.version>1.4.0</jmolecules.version>
+		<jmolecules-integrations.version>0.7.0</jmolecules-integrations.version>
 	</properties>
 
 	<dependencies>
@@ -30,6 +31,11 @@
 			<groupId>org.jmolecules</groupId>
 			<artifactId>jmolecules-events</artifactId>
 			<version>${jmolecules.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jmolecules.integrations</groupId>
+			<artifactId>jmolecules-spring</artifactId>
+			<version>${jmolecules-integrations.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>

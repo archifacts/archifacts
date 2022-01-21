@@ -5,13 +5,13 @@
 	<parent>
 		<groupId>org.archifacts</groupId>
 		<artifactId>archifacts-parent</artifactId>
-		<version>0.2.1-SNAPSHOT</version>
+		<version>0.3.0-SNAPSHOT</version>
 		<relativePath>parent/pom.xml</relativePath>
 	</parent>
 
 	<artifactId>archifacts-aggregator</artifactId>
 	<!-- We need this duplicate version tag to get versions:set working-->
-	<version>0.2.1-SNAPSHOT</version>
+	<version>0.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>archifacts Aggregator POM</description>
@@ -20,7 +20,6 @@
 		<module>parent</module>
 		<module>core</module>
 		<module>integration</module>
-		<module>examples</module>
 	</modules>
 
 </project>

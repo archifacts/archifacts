@@ -5,9 +5,12 @@ import java.util.stream.Stream;
 import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
 import org.archifacts.core.model.Artifact;
 import org.archifacts.core.model.ArtifactRelationshipRole;
+import org.jmolecules.ddd.types.Entity;
 import org.jmolecules.ddd.types.Identifiable;
 
 import com.tngtech.archunit.core.domain.JavaClass;
+import com.tngtech.archunit.core.domain.JavaParameterizedType;
+import com.tngtech.archunit.core.domain.JavaType;
 
 final class IdentifiedByDescriptor implements SourceBasedArtifactRelationshipDescriptor {
 
@@ -29,8 +32,13 @@ final class IdentifiedByDescriptor implements SourceBasedArtifactRelationshipDes
 
 	@Override
 	public Stream<JavaClass> targets(final JavaClass sourceClass) {
-		final JavaClass rawReturnType = sourceClass.getMethod("getId").getRawReturnType();
-		return Stream.of(rawReturnType);
+		return sourceClass.getInterfaces()
+				.stream()
+				.filter(candidate -> candidate.toErasure().isAssignableTo(Entity.class))
+				.filter(JavaParameterizedType.class::isInstance)
+				.map(JavaParameterizedType.class::cast)
+				.map(type -> type.getActualTypeArguments().get(1))
+				.map(JavaType::toErasure);
 	}
 
 }

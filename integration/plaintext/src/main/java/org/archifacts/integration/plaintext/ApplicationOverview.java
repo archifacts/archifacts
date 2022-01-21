@@ -16,9 +16,9 @@ public final class ApplicationOverview {
 
 	/**
 	 * Writes the current application overview into the given writer. The writer is neither flushed nor closed.
-	 * 
+	 *
 	 * @param writer The writer. Must not be <code>null</code>.
-	 * 
+	 *
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void writeToWriter(final Writer writer) throws IOException {

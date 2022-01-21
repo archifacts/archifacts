@@ -74,7 +74,6 @@ final class ContainedEntityDescriptor implements SourceBasedArtifactRelationship
 					if (EntityDescriptor.isBuildingBlock(javaClass)) {
 						return Optional.of(javaClass);
 					}
-					;
 				}
 			}
 		}
@@ -87,7 +86,6 @@ final class ContainedEntityDescriptor implements SourceBasedArtifactRelationship
 					if (EntityDescriptor.isBuildingBlock(javaClass)) {
 						return Optional.of(javaClass);
 					}
-					;
 				}
 			}
 		}

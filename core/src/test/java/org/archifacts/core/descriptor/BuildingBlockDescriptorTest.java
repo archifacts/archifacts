@@ -81,7 +81,7 @@ final class BuildingBlockDescriptorTest {
 		assertThat(buildingBlockDescriptor.isBuildingBlock(importClass(AnotherClass.class))).isFalse();
 	}
 
-	private JavaClass importClass(Class<?> clazz) {
+	private JavaClass importClass(final Class<?> clazz) {
 		return new ClassFileImporter().importClass(clazz);
 	}
 

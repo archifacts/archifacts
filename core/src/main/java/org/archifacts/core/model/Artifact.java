@@ -8,7 +8,7 @@ import java.util.Set;
 
 import com.tngtech.archunit.core.domain.JavaClass;
 
-public abstract class Artifact implements Named, HasIncomingRelationships, HasOutgoingRelationships {
+public abstract class Artifact implements Archifact, Named, HasIncomingRelationships, HasOutgoingRelationships {
 
 	private final JavaClass javaClass;
 
@@ -81,12 +81,15 @@ public abstract class Artifact implements Named, HasIncomingRelationships, HasOu
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final Artifact other = (Artifact) obj;
 		return Objects.equals(javaClass.getName(), other.javaClass.getName());
 	}

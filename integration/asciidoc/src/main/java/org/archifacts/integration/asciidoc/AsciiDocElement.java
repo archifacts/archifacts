@@ -8,7 +8,7 @@ public interface AsciiDocElement {
 
 	/**
 	 * Renders the current element as a String.
-	 * 
+	 *
 	 * @return The AsciiDoc String representing the element. Should not be <code>null</code>.
 	 */
 	String render();

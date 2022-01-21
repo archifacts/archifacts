@@ -5,7 +5,7 @@ import org.jmolecules.event.annotation.DomainEventHandler;
 public class MyEventHandler {
 
 	@DomainEventHandler
-	public void handle(MyEvent event) {
+	public void handle(final MyEvent event) {
 	}
 
 }

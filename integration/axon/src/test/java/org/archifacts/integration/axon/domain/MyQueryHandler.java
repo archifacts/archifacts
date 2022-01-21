@@ -6,7 +6,7 @@ import org.axonframework.queryhandling.QueryHandler;
 public class MyQueryHandler {
 
 	@QueryHandler
-	public Integer handle(MyQuery1 query) {
+	public Integer handle(final MyQuery1 query) {
 		return 0;
 	}
 

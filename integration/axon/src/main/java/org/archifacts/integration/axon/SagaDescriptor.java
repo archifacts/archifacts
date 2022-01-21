@@ -16,7 +16,7 @@ final class SagaDescriptor implements BuildingBlockDescriptor {
 	}
 
 	@Override
-	public boolean isBuildingBlock(JavaClass javaClass) {
+	public boolean isBuildingBlock(final JavaClass javaClass) {
 		return javaClass.getMethods()
 				.stream()
 				.anyMatch(method -> method.isMetaAnnotatedWith(StartSaga.class));

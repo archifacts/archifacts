@@ -1,8 +1,9 @@
 package org.archifacts.core.model;
 
+import java.util.Comparator;
 import java.util.Objects;
 
-final class ArtifactContainerDescription {
+final class ArtifactContainerDescription implements Comparable<ArtifactContainerDescription> {
 	private final ArtifactContainerType type;
 	private final String name;
 
@@ -30,14 +31,24 @@ final class ArtifactContainerDescription {
 
 	@Override
 	public boolean equals(final Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		final ArtifactContainerDescription other = (ArtifactContainerDescription) obj;
 		return Objects.equals(name, other.name) && Objects.equals(type, other.type);
+	}
+
+	@Override
+	public int compareTo(final ArtifactContainerDescription o) {
+		return Comparator.comparing(ArtifactContainerDescription::getType)
+				.thenComparing(ArtifactContainerDescription::getName)
+				.compare(this, o);
 	}
 
 }
