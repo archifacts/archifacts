@@ -34,11 +34,20 @@ implementation 'org.archifacts:archifacts-core:0.2.0'
 ```
 
 ## How to get started
-Take a look at our [Fraktalio demo application example](https://github.com/archifacts/fraktalio-example) to get an idea about how to use *archifacts*.
 
-The projects documents the [Fraktalio demo application](https://github.com/fraktalio) which is a Spring Boot and Axon Framework based microservice system, implemented in Java and Kotlin.
+Take a look at our [Fraktalio demo application example](https://github.com/archifacts/fraktalio-example) and [Spring Restbucks example](https://github.com/archifacts/spring-restbucks-example) to get an idea about how to use *archifacts*.
+
+### Fraktalio
+
+The project documents the [Fraktalio demo application](https://github.com/fraktalio) which is a Spring Boot and Axon Framework based microservice system, implemented in Java and Kotlin.
 
 The generated documentation is deployed using GitHub Actions. You can find it [here](https://archifacts.github.io/fraktalio-example/)
+
+### Spring Restbucks
+
+The project documents the [Spring Restbucks application](https://github.com/odrotbohm/spring-restbucks) which is a Spring Boot and jMolecules based modulithic system, implemented in Java.
+
+The generated documentation is deployed using GitHub Actions. You can find it [here](https://archifacts.github.io/spring-restbucks-example/)
 
 ## Why is it called 'archifacts'?
 
