@@ -7,11 +7,13 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions: 
       contents: read
       packages: write 
+    strategy:
+      matrix:
+        archunit-version: ['0.22.0', '0.21.0']
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
@@ -21,6 +23,6 @@ jobs:
           distribution: 'adopt'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots deploy
+        run: mvn --batch-mode --update-snapshots deploy -Darchunit.version=${{ matrix.archunit-version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
