@@ -1,4 +1,4 @@
-[![Build](https://github.com/archifacts/archifacts/actions/workflows/build-on-push.yml/badge.svg)](https://github.com/archifacts/archifacts/actions/workflows/build-on-push.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.archifacts/archifacts-core/badge.svg?)](https://maven-badges.herokuapp.com/maven-central/org.archifacts/archifacts-core) [![License](https://img.shields.io/github/license/archifacts/archifacts.svg?)](https://github.com/archifacts/archifacts/blob/main/LICENSE)
+[![Build](https://github.com/archifacts/archifacts/actions/workflows/verify-on-push.yml/badge.svg)](https://github.com/archifacts/archifacts/actions/workflows/verify-on-push.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.archifacts/archifacts-core/badge.svg?)](https://maven-badges.herokuapp.com/maven-central/org.archifacts/archifacts-core) [![License](https://img.shields.io/github/license/archifacts/archifacts.svg?)](https://github.com/archifacts/archifacts/blob/main/LICENSE)
 
 <img width="50%" src="archifacts-1-line.svg">
 
