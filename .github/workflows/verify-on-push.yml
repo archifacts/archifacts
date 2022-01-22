@@ -12,8 +12,10 @@ jobs:
       contents: read
       packages: write 
     strategy:
+      fail-fast: false
       matrix:
         archunit-version: ['0.22.0', '0.21.0', '0.20.1', '0.20.0', '0.19.0', '0.18.0', '0.17.0', '0.16.0']
+        
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 11
