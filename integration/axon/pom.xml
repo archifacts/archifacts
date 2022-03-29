@@ -16,7 +16,7 @@
 	<description>archifacts Axon Framework integration</description>
 	
 	<properties>
-		<axon.version>4.5.8</axon.version>
+		<axon.version>4.5.9</axon.version>
 	</properties>
 
 	<dependencies>
