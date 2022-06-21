@@ -14,7 +14,7 @@
 
 	<properties>
 		<jmolecules.version>1.5.0</jmolecules.version>
-		<jmolecules-integrations.version>0.10.0</jmolecules-integrations.version>
+		<jmolecules-integrations.version>1.6.0</jmolecules-integrations.version>
 	</properties>
 
 	<dependencies>
