@@ -13,7 +13,7 @@
 		<maven.compiler.target>11</maven.compiler.target>
 		<archunit.version>1.0.0</archunit.version>
 		<log4j.version>2.19.0</log4j.version>
-		<junit-jupiter.version>5.8.2</junit-jupiter.version>
+		<junit-jupiter.version>5.9.1</junit-jupiter.version>
 		<assertj.version>3.23.1</assertj.version>
 		<maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
 		<maven-source-plugin.version>3.2.1</maven-source-plugin.version>
@@ -145,19 +145,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-api</artifactId>
-				<version>${junit-jupiter.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-engine</artifactId>
-				<version>${junit-jupiter.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.junit.jupiter</groupId>
-				<artifactId>junit-jupiter-params</artifactId>
+				<artifactId>junit-jupiter</artifactId>
 				<version>${junit-jupiter.version}</version>
 				<scope>test</scope>
 			</dependency>
