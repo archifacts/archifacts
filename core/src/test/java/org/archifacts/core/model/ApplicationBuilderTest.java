@@ -1,43 +1,39 @@
 package org.archifacts.core.model;
 
-import static org.archifacts.core.model.ApplicationBuilderTest.Classes.createAnonymousClass;
+import static org.archifacts.core.model.Classes.createAnonymousClass;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Named.named;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.archifacts.core.descriptor.ArtifactContainerDescriptor;
 import org.archifacts.core.descriptor.BuildingBlockDescriptor;
-import org.archifacts.core.descriptor.SourceBasedArtifactRelationshipDescriptor;
-import org.archifacts.core.descriptor.TargetBasedArtifactRelationshipDescriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType1_BuildingBlockType1;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType1_BuildingBlockType2;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType1_ExternalArtifact;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType1_MiscArtifact;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType2_BuildingBlockType1;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType2_BuildingBlockType2;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType2_ExternalArtifact;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.ContainerType2_MiscArtifact;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.NoContainer_BuildingBlockType1;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.NoContainer_BuildingBlockType2;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.NoContainer_ExternalArtifact;
-import org.archifacts.core.model.ApplicationBuilderTest.Classes.NoContainer_MiscArtifact;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.BuildingBlockType1Descriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.BuildingBlockType2Descriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.ContainerType1Descriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.ContainerType2Descriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.ExternalArtifactRelationshipDescriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.MiscArtifactRelationshipDescriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.NonMatchingBuildingBlockDescriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondBuildingBlockType1Descriptor;
-import org.archifacts.core.model.ApplicationBuilderTest.Descriptors.SecondContainerType1Descriptor;
+import org.archifacts.core.model.Classes.ContainerType1_BuildingBlockType1;
+import org.archifacts.core.model.Classes.ContainerType1_BuildingBlockType2;
+import org.archifacts.core.model.Classes.ContainerType1_ExternalArtifact;
+import org.archifacts.core.model.Classes.ContainerType1_MiscArtifact;
+import org.archifacts.core.model.Classes.ContainerType2_BuildingBlockType1;
+import org.archifacts.core.model.Classes.ContainerType2_BuildingBlockType2;
+import org.archifacts.core.model.Classes.ContainerType2_ExternalArtifact;
+import org.archifacts.core.model.Classes.ContainerType2_MiscArtifact;
+import org.archifacts.core.model.Classes.NoContainer_BuildingBlockType1;
+import org.archifacts.core.model.Classes.NoContainer_BuildingBlockType2;
+import org.archifacts.core.model.Classes.NoContainer_ExternalArtifact;
+import org.archifacts.core.model.Classes.NoContainer_MiscArtifact;
+import org.archifacts.core.model.Descriptors.BuildingBlockType1Descriptor;
+import org.archifacts.core.model.Descriptors.BuildingBlockType2Descriptor;
+import org.archifacts.core.model.Descriptors.ContainerType1Descriptor;
+import org.archifacts.core.model.Descriptors.ContainerType2Descriptor;
+import org.archifacts.core.model.Descriptors.ExternalArtifactRelationshipDescriptor;
+import org.archifacts.core.model.Descriptors.MiscArtifactRelationshipDescriptor;
+import org.archifacts.core.model.Descriptors.NonMatchingBuildingBlockDescriptor;
+import org.archifacts.core.model.Descriptors.SecondBuildingBlockType1Descriptor;
+import org.archifacts.core.model.Descriptors.SecondContainerType1Descriptor;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator.ReplaceUnderscores;
@@ -48,10 +44,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import com.tngtech.archunit.core.domain.Dependency;
-import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.core.domain.JavaField;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 @DisplayNameGeneration(ReplaceUnderscores.class)
@@ -67,238 +60,6 @@ class ApplicationBuilderTest {
 				ContainerType2_MiscArtifact.class, NoContainer_BuildingBlockType1.class,
 				NoContainer_BuildingBlockType2.class, NoContainer_MiscArtifact.class,
 				createAnonymousClass().getClass());
-	}
-
-	static final class Classes {
-
-		static final class ContainerType1_BuildingBlockType1 {
-			ContainerType1_ExternalArtifact externalArtifact;
-
-		}
-
-		static final class ContainerType1_BuildingBlockType2 {
-			ContainerType1_MiscArtifact miscArtifact;
-
-		}
-
-		static final class ContainerType1_MiscArtifact {
-
-		}
-
-		static final class ContainerType1_ExternalArtifact {
-
-		}
-
-		static final class ContainerType2_BuildingBlockType1 {
-			ContainerType2_ExternalArtifact externalArtifact;
-		}
-
-		static final class ContainerType2_BuildingBlockType2 {
-			ContainerType2_MiscArtifact miscArtifact;
-		}
-
-		static final class ContainerType2_MiscArtifact {
-
-		}
-
-		static final class ContainerType2_ExternalArtifact {
-
-		}
-
-		static final class NoContainer_BuildingBlockType1 {
-			NoContainer_ExternalArtifact externalArtifact;
-		}
-
-		static final class NoContainer_BuildingBlockType2 {
-			NoContainer_MiscArtifact miscArtifact;
-		}
-
-		static final class NoContainer_MiscArtifact {
-
-		}
-
-		static final class NoContainer_ExternalArtifact {
-
-		}
-
-		static Object createAnonymousClass() {
-			return new Object() {
-
-			};
-		}
-	}
-
-	static final class Descriptors {
-
-		static final class BuildingBlockType1Descriptor implements BuildingBlockDescriptor {
-
-			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType1");
-
-			@Override
-			public BuildingBlockType type() {
-				return TYPE;
-			}
-
-			@Override
-			public boolean isBuildingBlock(final JavaClass javaClass) {
-				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
-			}
-		}
-
-		static final class SecondBuildingBlockType1Descriptor implements BuildingBlockDescriptor {
-
-			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType1-Duplicate");
-
-			@Override
-			public BuildingBlockType type() {
-				return TYPE;
-			}
-
-			@Override
-			public boolean isBuildingBlock(final JavaClass javaClass) {
-				return javaClass.getSimpleName().endsWith("_BuildingBlockType1");
-			}
-		}
-
-		static final class BuildingBlockType2Descriptor implements BuildingBlockDescriptor {
-
-			private static final BuildingBlockType TYPE = BuildingBlockType.of("BuildingBlockType2");
-
-			@Override
-			public BuildingBlockType type() {
-				return TYPE;
-			}
-
-			@Override
-			public boolean isBuildingBlock(final JavaClass javaClass) {
-				return javaClass.getSimpleName().endsWith("_BuildingBlockType2");
-			}
-		}
-
-		static final class ContainerType1Descriptor implements ArtifactContainerDescriptor {
-
-			private static final ArtifactContainerType TYPE = ArtifactContainerType.of("ContainerType1");
-
-			@Override
-			public ArtifactContainerType type() {
-				return TYPE;
-			}
-
-			@Override
-			public Optional<String> containerNameOf(final JavaClass javaClass) {
-				final String[] splittedName = javaClass.getSimpleName().split("_");
-				if (splittedName.length > 1) {
-					final String containerName = splittedName[0];
-					if ("ContainerType1".equals(containerName)) {
-						return Optional.of("Container1");
-					}
-				}
-				return Optional.empty();
-			}
-		}
-
-		static final class SecondContainerType1Descriptor implements ArtifactContainerDescriptor {
-
-			private static final ArtifactContainerType TYPE = ArtifactContainerType.of("ContainerType1");
-
-			@Override
-			public ArtifactContainerType type() {
-				return TYPE;
-			}
-
-			@Override
-			public Optional<String> containerNameOf(final JavaClass javaClass) {
-				final String[] splittedName = javaClass.getSimpleName().split("_");
-				if (splittedName.length > 1) {
-					final String containerName = splittedName[0];
-					if ("ContainerType1".equals(containerName)) {
-						return Optional.of("SecondContainer1");
-					}
-				}
-				return Optional.empty();
-			}
-		}
-
-		static final class ContainerType2Descriptor implements ArtifactContainerDescriptor {
-
-			private static final ArtifactContainerType TYPE = ArtifactContainerType.of("ContainerType2");
-
-			@Override
-			public ArtifactContainerType type() {
-				return TYPE;
-			}
-
-			@Override
-			public Optional<String> containerNameOf(final JavaClass javaClass) {
-				final String[] splittedName = javaClass.getSimpleName().split("_");
-				if (splittedName.length > 1) {
-					final String containerName = splittedName[0];
-					if ("ContainerType2".equals(containerName)) {
-						return Optional.of("Container2");
-					}
-				}
-				return Optional.empty();
-			}
-		}
-
-		static final class NonMatchingBuildingBlockDescriptor implements BuildingBlockDescriptor {
-
-			private static final BuildingBlockType TYPE = BuildingBlockType.of("Non-matching");
-
-			@Override
-			public BuildingBlockType type() {
-				return TYPE;
-			}
-
-			@Override
-			public boolean isBuildingBlock(final JavaClass javaClass) {
-				return false;
-			}
-		}
-
-		static final class ExternalArtifactRelationshipDescriptor implements SourceBasedArtifactRelationshipDescriptor {
-
-			private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("extref");
-
-			@Override
-			public ArtifactRelationshipRole role() {
-				return ROLE;
-			}
-
-			@Override
-			public boolean isSource(final Artifact sourceCandidateArtifact) {
-				return sourceCandidateArtifact.getJavaClass().getFields().stream()
-						.anyMatch(field -> field.getName().equals("externalArtifact"));
-			}
-
-			@Override
-			public Stream<JavaClass> targets(final JavaClass sourceClass) {
-				return sourceClass.getFields().stream().filter(field -> field.getName().equals("externalArtifact"))
-						.map(JavaField::getRawType);
-			}
-		}
-
-		static final class MiscArtifactRelationshipDescriptor implements TargetBasedArtifactRelationshipDescriptor {
-
-			private static final ArtifactRelationshipRole ROLE = ArtifactRelationshipRole.of("miscref");
-
-			@Override
-			public ArtifactRelationshipRole role() {
-				return ROLE;
-			}
-
-			@Override
-			public boolean isTarget(final Artifact targetCandidateArtifact) {
-				return !targetCandidateArtifact.getJavaClass().getDirectDependenciesToSelf().isEmpty();
-			}
-
-			@Override
-			public Stream<JavaClass> sources(final JavaClass targetClass) {
-				return targetClass.getDirectDependenciesToSelf().stream().map(Dependency::getOriginClass);
-			}
-
-		}
-
 	}
 
 	@Nested
@@ -405,8 +166,7 @@ class ApplicationBuilderTest {
 									ContainerType2_MiscArtifact.class.getName()),
 							tuple(NoContainer_MiscArtifact.class.getSimpleName(),
 									NoContainer_MiscArtifact.class.getName()),
-							tuple(ApplicationBuilderTest.class.getSimpleName() + "$" + Classes.class.getSimpleName()
-									+ "$1", Classes.class.getName() + "$1"));
+							tuple(Classes.class.getSimpleName() + "$1", Classes.class.getName() + "$1"));
 		}
 
 		@Test
