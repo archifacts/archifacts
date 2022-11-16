@@ -3,8 +3,8 @@ package org.archifacts.integration.c4.asciidoc.plantuml;
 import org.archifacts.integration.asciidoc.PlantUMLDocElement;
 import org.archifacts.integration.c4.asciidoc.ViewDocElement;
 
-import com.structurizr.io.Diagram;
-import com.structurizr.io.plantuml.C4PlantUMLExporter;
+import com.structurizr.export.Diagram;
+import com.structurizr.export.plantuml.C4PlantUMLExporter;
 import com.structurizr.view.View;
 
 abstract class ViewPlantUMLDocElement<V extends View> extends ViewDocElement<V> {
