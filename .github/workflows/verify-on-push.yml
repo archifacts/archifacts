@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        archunit-version: ['1.0.0']
+        archunit-version: ['1.0.1']
         
     steps:
       - uses: actions/checkout@v2
