@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        archunit-version: ['1.0.1', '1.1.0']
+        archunit-version: ['1.1.0']
         java: [ '11', '17', '21' ]
         
     steps:
