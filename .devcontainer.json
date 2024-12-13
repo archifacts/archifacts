@@ -1,0 +1,6 @@
+{
+  "image":"mcr.microsoft.com/devcontainers/java",
+  "features": {
+    "ghcr.io/devcontainers-extra/features/maven-sdkman:2": {}
+  }
+}
