@@ -1,4 +1,4 @@
-name: maven build on pr
+name: Verify (PR)
 
 on:
   pull_request:
@@ -6,11 +6,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    permissions: 
+    permissions:
       contents: read
-      packages: write 
+      packages: read
     strategy:
       fail-fast: false
       matrix:
@@ -21,9 +20,10 @@ jobs:
         uses: actions/setup-java@v5
         with:
           java-version: '${{ matrix.java }}'
-          distribution: 'zulu'
+          distribution: 'temurin'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          BRANCH_NAME=${{ github.head_ref }}
+          SAFE_BRANCH_NAME=${BRANCH_NAME//\//-}
+          mvn --batch-mode --update-snapshots -Drevision=${SAFE_BRANCH_NAME}-SNAPSHOT verify
