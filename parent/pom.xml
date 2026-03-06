@@ -21,7 +21,7 @@
 		<jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
 		<maven-gpg-plugin.version>3.0.1</maven-gpg-plugin.version>
 		<nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-		<nexus.url>https://s01.oss.sonatype.org</nexus.url>
+		<nexus.url>https://ossrh-staging-api.central.sonatype.com</nexus.url>
 	</properties>
 	<build>
 		<pluginManagement>
