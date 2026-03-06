@@ -31,8 +31,11 @@ jobs:
         with:
           languages: ${{ matrix.language }}
 
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v4
+      - name: Build for CodeQL
+        run: |
+          BRANCH_NAME=${{ github.head_ref || github.ref_name }}
+          SAFE_BRANCH_NAME=${BRANCH_NAME//\//-}
+          mvn --batch-mode --update-snapshots -Drevision=${SAFE_BRANCH_NAME}-SNAPSHOT -DskipTests compile
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v4
