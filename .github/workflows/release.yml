@@ -35,6 +35,7 @@ jobs:
           MAVEN_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           MAVEN_CENTRAL_TOKEN: ${{ secrets.SONATYPE_PASSWORD }}
           MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+          MAVEN_GPG_KEYNAME: ${{ secrets.MAVEN_GPG_KEYNAME }}
         run: |
           export GPG_TTY=$(tty)
           mvn --no-transfer-progress -B --file pom.xml \
