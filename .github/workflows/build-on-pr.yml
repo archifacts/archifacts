@@ -6,11 +6,10 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-    permissions: 
+    permissions:
       contents: read
-      packages: write 
+      packages: read
     strategy:
       fail-fast: false
       matrix:
@@ -24,6 +23,9 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots -Drevision=0.0.0-SNAPSHOT verify
+        run: |
+          BRANCH_NAME=${{ github.head_ref }}
+          SAFE_BRANCH_NAME=${BRANCH_NAME//\//-}
+          mvn --batch-mode --update-snapshots -Drevision=${SAFE_BRANCH_NAME}-SNAPSHOT verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
