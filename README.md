@@ -1,4 +1,4 @@
-[![Build](https://github.com/archifacts/archifacts/actions/workflows/verify-on-push.yml/badge.svg)](https://github.com/archifacts/archifacts/actions/workflows/verify-on-push.yml) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.archifacts/archifacts-core/badge.svg?)](https://maven-badges.herokuapp.com/maven-central/org.archifacts/archifacts-core) [![License](https://img.shields.io/github/license/archifacts/archifacts.svg?)](https://github.com/archifacts/archifacts/blob/main/LICENSE)
+[![Verify (PR)](https://github.com/archifacts/archifacts/actions/workflows/verify-on-pr.yml/badge.svg)](https://github.com/archifacts/archifacts/actions/workflows/verify-on-pr.yml) [![Verify (Push)](https://github.com/archifacts/archifacts/actions/workflows/verify-on-push.yml/badge.svg)](https://github.com/archifacts/archifacts/actions/workflows/verify-on-push.yml) [![Maven Central](https://img.shields.io/maven-central/v/org.archifacts/archifacts-core?label=Maven%20Central)](https://search.maven.org/artifact/org.archifacts/archifacts-core) [![License](https://img.shields.io/github/license/archifacts/archifacts.svg?)](https://github.com/archifacts/archifacts/blob/main/LICENSE)
 
 <img width="50%" src="archifacts-1-line.svg">
 
@@ -20,7 +20,7 @@ Nevertheless we try to reduce the breaking changes to a minimum, but there is no
 ### Gradle
 
 ```Gradle
-implementation 'org.archifacts:archifacts-core:0.5.0'
+implementation 'org.archifacts:archifacts-core:<latest-version>'
 ```
 
 ### Maven
@@ -29,7 +29,7 @@ implementation 'org.archifacts:archifacts-core:0.5.0'
 <dependency>
     <groupId>org.archifacts</groupId>
     <artifactId>archifacts-core</artifactId>
-    <version>0.5.0</version>
+    <version>&lt;latest-version&gt;</version>
 </dependency>
 ```
 
@@ -45,7 +45,7 @@ The generated documentation is deployed using GitHub Actions. You can find it [h
 
 ### Spring Restbucks
 
-The project documents the [Spring Restbucks application](https://github.com/odrotbohm/spring-restbucks) which is a Spring Boot and jMolecules based modulithic system, implemented in Java.
+The project documents the [Spring Restbucks application](https://github.com/odrotbohm/spring-restbucks) which is a Spring Boot and jMolecules based modular monolith system, implemented in Java.
 
 The generated documentation is deployed using GitHub Actions. You can find it [here](https://archifacts.github.io/spring-restbucks-example/)
 
@@ -102,4 +102,4 @@ This repository uses Maven CI-friendly versions, so the Git tag is the source of
 
 ## License
 
-ArchUnit is published under the Apache License 2.0, see <http://www.apache.org/licenses/LICENSE-2.0> for details.
+archifacts is published under the Apache License 2.0, see <http://www.apache.org/licenses/LICENSE-2.0> for details.
