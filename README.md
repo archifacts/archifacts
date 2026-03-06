@@ -62,6 +62,44 @@ Every class, interface or enum in your application is treated as an *artifact*. 
 ## How can I contribute?
 The most helpful contribution in this early project phase is feedback. Feedback about bugs, missing features, misconceptions, successes, whatever. We would like to get in touch with the library's users to improve *archifacts*.
 
+## Release process
+
+Releases are created manually via GitHub Releases and published by the `Release` GitHub Actions workflow.
+
+### Prerequisites
+
+- The required repository secrets for Maven Central publishing and GPG signing are configured:
+  - `SONATYPE_USERNAME`
+  - `SONATYPE_PASSWORD`
+  - `GPG_PRIVATE_KEY`
+  - `GPG_PASSPHRASE`
+  - `MAVEN_GPG_KEYNAME`
+- All changes for the release are merged and verified on `main`.
+
+### Steps
+
+1. Create and push a release tag (SemVer-style), for example:
+
+```bash
+git checkout main
+git pull
+git tag 0.7.0
+git push origin 0.7.0
+```
+
+2. Open GitHub -> `Releases` -> `Draft a new release`.
+3. Choose the existing tag from the tag selector.
+4. Add title and release notes.
+5. Publish the release.
+
+Publishing the release triggers `.github/workflows/release.yml` (`release.published` event), checks out the tagged commit, and runs Maven deploy with:
+
+```bash
+-Drevision=<tag-name>
+```
+
+This repository uses Maven CI-friendly versions, so the Git tag is the source of truth for the released artifact version.
+
 ## License
 
 ArchUnit is published under the Apache License 2.0, see <http://www.apache.org/licenses/LICENSE-2.0> for details.

@@ -27,6 +27,6 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify -Darchunit.version=${{ matrix.archunit-version }}
+        run: mvn --batch-mode --update-snapshots -Drevision=0.0.0-SNAPSHOT verify -Darchunit.version=${{ matrix.archunit-version }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

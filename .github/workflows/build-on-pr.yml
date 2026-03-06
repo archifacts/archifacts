@@ -24,6 +24,6 @@ jobs:
           distribution: 'zulu'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn --batch-mode --update-snapshots verify
+        run: mvn --batch-mode --update-snapshots -Drevision=0.0.0-SNAPSHOT verify
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
